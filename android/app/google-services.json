@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "689295844787",
+    "firebase_url": "https://securisalary-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "securisalary",
+    "storage_bucket": "securisalary.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689295844787:android:e1f34fed50e08eca2057c6",
+        "android_client_info": {
+          "package_name": "salary.securitas.salary_securitas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDN14sbM4DBYkBrWW01Rfcaxzj6E9us0Kk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
