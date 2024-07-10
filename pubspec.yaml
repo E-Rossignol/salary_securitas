@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
+  # The following adds the Cupertino Icons fonts to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   firebase_core: ^3.1.1
@@ -48,6 +48,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_date_pickers: ^0.4.3
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -62,11 +63,14 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
+flutter_icons:
+  android: true
+  ios: false
+  image_path: "lib/images/black_dollar.png"
 # The following section is specific to Flutter packages.
 flutter:
 
-  # The following line ensures that the Material Icons font is
+  # The following line ensures that the Material Icons fonts is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
@@ -76,6 +80,12 @@ flutter:
     - lib/images/black_dollar.png
     - lib/images/black_dollar_dark.png
   #   - images/a_dot_ham.jpeg
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: lib/constants/fonts/montserrat/Montserrat-Regular.ttf
+        - asset: lib/constants/fonts/montserrat/Montserrat-Bold.ttf
+          weight: 700
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -85,8 +95,8 @@ flutter:
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
+  # "family" key with the fonts family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the fonts. For
   # example:
   # fonts:
   #   - family: Schyler

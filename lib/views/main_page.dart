@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:salary_securitas/components/settings/log_out_component.dart';
 import 'package:salary_securitas/models/appointment.dart';
 import 'package:flutter/material.dart';
 import 'package:salary_securitas/auth/auth.dart';
 import 'package:salary_securitas/views/create_service_page.dart';
 import 'package:salary_securitas/views/settings_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../constants/helper.dart';
 import '../database/service_db.dart';
@@ -22,13 +22,14 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  late Future<SharedPreferences> prefs;
   Future<List<Appointment>>? futureAppointments;
   ServiceDB db = ServiceDB();
   late Future<UserSecu> futureUser;
   UserSecu user = UserSecu(id: 0, userID: '', firstName: '', lastName: '');
   late CalendarFormat _calendarFormat = CalendarFormat.month;
-  late DateTime _selectedDay = DateTime.now();
-  late DateTime _focusedDay = DateTime.now();
+  DateTime _selectedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
   late int _currentMonth = DateTime.now().month;
   late int _currentYear = DateTime.now().year;
   List<Appointment> _appointmentsForSelectedDay = [];
@@ -36,10 +37,16 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    setPrefs();
     getName();
     fetchServices();
   }
 
+  void setPrefs(){
+    setState(() {
+      prefs = SharedPreferences.getInstance();
+    });
+  }
   void fetchServices() {
     setState(() {
       futureAppointments =
@@ -73,8 +80,9 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context)
-              .push(Helper.switchPages(CreateServicePage(day: _selectedDay)));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateServicePage(day: _selectedDay)));
         },
         backgroundColor: colors.secondary,
         child: const Icon(Icons.add),
@@ -84,11 +92,16 @@ class _MainPageState extends State<MainPage> {
           future: futureUser,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text('Loading...');
+              return Text('loading'.tr);
             } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
+              return Text('${'error:'.tr}${snapshot.error}');
             } else {
               user = snapshot.data!;
+              if (user.id == -1){
+                return Center(
+                  child: Text('no name registered'.tr),
+                );
+              }
               return Center(
                   child: Text('${user.firstName} ${user.lastName}',
                       style: TextStyle(color: colors.onPrimary)));
@@ -113,7 +126,21 @@ class _MainPageState extends State<MainPage> {
       endDrawer: Drawer(
         shadowColor: colors.onBackground,
         backgroundColor: colors.background,
-        child: const SettingsView(),
+        child: FutureBuilder<SharedPreferences>(
+          future: prefs,
+          builder: (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // Show a loading spinner while waiting
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              // SharedPreferences instance is available here
+              SharedPreferences prefs = snapshot.data!;
+              bool isDebug = prefs.getBool('godMod') ?? false;
+              return SettingsView(isLoginPage: false, isDebug: isDebug);
+            }
+          },
+        )
       ),
       body: FutureBuilder<List<Appointment>>(
         future: futureAppointments,
@@ -121,7 +148,7 @@ class _MainPageState extends State<MainPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text('${'error:'.tr}  ${snapshot.error.toString()}'));
           } else {
             return Column(mainAxisSize: MainAxisSize.max, children: [
               Container(
@@ -141,8 +168,8 @@ class _MainPageState extends State<MainPage> {
                             DateTime(day.year, day.month, day.day)] ??
                         [];
                   },
-                  availableCalendarFormats: const {
-                    CalendarFormat.month: 'Month',
+                  availableCalendarFormats: {
+                    CalendarFormat.month: 'month'.tr,
                   },
                   onFormatChanged: (format) {
                     setState(() {
@@ -177,8 +204,9 @@ class _MainPageState extends State<MainPage> {
                     });
                   },
                   onDayLongPressed: (selectedDay, focusedDay) {
-                    Navigator.of(context).push(Helper.switchPages(
-                        CreateServicePage(day: selectedDay)));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CreateServicePage(day: selectedDay)));
                   },
                   onDaySelected: (selectedDay, focusedDay) {
                     setState(() {
@@ -287,11 +315,9 @@ class _MainPageState extends State<MainPage> {
                                                         size: 20,
                                                       ),
                                                       onPressed: () {
-                                                        Navigator.of(context).push(
-                                                            Helper.switchPages(
-                                                                EditServicePage(
-                                                                    app:
-                                                                        appointment)));
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(builder: (context) => EditServicePage(app: appointment,)));
                                                       },
                                                     ),
                                                   ),
@@ -325,13 +351,13 @@ class _MainPageState extends State<MainPage> {
                                                             builder: (context) {
                                                               return AlertDialog(
                                                                 title: Text(
-                                                                    'Delete Service'),
+                                                                    'delete_service'.tr),
                                                                 content: Text(
-                                                                    'Are you sure you want to delete this service?'),
+                                                                    'sure_delete_service'.tr),
                                                                 actions: <Widget>[
                                                                   TextButton(
                                                                     child: Text(
-                                                                        'Cancel'),
+                                                                        'cancel'.tr),
                                                                     onPressed:
                                                                         () {
                                                                       Navigator.of(
@@ -341,7 +367,7 @@ class _MainPageState extends State<MainPage> {
                                                                   ),
                                                                   TextButton(
                                                                     child: Text(
-                                                                        'Delete'),
+                                                                        'delete'.tr),
                                                                     onPressed:
                                                                         () {
                                                                       Navigator.of(
@@ -368,7 +394,7 @@ class _MainPageState extends State<MainPage> {
                                   );
                                 }),
                           )
-                        : const Center(child: Text('No services for this day')),
+                        : Center(child: Text('no_service'.tr)),
                   ),
                 ),
               ),
@@ -382,7 +408,7 @@ class _MainPageState extends State<MainPage> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
+                        return Center(child: Text('${'error'.tr} ${snapshot.error}'));
                       } else {
                         return Container(
                           margin: const EdgeInsets.all(15.0),

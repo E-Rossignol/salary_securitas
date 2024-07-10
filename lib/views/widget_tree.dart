@@ -3,8 +3,6 @@ import 'package:salary_securitas/views/main_page.dart';
 import 'package:salary_securitas/views/login_register_page.dart';
 import 'package:flutter/material.dart';
 
-import '../constants/helper.dart';
-
 class WidgetTree extends StatefulWidget {
   const WidgetTree({super.key});
 
@@ -20,12 +18,16 @@ class _WidgetTreeState extends State<WidgetTree> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.push(context, Helper.switchPages(const MainPage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainPage()));
             });
             return const MainPage();
           } else {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.push(context, Helper.switchPages(const LoginPage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()));
             });
             return const LoginPage();
           }

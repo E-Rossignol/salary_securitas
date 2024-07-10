@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:salary_securitas/database/service_db.dart';
-import 'package:salary_securitas/models/appointment.dart';
-import 'package:salary_securitas/models/user_secu.dart';
 import 'package:salary_securitas/views/settings_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../auth/auth.dart';
+import '../constants/helper.dart';
 import '../constants/theme/theme_provider.dart';
+import '../models/user_secu.dart';
+import 'main_page.dart';
 import 'name_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,6 +20,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool godMod = false;
   String? errorMessage;
   bool isLogin = true;
   bool _isPasswordHidden = true;
@@ -37,6 +40,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<bool> signInWithEmailAndPassword() async {
+    Future.delayed(Duration(seconds: 1));
     try {
       await Auth().signInWithEmailAndPassword(
           email: _controllerEmail.text, password: _controllerPassword.text);
@@ -55,7 +59,8 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(
             builder: (context) => NamePage(
                 email: _controllerEmail.text,
-                password: _controllerPassword.text)));
+                password: _controllerPassword.text,
+            registered: false,)));
   }
 
   void _togglePasswordVisibility() {
@@ -89,26 +94,69 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  void goToMainPage(){
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MainPage()));
+  }
+
+  void goToNamePage(bool registered){
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NamePage(
+                email: _controllerEmail.text,
+                password: _controllerPassword.text,
+                registered: registered)
+    ));
+  }
+
+  Future<bool> hasName() async {
+    ServiceDB db = ServiceDB();
+    UserSecu user = await db.getName(FirebaseAuth.instance.currentUser!.uid);
+    return user.id != -1;
+  }
+
   Future<Widget> _submitButton() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     return ElevatedButton(
       onPressed: () async {
-        bool isAlreadyIn = await signInWithEmailAndPassword();
-        if (!isLogin && isAlreadyIn) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Email already registered'),
-            duration: Duration(seconds: 1),
-          ));
-          return;
+        if (isLogin) {
+          bool registered = await signInWithEmailAndPassword();
+          if (registered) {
+            bool currentHasName = await hasName();
+            if (currentHasName){
+              goToMainPage();
+            }
+            else{
+              goToNamePage(true);
+            }
+          }
         } else {
-          prefs.setString('email', _controllerEmail.text);
-          prefs.setString('password', _controllerPassword.text);
-          isLogin
-              ? signInWithEmailAndPassword()
-              : createUserWithEmailAndPassword();
+          bool registered = await signInWithEmailAndPassword();
+          if (registered){
+            setState(() {
+              errorMessage = '${'email_already_exists'.tr}, ${'connection in progress'.tr}';
+              Future.delayed(Duration(seconds: 2));
+            });
+          } else {
+            await createUserWithEmailAndPassword();
+          }
         }
       },
-      child: Text(isLogin ? 'Login' : 'Register'),
+      child: Text(isLogin ? 'logIn'.tr : 'register'.tr),
+    );
+  }
+  Widget _justLogIn() {
+    return ElevatedButton(
+        onPressed: () {
+          setState(() {
+            _controllerEmail.text = 'erwan@hotmail.ch';
+            _controllerPassword.text = 'testtest';
+          });
+        },
+        child: Text('Just fckin log me in',
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface))
     );
   }
 
@@ -119,96 +167,51 @@ class _LoginPageState extends State<LoginPage> {
             isLogin = !isLogin;
           });
         },
-        child: Text(isLogin ? 'Register' : 'Login',
+        child: Text(isLogin ? 'register'.tr : 'logIn'.tr,
             style: TextStyle(color: Theme.of(context).colorScheme.onSurface)));
   }
 
-  Future<Widget> _showTables() async {
+  void _showGodModDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        TextEditingController controller = TextEditingController();
+        return AlertDialog(
+          title: Text('Enter God Mod Code'),
+          content: TextField(
+            controller: controller,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(hintText: "Enter numeric code"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Submit'),
+              onPressed: () async {
+                if (controller.text == '2563') {
+                  setState(() {
+                    godMod = true;
+                  });
+                  Helper.snackbar('OH MY GOD', 'Hello Kratos !');
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  prefs.setBool('godMod', true);
+                }
+                else {
+                  Helper.snackbar('Error', 'U SUCK BITCH');
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _godModButton() {
     return ElevatedButton(
-        child: const Text('Show tables'),
-        onPressed: () async {
-          List<dynamic> tables = await getTables();
-          List<Appointment> apps = tables.first;
-          List<UserSecu> names = tables.last;
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Tables'),
-                  content: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.9,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SingleChildScrollView(
-                            child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text('Appointments:'),
-                            for (var app in apps)
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Expanded(
-                                    child: ListTile(
-                                      title: Text(
-                                          'User: ${app.user.substring(0, 4)}'),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: ListTile(
-                                      title: Text(
-                                          'Start: ${app.start.toString()}'),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: ListTile(
-                                      title: Text('End: ${app.end.toString()}'),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                          ],
-                        )),
-                        SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Names:'),
-                              for (var name in names)
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Expanded(
-                                      child: ListTile(
-                                        title: Text(
-                                            'UserID: ${name.userID.substring(0, 4)}'),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: ListTile(
-                                        title: Text(
-                                            'NAME: ${name.firstName} ${name.lastName}'),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Close'))
-                  ],
-                );
-              });
-        });
+      onPressed: _showGodModDialog,
+      child: Text('God Mod'),
+    );
   }
 
   @override
@@ -231,7 +234,7 @@ class _LoginPageState extends State<LoginPage> {
           ]),
           endDrawer: Drawer(
             backgroundColor: colors.background,
-            child: const SettingsView(),
+            child: SettingsView(isLoginPage: true, isDebug: godMod),
           ),
           body: Container(
             height: double.infinity,
@@ -253,16 +256,9 @@ class _LoginPageState extends State<LoginPage> {
                       width: 150,
                     ),
                   ),
-                  FutureBuilder<Widget>(
-                    future: _showTables(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return snapshot.data!;
-                      } else {
-                        return const CircularProgressIndicator();
-                      }
-                    },
-                  ),
+                  if(godMod){
+                    _justLogIn()
+                  }.first,
                   _entryField('Email', _controllerEmail),
                   _entryField('Password', _controllerPassword,
                       isPassword: true),
@@ -277,6 +273,10 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       }),
                   _loginOrRegisterButton(),
+                  SizedBox(
+                    height: 200,
+                  ),
+                  _godModButton(),
                 ],
               ),
             ),
@@ -284,10 +284,5 @@ class _LoginPageState extends State<LoginPage> {
         );
       },
     );
-  }
-
-  Future<List> getTables() async {
-    ServiceDB db = ServiceDB();
-    return await db.getTables();
   }
 }

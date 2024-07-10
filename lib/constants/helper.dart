@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../database/service_db.dart';
@@ -29,11 +28,12 @@ class Helper {
     double salaryPerHour = prefs.getDouble('salaryPerHour') ?? 25;
     double salary = 0;
     for (Appointment app in apps) {
+      double isOrderSalary = app.isOrderService ? 1 : 0.8;
       double minutes = 0;
       minutes += app.end.difference(app.start).inMinutes;
       minutes += nightMinutes(app.start, app.end) / 10;
       minutes += sundayMinutes(app.start, app.end) / 10;
-      salary += minutes * salaryPerHour / 60;
+      salary += minutes * salaryPerHour * isOrderSalary / 60;
     }
     return salary;
   }
@@ -168,25 +168,7 @@ class Helper {
     db.create(newApp);
   }
 
-  static PageRouteBuilder switchPages(Widget newPage) {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => newPage,
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = const Offset(1.0, 0.0);
-        var end = Offset.zero;
-        var curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return FadeTransition(
-          opacity: animation,
-          child: SlideTransition(
-            position: animation.drive(tween),
-            child: child,
-          ),
-        );
-      },
-    );
+  static void snackbar(String title, String message){
+    Get.snackbar(title, message, duration: Duration(seconds: 2), snackPosition: SnackPosition.BOTTOM, isDismissible: true);
   }
 }

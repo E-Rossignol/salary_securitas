@@ -12,7 +12,7 @@ import '../constants/theme/theme_provider.dart';
 class EditServicePage extends StatefulWidget {
   final Appointment app;
 
-  EditServicePage({super.key, required this.app});
+  const EditServicePage({super.key, required this.app});
 
   @override
   State<EditServicePage> createState() => _EditServicePageState(app);
@@ -22,7 +22,7 @@ class _EditServicePageState extends State<EditServicePage> {
   late DateTime defaultDay;
   TimeOfDay startTime = const TimeOfDay(hour: 0, minute: 0);
   TimeOfDay endTime = const TimeOfDay(hour: 0, minute: 0);
-  String dropdownValue = 'Yes';
+  String dropdownValue = 'yes'.tr;
   final dateFormat = DateFormat("MM/dd");
   final timeFormat = DateFormat("HH:mm");
   DateTime start = DateTime(2000);
@@ -37,7 +37,7 @@ class _EditServicePageState extends State<EditServicePage> {
       endMinute;
 
   _EditServicePageState(Appointment app) {
-    dropdownValue = app.isOrderService ? 'Yes' : 'No';
+    dropdownValue = app.isOrderService ? 'yes'.tr : 'no'.tr;
     defaultDay = app.start;
     startMonth = app.start.month;
     startDay = app.start.day;
@@ -62,7 +62,7 @@ class _EditServicePageState extends State<EditServicePage> {
           appBar: AppBar(
             foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
             backgroundColor: Theme.of(context).colorScheme.background,
-            title: Text('Edit Service'),
+            title: Text('yes'.tr),
           ),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -76,10 +76,10 @@ class _EditServicePageState extends State<EditServicePage> {
                           format: dateFormat,
                           initialValue: widget.app.start,
                           decoration:
-                              const InputDecoration(labelText: 'Start Date'),
+                              InputDecoration(labelText: 'start_date'.tr),
                           onShowPicker: (context, currentValue) async {
                             final date = await showDatePicker(
-                                locale: const Locale('fr', 'FR'),
+                                locale: Get.locale,
                                 context: context,
                                 initialEntryMode:
                                     DatePickerEntryMode.calendarOnly,
@@ -92,7 +92,7 @@ class _EditServicePageState extends State<EditServicePage> {
                                 startDay = date.day;
                               });
                             }
-                            return null;
+                            return date;
                           },
                         ),
                       ),
@@ -100,7 +100,7 @@ class _EditServicePageState extends State<EditServicePage> {
                         child: DateTimeField(
                           format: timeFormat,
                           initialValue: widget.app.start,
-                          decoration: InputDecoration(labelText: 'Start Hour'),
+                          decoration: InputDecoration(labelText: 'start_hour'.tr),
                           onShowPicker: (context, currentValue) async {
                             final time = await showTimePicker(
                               context: context,
@@ -126,7 +126,7 @@ class _EditServicePageState extends State<EditServicePage> {
                         child: DateTimeField(
                           format: dateFormat,
                           initialValue: widget.app.end,
-                          decoration: InputDecoration(labelText: 'End Date'),
+                          decoration: InputDecoration(labelText: 'end_date'.tr),
                           onShowPicker: (context, currentValue) async {
                             final date = await showDatePicker(
                                 locale: Get.locale,
@@ -142,7 +142,7 @@ class _EditServicePageState extends State<EditServicePage> {
                                 endDay = date.day;
                               });
                             }
-                            return null;
+                            return date;
                           },
                         ),
                       ),
@@ -151,7 +151,7 @@ class _EditServicePageState extends State<EditServicePage> {
                           format: timeFormat,
                           initialValue: widget.app.end,
                           decoration:
-                              const InputDecoration(labelText: 'End Hour'),
+                              InputDecoration(labelText: 'end_hour'.tr),
                           onShowPicker: (context, currentValue) async {
                             final time = await showTimePicker(
                               context: context,
@@ -172,7 +172,7 @@ class _EditServicePageState extends State<EditServicePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('Is this an order service?'),
+                    Text('order_service?'.tr),
                     DropdownButton<String>(
                       value: dropdownValue,
                       onChanged: (String? newValue) {
@@ -180,7 +180,7 @@ class _EditServicePageState extends State<EditServicePage> {
                           dropdownValue = newValue!;
                         });
                       },
-                      items: <String>['Yes', 'No']
+                      items: <String>['yes'.tr, 'no'.tr]
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -199,24 +199,21 @@ class _EditServicePageState extends State<EditServicePage> {
                             endHour, endMinute);
                       });
                       if (end.isBefore(start)) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text('End date must be after start date'),
-                          duration: Duration(seconds: 2),
-                        ));
+                        Helper.snackbar('error'.tr, 'end_date_before_start_date'.tr);
                         return;
                       }
                       Appointment newApp = Appointment(
                           id: widget.app.id,
                           start: start,
                           end: end,
-                          isOrderService: dropdownValue == 'Yes',
+                          isOrderService: dropdownValue == 'yes'.tr,
                           user: widget.app.user);
                       await ServiceDB().update(newApp.id, newApp);
-                      Navigator.of(context)
-                          .push(Helper.switchPages(const MainPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const MainPage()));
                     },
-                    child: Text('Validate'))
+                    child: Text('validate'.tr))
               ],
             ),
           ),

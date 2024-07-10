@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constants/helper.dart';
@@ -10,13 +9,13 @@ class CopyServicePage extends StatefulWidget {
   const CopyServicePage({super.key, required Appointment app}) : _app = app;
 
   @override
-  _CopyServicePageState createState() => _CopyServicePageState(_app);
+  CopyServicePageState createState() => CopyServicePageState(_app);
 }
 
-class _CopyServicePageState extends State<CopyServicePage> {
+class CopyServicePageState extends State<CopyServicePage> {
   late DateTime _selectedDate;
 
-  _CopyServicePageState(app) {
+  CopyServicePageState(Appointment app) {
     _selectedDate = app.start;
   }
 
@@ -35,7 +34,9 @@ class _CopyServicePageState extends State<CopyServicePage> {
         setState(() => _selectedDate = picked);
         Helper.copyApp(_selectedDate, widget._app);
       }
-      Navigator.of(context).push(Helper.switchPages(const MainPage()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MainPage()));
     });
   }
 

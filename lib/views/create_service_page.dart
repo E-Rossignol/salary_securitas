@@ -1,6 +1,7 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:salary_securitas/database/service_db.dart';
@@ -12,7 +13,7 @@ import '../constants/theme/theme_provider.dart';
 class CreateServicePage extends StatefulWidget {
   final DateTime day;
 
-  CreateServicePage({super.key, required this.day});
+  const CreateServicePage({super.key, required this.day});
 
   @override
   State<CreateServicePage> createState() => _CreateServicePageState(day);
@@ -22,7 +23,7 @@ class _CreateServicePageState extends State<CreateServicePage> {
   late DateTime defaultDay;
   TimeOfDay defaultStartTime = const TimeOfDay(hour: 19, minute: 0);
   TimeOfDay defaultEndTime = const TimeOfDay(hour: 03, minute: 0);
-  String dropdownValue = 'Yes';
+  String dropdownValue = 'yes'.tr;
   final dateFormat = DateFormat("MM/dd");
   final timeFormat = DateFormat("HH:mm");
   DateTime start = DateTime(2000);
@@ -37,7 +38,7 @@ class _CreateServicePageState extends State<CreateServicePage> {
       endMinute;
 
   _CreateServicePageState(DateTime day) {
-    defaultDay = DateTime(day.year, day.month, day.day, defaultStartTime.hour,
+    defaultDay = DateTime(day.year, day.month,day.day, defaultStartTime.hour,
         defaultStartTime.minute);
     startMonth = defaultDay.month;
     startDay = defaultDay.day;
@@ -62,7 +63,7 @@ class _CreateServicePageState extends State<CreateServicePage> {
           appBar: AppBar(
             foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
             backgroundColor: Theme.of(context).colorScheme.background,
-            title: const Text('Create Service'),
+            title: Text('create_service'.tr),
           ),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -76,9 +77,10 @@ class _CreateServicePageState extends State<CreateServicePage> {
                           format: dateFormat,
                           initialValue: defaultDay,
                           decoration:
-                              const InputDecoration(labelText: 'Start Date'),
+                              InputDecoration(labelText: 'start_date'.tr),
                           onShowPicker: (context, currentValue) async {
                             final date = await showDatePicker(
+                                locale: Get.locale,
                                 context: context,
                                 initialEntryMode:
                                     DatePickerEntryMode.calendarOnly,
@@ -91,14 +93,15 @@ class _CreateServicePageState extends State<CreateServicePage> {
                                 startDay = date.day;
                               });
                             }
-                            return null;
+                            return date;
                           },
                         ),
                       ),
                       Expanded(
                         child: DateTimeField(
                           format: timeFormat,
-                          decoration: InputDecoration(labelText: 'Start Hour'),
+                          decoration:
+                              InputDecoration(labelText: 'start_hour'.tr),
                           onShowPicker: (context, currentValue) async {
                             final time = await showTimePicker(
                               context: context,
@@ -130,10 +133,10 @@ class _CreateServicePageState extends State<CreateServicePage> {
                         child: DateTimeField(
                           format: dateFormat,
                           initialValue: defaultDay.add(const Duration(days: 1)),
-                          decoration:
-                              const InputDecoration(labelText: 'End Date'),
+                          decoration: InputDecoration(labelText: 'end_date'.tr),
                           onShowPicker: (context, currentValue) async {
                             final date = await showDatePicker(
+                                locale: Get.locale,
                                 context: context,
                                 initialEntryMode:
                                     DatePickerEntryMode.calendarOnly,
@@ -146,15 +149,14 @@ class _CreateServicePageState extends State<CreateServicePage> {
                                 endDay = date.day;
                               });
                             }
-                            return null;
+                            return date;
                           },
                         ),
                       ),
                       Expanded(
                         child: DateTimeField(
                           format: timeFormat,
-                          decoration:
-                              const InputDecoration(labelText: 'End Hour'),
+                          decoration: InputDecoration(labelText: 'end_hour'.tr),
                           onShowPicker: (context, currentValue) async {
                             final time = await showTimePicker(
                               context: context,
@@ -181,7 +183,7 @@ class _CreateServicePageState extends State<CreateServicePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Text('Is this an order service?'),
+                    Text('order_service?'.tr),
                     DropdownButton<String>(
                       value: dropdownValue,
                       onChanged: (String? newValue) {
@@ -189,7 +191,7 @@ class _CreateServicePageState extends State<CreateServicePage> {
                           dropdownValue = newValue!;
                         });
                       },
-                      items: <String>['Yes', 'No']
+                      items: <String>['yes'.tr, 'no'.tr]
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -207,32 +209,35 @@ class _CreateServicePageState extends State<CreateServicePage> {
                         end = DateTime(defaultDay.year, endMonth, endDay,
                             endHour, endMinute);
                       });
-                      if (end.isBefore(start)) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text('End date must be after start date'),
-                          duration: Duration(seconds: 2),
-                        ));
+                      if (DateTime(defaultDay.year, endMonth, endDay, endHour,
+                              endMinute)
+                          .isBefore(DateTime(defaultDay.year, startMonth,
+                              startDay, startHour, startMinute))) {
+                        Helper.snackbar('error'.tr, 'end_date_before_start_date'.tr);
                         return;
                       }
-                      if (end.difference(start).inHours >= 24) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text('There is a date error'),
-                          duration: Duration(seconds: 2),
-                        ));
+                      if (DateTime(defaultDay.year, endMonth, endDay, endHour,
+                                  endMinute)
+                              .difference(DateTime(defaultDay.year, startMonth,
+                                  startDay, startHour, startMinute))
+                              .inHours >=
+                          14) {
+                        Helper.snackbar('error'.tr, 'date_error'.tr);
+                        return;
                       }
                       Appointment app = Appointment(
                           id: 0,
                           start: start,
                           end: end,
-                          isOrderService: dropdownValue == 'Yes' ? true : false,
+                          isOrderService:
+                              dropdownValue == 'yes'.tr ? true : false,
                           user: FirebaseAuth.instance.currentUser!.uid);
                       await ServiceDB().create(app);
-                      Navigator.of(context)
-                          .push(Helper.switchPages(const MainPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const MainPage()));
                     },
-                    child: Text('Validate'))
+                    child: Text('validate'.tr))
               ],
             ),
           ),

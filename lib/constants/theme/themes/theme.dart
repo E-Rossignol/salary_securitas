@@ -601,6 +601,7 @@ class MaterialTheme {
         brightness: colorScheme.brightness,
         colorScheme: colorScheme,
         textTheme: textTheme.apply(
+          fontFamily: 'Montserrat',
           bodyColor: colorScheme.onSurface,
           displayColor: colorScheme.onSurface,
         ),

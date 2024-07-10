@@ -10,15 +10,17 @@ import '../database/service_db.dart';
 class NamePage extends StatefulWidget {
   final String _email;
   final String _password;
-  NamePage({super.key, required String email, required String password})
+  final bool _registered;
+  const NamePage({super.key, required String email, required String password, required bool registered})
       : _email = email,
-        _password = password;
+        _password = password,
+        _registered = registered;
 
   @override
-  _NamePageState createState() => _NamePageState();
+  NamePageState createState() => NamePageState();
 }
 
-class _NamePageState extends State<NamePage> {
+class NamePageState extends State<NamePage> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   int yearsWorked = 1;
@@ -49,12 +51,8 @@ class _NamePageState extends State<NamePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('I\'ve been working for Securitas for '),
+                  Text('working_for_securitas'.tr),
                   Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.black26),
-                    ),
                     child: NumberPicker(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
@@ -64,13 +62,14 @@ class _NamePageState extends State<NamePage> {
                       ),
                       minValue: 0,
                       maxValue: 50,
+                      itemHeight: 40,
                       value: yearsWorked,
                       onChanged: (int value) {
                         setState(() => yearsWorked = value);
                       },
                     ),
                   ),
-                  Text(' years'),
+                  Text('years'.tr),
                 ],
               ),
             ),
@@ -93,7 +92,7 @@ class _NamePageState extends State<NamePage> {
                   case 4:
                     salaryPerHours = 25;
                     break;
-                  case 5:
+                  default:
                     salaryPerHours = 25.5;
                     break;
                 }
@@ -110,8 +109,10 @@ class _NamePageState extends State<NamePage> {
   }
 
   void storeName(String firstName, String lastName) async {
-    await Auth().createUserWithEmailAndPassword(
-        email: widget._email, password: widget._password);
+    if (!widget._registered) {
+      await Auth().createUserWithEmailAndPassword(
+          email: widget._email, password: widget._password);
+    }
     UserSecu user = UserSecu(
       id: 0,
       userID: FirebaseAuth.instance.currentUser!.uid,
@@ -120,6 +121,8 @@ class _NamePageState extends State<NamePage> {
     );
     ServiceDB db = ServiceDB();
     db.createName(user);
-    Navigator.of(context).pop();
+    if(mounted){
+      Navigator.of(context).pop();
+    }
   }
 }

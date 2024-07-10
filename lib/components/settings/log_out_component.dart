@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:salary_securitas/auth/auth.dart';
 import 'package:salary_securitas/views/login_register_page.dart';
 
-import '../../constants/helper.dart';
-
 /// The `LogOutComponent` class represents a widget that allows the user to log out of the application.
 ///
 /// It extends `StatefulWidget`, meaning it can maintain state that might change during the lifetime of the widget.
@@ -14,7 +12,7 @@ class LogOutComponent extends StatefulWidget {
   const LogOutComponent({super.key});
 
   @override
-  _LogOutComponent createState() => _LogOutComponent();
+  LogOutComponentState createState() => LogOutComponentState();
 }
 
 /// The `_LogOutComponent` class represents the state of the `LogOutComponent` widget.
@@ -22,7 +20,7 @@ class LogOutComponent extends StatefulWidget {
 /// It extends `State<LogOutComponent>`, meaning it holds the mutable state for the `LogOutComponent` widget.
 ///
 /// The class provides a `build` method that returns a `ListTile` widget. When this `ListTile` is tapped, it shows a dialog asking the user to confirm if they want to leave the app.
-class _LogOutComponent extends State<LogOutComponent> {
+class LogOutComponentState extends State<LogOutComponent> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -41,8 +39,9 @@ class _LogOutComponent extends State<LogOutComponent> {
                 ElevatedButton(
                     onPressed: () async {
                       await Auth().signOut();
-                      Navigator.of(context)
-                          .push(Helper.switchPages(const LoginPage()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const LoginPage()));
                     },
                     child: Text('yes'.tr)),
                 ElevatedButton(

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:salary_securitas/constants/helper.dart';
 import 'package:salary_securitas/models/appointment.dart';
 import 'package:sqflite/sqflite.dart';
@@ -9,18 +8,6 @@ import 'package:salary_securitas/models/user_secu.dart';
 class ServiceDB {
   final tableNameService = 'services';
   final tableNameNames = 'appointments';
-
-  Future<List<dynamic>> getTables() async {
-    List<Appointment> appointments = await fetchAll();
-    for (Appointment app in appointments) {
-      print(app.toString());
-    }
-    List<UserSecu> names = await fetchAllNames();
-    for (UserSecu name in names) {
-      print('${name.firstName} ${name.lastName} ${name.userID}');
-    }
-    return [appointments, names];
-  }
 
   Future<void> createTableService(Database db) async {
     await db.execute("""CREATE TABLE IF NOT EXISTS $tableNameService (
@@ -50,9 +37,6 @@ class ServiceDB {
       'isOrderService': data.isOrderService,
       'user': data.user,
     };
-    if (kDebugMode) {
-      print('${data.toString()} created');
-    }
     return await db.insert(tableNameService, serviceMap);
   }
 
@@ -86,7 +70,6 @@ class ServiceDB {
   Future<int> update(int id, Appointment app) async {
     final db = await DatabaseService().database;
     Service data = Helper.toServiceList([app]).first;
-    print('Updating ${data.toString()} with id $id');
     return await db.update(
         tableNameService,
         {
@@ -139,15 +122,16 @@ class ServiceDB {
     if (all.isNotEmpty && all.length == 1) {
       return all.first;
     } else {
-      throw Exception('User not found');
+      return UserSecu(id: -1, userID: '', firstName: '', lastName: '');
     }
   }
 
-  Future<void> emptyTables() async {
+  Future<bool> resetTables() async {
     Database db = await DatabaseService().database;
-    await db.delete(tableNameService);
-    createTableService(db);
-    await db.delete(tableNameNames);
+    await db.execute('DROP TABLE IF EXISTS $tableNameService');
+    await db.execute('DROP TABLE IF EXISTS $tableNameNames');
     createTableName(db);
+    createTableService(db);
+    return true;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants/theme/theme_provider.dart';
@@ -20,13 +21,13 @@ class ThemeSelectionComponent extends StatelessWidget {
     return ListTile(
         leading: Icon(Icons.palette,
             color: Theme.of(context).colorScheme.onPrimaryContainer),
-        title: const Text('Select Theme'),
+        title: Text('select_theme'.tr),
         onTap: () {
           showDialog(
               context: context,
               builder: (builder) {
                 return AlertDialog(
-                    title: const Text('Select Theme'),
+                    title: Text('select_theme'.tr),
                     content: SizedBox(
                         width: double.minPositive,
                         child: ListView.separated(
