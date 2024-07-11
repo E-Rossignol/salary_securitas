@@ -40,7 +40,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<bool> signInWithEmailAndPassword() async {
-    Future.delayed(Duration(seconds: 1));
     try {
       await Auth().signInWithEmailAndPassword(
           email: _controllerEmail.text, password: _controllerPassword.text);
@@ -58,9 +57,9 @@ class _LoginPageState extends State<LoginPage> {
         context,
         MaterialPageRoute(
             builder: (context) => NamePage(
-                email: _controllerEmail.text,
-                password: _controllerPassword.text,
-            registered: false,)));
+                  email: _controllerEmail.text,
+                  password: _controllerPassword.text,
+                )));
   }
 
   void _togglePasswordVisibility() {
@@ -69,8 +68,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  Widget _entryField(String title, TextEditingController controller,
-      {bool isPassword = false}) {
+  Widget _entryField(String title, TextEditingController controller, {bool isPassword = false}) {
     return TextField(
       controller: controller,
       obscureText: isPassword ? _isPasswordHidden : false,
@@ -94,59 +92,73 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void goToMainPage(){
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => MainPage()));
+  Widget _space() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.1,
+    );
   }
 
-  void goToNamePage(bool registered){
+  Widget _title(){
+    return const Text(
+      'SECURITHUNES',
+      style: TextStyle(
+        color: Color.fromRGBO(0, 80, 158, 100),
+        fontSize: 40,
+        fontFamily: 'Batman',
+      ),
+    );
+  }
+
+  void goToMainPage() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MainPage()));
+  }
+
+  void goToNamePage() {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => NamePage(
-                email: _controllerEmail.text,
-                password: _controllerPassword.text,
-                registered: registered)
-    ));
+                  email: _controllerEmail.text,
+                  password: _controllerPassword.text,
+                )));
   }
 
   Future<bool> hasName() async {
     ServiceDB db = ServiceDB();
-    UserSecu user = await db.getName(FirebaseAuth.instance.currentUser!.uid);
+    UserSecu user = await db.getName(_controllerEmail.text);
     return user.id != -1;
   }
 
   Future<Widget> _submitButton() async {
     return ElevatedButton(
       onPressed: () async {
-        if (isLogin) {
-          bool registered = await signInWithEmailAndPassword();
-          if (registered) {
-            bool currentHasName = await hasName();
-            if (currentHasName){
-              goToMainPage();
-            }
-            else{
-              goToNamePage(true);
-            }
-          }
-        } else {
-          bool registered = await signInWithEmailAndPassword();
-          if (registered){
-            setState(() {
-              errorMessage = '${'email_already_exists'.tr}, ${'connection in progress'.tr}';
-              Future.delayed(Duration(seconds: 2));
-            });
+        bool registered = await hasName();
+        if (isLogin){
+          if(registered) {
+            signInWithEmailAndPassword();
           } else {
-            await createUserWithEmailAndPassword();
+            setState(() {
+            errorMessage = 'not_registered'.tr;
+          });
+            return;
+          }
+        }
+        else {
+          if(!registered){
+            goToNamePage();
+          }
+          else {
+            setState(() {
+              errorMessage = 'email_already_exists'.tr;
+            });
           }
         }
       },
       child: Text(isLogin ? 'logIn'.tr : 'register'.tr),
     );
   }
+
   Widget _justLogIn() {
     return ElevatedButton(
         onPressed: () {
@@ -156,8 +168,7 @@ class _LoginPageState extends State<LoginPage> {
           });
         },
         child: Text('Just fckin log me in',
-            style: TextStyle(color: Theme.of(context).colorScheme.onSurface))
-    );
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface)));
   }
 
   Widget _loginOrRegisterButton() {
@@ -180,6 +191,7 @@ class _LoginPageState extends State<LoginPage> {
           title: Text('Enter God Mod Code'),
           content: TextField(
             controller: controller,
+            obscureText: true,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(hintText: "Enter numeric code"),
           ),
@@ -187,15 +199,15 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
               child: Text('Submit'),
               onPressed: () async {
-                if (controller.text == '2563') {
+                if (controller.text == '2563332563') {
                   setState(() {
                     godMod = true;
                   });
                   Helper.snackbar('OH MY GOD', 'Hello Kratos !');
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
                   prefs.setBool('godMod', true);
-                }
-                else {
+                } else {
                   Helper.snackbar('Error', 'U SUCK BITCH');
                 }
                 Navigator.of(context).pop();
@@ -210,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _godModButton() {
     return ElevatedButton(
       onPressed: _showGodModDialog,
-      child: Text('God Mod'),
+      child: Text('God Mod', style: TextStyle(color: Theme.of(context).colorScheme.secondary),)
     );
   }
 
@@ -242,23 +254,12 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(40.0),
-                    // Adjust the radius as needed
-                    child: Image.asset(
-                      themeProvider.themeData.brightness == Brightness.dark
-                          ? 'lib/images/black_dollar_dark.png'
-                          : 'lib/images/black_dollar.png',
-                      height: 150,
-                      width: 150,
-                    ),
-                  ),
-                  if(godMod){
-                    _justLogIn()
-                  }.first,
+                  _space(),
+                  _title(),
+                  _space(),
+                  if (godMod) {_justLogIn()}.first,
                   _entryField('Email', _controllerEmail),
                   _entryField('Password', _controllerPassword,
                       isPassword: true),
@@ -273,9 +274,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       }),
                   _loginOrRegisterButton(),
-                  SizedBox(
-                    height: 200,
-                  ),
+                  _space(),
                   _godModButton(),
                 ],
               ),

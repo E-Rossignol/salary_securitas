@@ -56,9 +56,10 @@ const Map<String, String> frLocale = {
   'error:': 'Erreur:',
   'month': 'Mois',
   'no_service': 'Aucun service',
-  'working_for_securitas': 'Je travaille pour Securitas depuis',
+  'salaire horaire': 'Salaire horaire (par défaut 25.-/h): ',
   'years': 'ans.',
   'not_registered': 'Vous n\'êtes pas enregistré',
   'no name registered': 'Aucun nom enregistré',
   'connection in progress': 'connexion en cours ...',
+  'where_is_salary': 'Si vous ne connaissez pas votre salaire horaire, allez voir sur une de vos fiches salaire.',
 };

@@ -56,9 +56,10 @@ const Map<String, String> itLocale = {
   'error:': 'Errore:',
   'month': 'Mese',
   'no_service': 'Nessun servizio',
-  'working_for_securitas': 'Lavoro per Securitas da',
+  'salaire horaire': 'Stipendio orario (predefinito 25.-/h): ',
   'years': 'anni.',
   'not_registered': 'Non sei registrato',
   'no name registered': 'Nessun nome registrato',
   'connection in progress': 'connessione in corso ...',
+  'where_is_salary': 'Se non conosci il tuo stipendio orario, controlla una delle tue buste paga.',
 };

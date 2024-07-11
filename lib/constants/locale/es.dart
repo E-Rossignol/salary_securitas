@@ -56,9 +56,10 @@ const Map<String, String> esLocale = {
   'error:': 'Error:',
   'month': 'Mes',
   'no_service': 'Sin servicio',
-  'working_for_securitas': 'He estado trabajando para Securitas durante',
+  'salaire horaire': 'Salario por hora (por defecto 25.-/h): ',
   'years': 'años',
   'not_registered': 'No estás registrado',
   'no name registered': 'No hay nombre registrado',
   'connection in progress': 'conexión en progreso ...',
+  'where_is_salary': 'Si no conoce su salario por hora, consulte una de sus nóminas.',
 };

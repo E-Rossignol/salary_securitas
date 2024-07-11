@@ -7,7 +7,7 @@ import 'package:salary_securitas/models/user_secu.dart';
 
 class ServiceDB {
   final tableNameService = 'services';
-  final tableNameNames = 'appointments';
+  final tableNameNames = 'names';
 
   Future<void> createTableService(Database db) async {
     await db.execute("""CREATE TABLE IF NOT EXISTS $tableNameService (
@@ -24,7 +24,7 @@ class ServiceDB {
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
-    "userID" TEXT NOT NULL
+    "email" TEXT NOT NULL
     );""");
   }
 
@@ -94,9 +94,24 @@ class ServiceDB {
     final Map<String, dynamic> userSecuMap = {
       'firstName': user.firstName,
       'lastName': user.lastName,
-      'userID': user.userID,
+      'email': user.email,
     };
     return await db.insert(tableNameNames, userSecuMap);
+  }
+
+  Future<int> updateName(UserSecu user) async {
+    Database db = await DatabaseService().database;
+    return await db.update(
+        tableNameNames,
+        {
+          'id': user.id,
+          'firstName': user.firstName,
+          'lastName': user.lastName,
+          'email': user.email,
+        },
+        where: 'email = ?',
+        conflictAlgorithm: ConflictAlgorithm.rollback,
+        whereArgs: [user.email]);
   }
 
   Future<List<UserSecu>> fetchAllNames() async {
@@ -107,22 +122,22 @@ class ServiceDB {
             'id': id as int,
             'firstName': firstName as String,
             'lastName': lastName as String,
-            'userID': userID as String
+            'email': email as String
           } in nameMaps)
         UserSecu(
-            id: id, userID: userID, firstName: firstName, lastName: lastName)
+            id: id, email: email, firstName: firstName, lastName: lastName)
     ];
     return all;
   }
 
-  Future<UserSecu> getName(String userID) async {
+  Future<UserSecu> getName(String email) async {
     List<UserSecu> all = (await fetchAllNames())
-        .where((element) => element.userID == userID)
+        .where((element) => element.email == email)
         .toList();
-    if (all.isNotEmpty && all.length == 1) {
+    if (all.length == 1) {
       return all.first;
     } else {
-      return UserSecu(id: -1, userID: '', firstName: '', lastName: '');
+      return UserSecu(id: -1, email: '', firstName: '', lastName: '');
     }
   }
 

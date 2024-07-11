@@ -90,8 +90,11 @@ class FastServicesComponentState extends State<FastServicesComponent> {
         case "juillet":
           month = 7;
           break;
-        case "août":
+        case "aout":
           month = 8;
+          break;
+        case "septembre":
+          month = 9;
           break;
         default:
           month = 1;
@@ -108,10 +111,12 @@ class FastServicesComponentState extends State<FastServicesComponent> {
     List<Appointment> mayApp = _fastMayServices();
     List<Appointment> juneApp = _fastJuneServices();
     List<Appointment> julyApp = _fastJulyServices();
+    List<Appointment> augustApp = _fastAugustServices();
     List<Appointment> allApp = [];
     allApp.addAll(mayApp);
     allApp.addAll(juneApp);
     allApp.addAll(julyApp);
+    allApp.addAll(augustApp);
     ServiceDB db = ServiceDB();
     for (Appointment app in allApp) {
       await db.create(app);
@@ -356,10 +361,11 @@ class FastServicesComponentState extends State<FastServicesComponent> {
       '06 juillet 19h00',
       '07 juillet 19h00',
       '10 juillet 19h00',
+      '11 juillet 19h00',
+      '12 juillet 19h00',
       '13 juillet 19h00',
       '14 juillet 19h00',
       '15 juillet 19h00',
-      '16 juillet 19h00',
       '19 juillet 19h00',
       '20 juillet 19h00',
       '21 juillet 19h00',
@@ -378,10 +384,11 @@ class FastServicesComponentState extends State<FastServicesComponent> {
       '07 juillet 03h00',
       '08 juillet 03h00',
       '11 juillet 03h00',
+      '12 juillet 03h00',
+      '13 juillet 03h00',
       '14 juillet 03h00',
       '15 juillet 03h00',
       '16 juillet 03h00',
-      '17 juillet 03h00',
       '20 juillet 03h00',
       '21 juillet 03h00',
       '22 juillet 03h00',
@@ -390,7 +397,7 @@ class FastServicesComponentState extends State<FastServicesComponent> {
       '27 juillet 03h00',
       '28 juillet 03h00',
       '29 juillet 03h00',
-      '01 août 3h00',
+      '01 aout 3h00',
     ];
     List<DateTime> startDateTime = formatDate(startDates);
     List<DateTime> endDateTime = formatDate(endDates);
@@ -509,6 +516,18 @@ class FastServicesComponentState extends State<FastServicesComponent> {
         end: endDateTime[18],
         isOrderService: true,
         user: FirebaseAuth.instance.currentUser!.uid);
+    Appointment julyApp20 = Appointment(
+        id: 0,
+        start: startDateTime[19],
+        end: endDateTime[19],
+        isOrderService: true,
+        user: FirebaseAuth.instance.currentUser!.uid);
+    Appointment julyApp21 = Appointment(
+        id: 0,
+        start: startDateTime[20],
+        end: endDateTime[20],
+        isOrderService: true,
+        user: FirebaseAuth.instance.currentUser!.uid);
     apps.add(julyApp1);
     apps.add(julyApp2);
     apps.add(julyApp3);
@@ -528,6 +547,55 @@ class FastServicesComponentState extends State<FastServicesComponent> {
     apps.add(julyApp17);
     apps.add(julyApp18);
     apps.add(julyApp19);
+    apps.add(julyApp20);
+    apps.add(julyApp21);
+    return apps;
+  }
+
+  List<Appointment> _fastAugustServices(){
+    List<String> startDates = [
+      '02 aout 21h00',
+      '03 aout 21h00',
+      '30 aout 19h00',
+      '31 aout 19h00',
+    ];
+    List<String> endDates = [
+      '03 aout 02h30',
+      '04 aout 02h30',
+      '31 aout 03h00',
+      '01 septembre 03h00',
+    ];
+    List<DateTime> startDateTime = formatDate(startDates);
+    List<DateTime> endDateTime = formatDate(endDates);
+    List<Appointment> apps = [];
+    Appointment mayApp1 = Appointment(
+        id: 0,
+        start: startDateTime[0],
+        end: endDateTime[0],
+        isOrderService: true,
+        user: FirebaseAuth.instance.currentUser!.uid);
+    Appointment mayApp2 = Appointment(
+        id: 0,
+        start: startDateTime[1],
+        end: endDateTime[1],
+        isOrderService: true,
+        user: FirebaseAuth.instance.currentUser!.uid);
+    Appointment mayApp3 = Appointment(
+        id: 0,
+        start: startDateTime[2],
+        end: endDateTime[2],
+        isOrderService: true,
+        user: FirebaseAuth.instance.currentUser!.uid);
+    Appointment mayApp4 = Appointment(
+        id: 0,
+        start: startDateTime[3],
+        end: endDateTime[3],
+        isOrderService: true,
+        user: FirebaseAuth.instance.currentUser!.uid);
+    apps.add(mayApp1);
+    apps.add(mayApp2);
+    apps.add(mayApp3);
+    apps.add(mayApp4);
     return apps;
   }
 }

@@ -56,9 +56,10 @@ const Map<String, String> enLocale = {
   'error:': 'Error:',
   'month': 'Month',
   'no_service': 'No service',
-  'working_for_securitas': 'I\'ve been working for Securitas for',
+  'salaire horaire': 'Hourly salary (default 25.-/h): ',
   'years': 'years.',
   'not_registered': 'You are not registered',
   'no name registered': 'No name registered',
   'connection in progress': 'connection in progress ...',
+  'where_is_salary': 'If you do not know your hourly salary, look on one of your salary slips.',
 };

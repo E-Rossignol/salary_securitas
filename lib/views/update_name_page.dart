@@ -1,28 +1,38 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salary_securitas/models/user_secu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../auth/auth.dart';
+import '../constants/helper.dart';
 import '../database/service_db.dart';
 import 'main_page.dart';
 
-class NamePage extends StatefulWidget {
+class UpdateNamePage extends StatefulWidget {
   final String _email;
-  final String _password;
-
-  const NamePage({super.key, required String email, required String password})
-      : _email = email,
-        _password = password;
+  const UpdateNamePage({super.key, required String email})
+      : _email = email;
 
   @override
-  NamePageState createState() => NamePageState();
+  UpdateNamePageState createState() => UpdateNamePageState();
 }
 
-class NamePageState extends State<NamePage> {
+class UpdateNamePageState extends State<UpdateNamePage> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _salaryController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _initNameFields();
+  }
+
+  Future<void> _initNameFields() async {
+    List<String> fullName = await _getFullName(widget._email);
+    setState(() {
+      _firstNameController.text = fullName[0];
+      _lastNameController.text = fullName[1];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,14 +121,18 @@ class NamePageState extends State<NamePage> {
     );
   }
 
+  Future<List<String>> _getFullName(String email) async {
+    ServiceDB db = ServiceDB();
+    UserSecu user = await db.getName(email);
+    return [user.firstName, user.lastName];
+  }
   void storeName(String firstName, String lastName) async {
     ServiceDB db = ServiceDB();
     UserSecu user = UserSecu(
         id: 0, email: widget._email, firstName: firstName, lastName: lastName);
-    await db.createName(user);
-    await Auth().createUserWithEmailAndPassword(
-        email: widget._email, password: widget._password);
-    if (mounted) {
+    await db.updateName(user);
+    if(mounted) {
+      Helper.snackbar('Success', 'Infos updated');
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const MainPage()));
     }

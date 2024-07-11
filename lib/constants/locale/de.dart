@@ -56,9 +56,10 @@ const Map<String, String> deLocale = {
   'error:': 'Fehler:',
   'month': 'Monat',
   'no_service': 'Kein Dienst',
-  'working_for_securitas': 'Ich arbeite seit',
+  'salaire horaire': 'Stundenlohn (Standard 25.-/h): ',
   'years': 'Jahren bei Securitas.',
   'not_registered': 'Sie sind nicht registriert',
   'no name registered': 'Kein Name registriert',
   'connection in progress': 'verbindung wird hergestellt ...',
+  'where_is_salary': 'Wenn Sie Ihren Stundenlohn nicht kennen, schauen Sie auf einer Ihrer Gehaltsabrechnungen nach.'
 };

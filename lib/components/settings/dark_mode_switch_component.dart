@@ -53,7 +53,9 @@ class _DarkModeSwitchComponentState extends State<DarkModeSwitchComponent> {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
-      title: Text('darkMode'.tr),
+      title: Text('darkMode'.tr, style: TextStyle(
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+      ),),
       secondary: Icon(_isDarkMode ? Icons.nightlight : Icons.wb_sunny),
       value: _isDarkMode,
       selected: _isDarkMode,

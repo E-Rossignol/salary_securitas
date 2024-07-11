@@ -21,13 +21,17 @@ class ThemeSelectionComponent extends StatelessWidget {
     return ListTile(
         leading: Icon(Icons.palette,
             color: Theme.of(context).colorScheme.onPrimaryContainer),
-        title: Text('select_theme'.tr),
+        title: Text('select_theme'.tr, style: TextStyle(
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
+        ),),
         onTap: () {
           showDialog(
               context: context,
               builder: (builder) {
                 return AlertDialog(
-                    title: Text('select_theme'.tr),
+                    title: Text('select_theme'.tr, style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),),
                     content: SizedBox(
                         width: double.minPositive,
                         child: ListView.separated(

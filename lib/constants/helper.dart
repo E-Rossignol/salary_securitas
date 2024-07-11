@@ -25,7 +25,7 @@ class Helper {
 
   static Future<double> getBrutSalary(List<Appointment> apps) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    double salaryPerHour = prefs.getDouble('salaryPerHour') ?? 25;
+    double salaryPerHour = prefs.getDouble('salaryPerHour') ?? 25.92;
     double salary = 0;
     for (Appointment app in apps) {
       double isOrderSalary = app.isOrderService ? 1 : 0.8;

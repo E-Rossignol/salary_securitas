@@ -26,7 +26,7 @@ class _MainPageState extends State<MainPage> {
   Future<List<Appointment>>? futureAppointments;
   ServiceDB db = ServiceDB();
   late Future<UserSecu> futureUser;
-  UserSecu user = UserSecu(id: 0, userID: '', firstName: '', lastName: '');
+  UserSecu user = UserSecu(id: 0, email: '', firstName: '', lastName: '');
   late CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
@@ -56,7 +56,7 @@ class _MainPageState extends State<MainPage> {
 
   void getName() {
     setState(() {
-      futureUser = db.getName(FirebaseAuth.instance.currentUser!.uid);
+      futureUser = db.getName(FirebaseAuth.instance.currentUser!.email!);
     });
   }
 
