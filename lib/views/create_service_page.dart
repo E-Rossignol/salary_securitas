@@ -38,7 +38,7 @@ class _CreateServicePageState extends State<CreateServicePage> {
       endMinute;
 
   _CreateServicePageState(DateTime day) {
-    defaultDay = DateTime(day.year, day.month,day.day, defaultStartTime.hour,
+    defaultDay = DateTime(day.year, day.month, day.day, defaultStartTime.hour,
         defaultStartTime.minute);
     startMonth = defaultDay.month;
     startDay = defaultDay.day;
@@ -213,7 +213,8 @@ class _CreateServicePageState extends State<CreateServicePage> {
                               endMinute)
                           .isBefore(DateTime(defaultDay.year, startMonth,
                               startDay, startHour, startMinute))) {
-                        Helper.snackbar('error'.tr, 'end_date_before_start_date'.tr);
+                        Helper.snackbar(
+                            'error'.tr, 'end_date_before_start_date'.tr);
                         return;
                       }
                       if (DateTime(defaultDay.year, endMonth, endDay, endHour,
@@ -235,7 +236,8 @@ class _CreateServicePageState extends State<CreateServicePage> {
                       await ServiceDB().create(app);
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const MainPage()));
+                          MaterialPageRoute(
+                              builder: (context) => const MainPage()));
                     },
                     child: Text('validate'.tr))
               ],

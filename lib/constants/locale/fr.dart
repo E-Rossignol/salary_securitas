@@ -48,7 +48,8 @@ const Map<String, String> frLocale = {
   'end_date': 'Date de fin',
   'end_hour': 'Heure de fin',
   'order_service?': 'Est-ce un service d\'ordre ?',
-  'end_date_before_start_date': 'La date de fin doit être postérieure à la date de début',
+  'end_date_before_start_date':
+      'La date de fin doit être postérieure à la date de début',
   'date_error': 'Il y a une erreur dans la date, votre service est trop long',
   'email_already_exists': 'Cet e-mail existe déjà',
   'register': 'S\'inscrire',
@@ -61,5 +62,6 @@ const Map<String, String> frLocale = {
   'not_registered': 'Vous n\'êtes pas enregistré',
   'no name registered': 'Aucun nom enregistré',
   'connection in progress': 'connexion en cours ...',
-  'where_is_salary': 'Si vous ne connaissez pas votre salaire horaire, allez voir sur une de vos fiches salaire.',
+  'where_is_salary':
+      'Si vous ne connaissez pas votre salaire horaire, allez voir sur une de vos fiches salaire.',
 };

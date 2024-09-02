@@ -35,8 +35,7 @@ class CopyServicePageState extends State<CopyServicePage> {
         Helper.copyApp(_selectedDate, widget._app);
       }
       Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MainPage()));
+          context, MaterialPageRoute(builder: (context) => const MainPage()));
     });
   }
 

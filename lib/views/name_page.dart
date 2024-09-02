@@ -96,10 +96,12 @@ class NamePageState extends State<NamePage> {
                 padding: const EdgeInsets.only(top: 50),
                 child: ElevatedButton(
                   onPressed: () async {
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
                     prefs.setDouble(
                         'salaryPerHour', double.parse(_salaryController.text));
-                    storeName(_firstNameController.text, _lastNameController.text);
+                    storeName(
+                        _firstNameController.text, _lastNameController.text);
                   },
                   child: Text('validate'.tr),
                 ),

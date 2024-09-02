@@ -43,10 +43,7 @@ class ResetTablesComponentState extends State<ResetTablesComponent> {
                 'Reset tables',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .onPrimaryContainer,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
                 ),
               ),
               content: Text('Are you sure you want to reset the tables?'),
@@ -60,8 +57,10 @@ class ResetTablesComponentState extends State<ResetTablesComponent> {
                       } else {
                         Helper.snackbar('Error', 'Could not reset tables');
                       }
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const MainPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MainPage()));
                     },
                     child: Text('yes'.tr)),
                 ElevatedButton(

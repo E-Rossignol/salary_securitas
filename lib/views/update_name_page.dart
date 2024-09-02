@@ -8,8 +8,7 @@ import 'main_page.dart';
 
 class UpdateNamePage extends StatefulWidget {
   final String _email;
-  const UpdateNamePage({super.key, required String email})
-      : _email = email;
+  const UpdateNamePage({super.key, required String email}) : _email = email;
 
   @override
   UpdateNamePageState createState() => UpdateNamePageState();
@@ -106,10 +105,12 @@ class UpdateNamePageState extends State<UpdateNamePage> {
                 padding: const EdgeInsets.only(top: 50),
                 child: ElevatedButton(
                   onPressed: () async {
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
                     prefs.setDouble(
                         'salaryPerHour', double.parse(_salaryController.text));
-                    storeName(_firstNameController.text, _lastNameController.text);
+                    storeName(
+                        _firstNameController.text, _lastNameController.text);
                   },
                   child: Text('validate'.tr),
                 ),
@@ -126,12 +127,13 @@ class UpdateNamePageState extends State<UpdateNamePage> {
     UserSecu user = await db.getName(email);
     return [user.firstName, user.lastName];
   }
+
   void storeName(String firstName, String lastName) async {
     ServiceDB db = ServiceDB();
     UserSecu user = UserSecu(
         id: 0, email: widget._email, firstName: firstName, lastName: lastName);
     await db.updateName(user);
-    if(mounted) {
+    if (mounted) {
       Helper.snackbar('Success', 'Infos updated');
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const MainPage()));

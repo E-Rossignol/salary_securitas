@@ -20,7 +20,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SettingsView extends StatefulWidget {
   final bool isLoginPage;
   final bool isDebug;
-  const SettingsView({super.key, required this.isLoginPage, required this.isDebug});
+  const SettingsView(
+      {super.key, required this.isLoginPage, required this.isDebug});
 
   @override
   SettingsViewState createState() => SettingsViewState();
@@ -60,18 +61,20 @@ class SettingsViewState extends State<SettingsView> {
     widgets.add(const DarkModeSwitchComponent());
     widgets.add(const ChangeLanguageComponent());
     widgets.add(const ThemeSelectionComponent());
-    if(!isLoginPage) {
-      widgets.add(EditUserComponent(email: FirebaseAuth.instance.currentUser!.email!));
-      if(isDebug){
+    if (!isLoginPage) {
+      widgets.add(
+          EditUserComponent(email: FirebaseAuth.instance.currentUser!.email!));
+      if (isDebug) {
         widgets.add(const FastServicesComponent());
         widgets.add(const ResetTablesComponent());
-        if (isGodMod){
+        if (isGodMod) {
           widgets.add(
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const HumantechPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const HumantechPage()),
                 );
               },
               child: Text('Humantech'),

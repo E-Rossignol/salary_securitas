@@ -34,8 +34,9 @@ class EditUserComponentState extends State<EditUserComponent> {
         ),
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => UpdateNamePage(email: widget.email)));
-        }
-    );
+              context,
+              MaterialPageRoute(
+                  builder: (context) => UpdateNamePage(email: widget.email)));
+        });
   }
 }

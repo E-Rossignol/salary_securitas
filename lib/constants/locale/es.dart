@@ -48,7 +48,8 @@ const Map<String, String> esLocale = {
   'end_date': 'Fecha de finalización',
   'end_hour': 'Hora de finalización',
   'order_service?': '¿Es este un servicio de seguridad?',
-  'end_date_before_start_date': 'La fecha de finalización debe ser posterior a la fecha de inicio',
+  'end_date_before_start_date':
+      'La fecha de finalización debe ser posterior a la fecha de inicio',
   'date_error': 'Hay un error en la fecha, su servicio es demasiado largo',
   'email_already_exists': 'Este correo electrónico ya existe',
   'register': 'Registrarse',
@@ -61,5 +62,6 @@ const Map<String, String> esLocale = {
   'not_registered': 'No estás registrado',
   'no name registered': 'No hay nombre registrado',
   'connection in progress': 'conexión en progreso ...',
-  'where_is_salary': 'Si no conoce su salario por hora, consulte una de sus nóminas.',
+  'where_is_salary':
+      'Si no conoce su salario por hora, consulte una de sus nóminas.',
 };

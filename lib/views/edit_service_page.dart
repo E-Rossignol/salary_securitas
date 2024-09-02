@@ -100,7 +100,8 @@ class _EditServicePageState extends State<EditServicePage> {
                         child: DateTimeField(
                           format: timeFormat,
                           initialValue: widget.app.start,
-                          decoration: InputDecoration(labelText: 'start_hour'.tr),
+                          decoration:
+                              InputDecoration(labelText: 'start_hour'.tr),
                           onShowPicker: (context, currentValue) async {
                             final time = await showTimePicker(
                               context: context,
@@ -150,8 +151,7 @@ class _EditServicePageState extends State<EditServicePage> {
                         child: DateTimeField(
                           format: timeFormat,
                           initialValue: widget.app.end,
-                          decoration:
-                              InputDecoration(labelText: 'end_hour'.tr),
+                          decoration: InputDecoration(labelText: 'end_hour'.tr),
                           onShowPicker: (context, currentValue) async {
                             final time = await showTimePicker(
                               context: context,
@@ -199,7 +199,8 @@ class _EditServicePageState extends State<EditServicePage> {
                             endHour, endMinute);
                       });
                       if (end.isBefore(start)) {
-                        Helper.snackbar('error'.tr, 'end_date_before_start_date'.tr);
+                        Helper.snackbar(
+                            'error'.tr, 'end_date_before_start_date'.tr);
                         return;
                       }
                       Appointment newApp = Appointment(
@@ -211,7 +212,8 @@ class _EditServicePageState extends State<EditServicePage> {
                       await ServiceDB().update(newApp.id, newApp);
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const MainPage()));
+                          MaterialPageRoute(
+                              builder: (context) => const MainPage()));
                     },
                     child: Text('validate'.tr))
               ],

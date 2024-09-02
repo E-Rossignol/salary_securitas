@@ -40,12 +40,14 @@ class LogOutComponentState extends State<LogOutComponent> {
                 ElevatedButton(
                     onPressed: () async {
                       await Auth().signOut();
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
                       prefs.remove('email');
                       prefs.remove('password');
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const LoginPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()));
                     },
                     child: Text('yes'.tr)),
                 ElevatedButton(

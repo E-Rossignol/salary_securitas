@@ -18,15 +18,13 @@ class _WidgetTreeState extends State<WidgetTree> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.push(
-                  context,
+              Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const MainPage()));
             });
             return const MainPage();
           } else {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.push(
-                  context,
+              Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const LoginPage()));
             });
             return const LoginPage();

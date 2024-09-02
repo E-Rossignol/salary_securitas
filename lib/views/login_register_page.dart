@@ -71,7 +71,8 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  Widget _entryField(String title, TextEditingController controller, {bool isPassword = false}) {
+  Widget _entryField(String title, TextEditingController controller,
+      {bool isPassword = false}) {
     return TextField(
       controller: controller,
       obscureText: isPassword ? _isPasswordHidden : false,
@@ -101,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _title(){
+  Widget _title() {
     return Text(
       'SECURITHUNES',
       style: TextStyle(
@@ -137,21 +138,19 @@ class _LoginPageState extends State<LoginPage> {
     return ElevatedButton(
       onPressed: () async {
         bool registered = await hasName();
-        if (isLogin){
-          if(registered) {
+        if (isLogin) {
+          if (registered) {
             signInWithEmailAndPassword();
           } else {
             setState(() {
-            errorMessage = 'not_registered'.tr;
-          });
+              errorMessage = 'not_registered'.tr;
+            });
             return;
           }
-        }
-        else {
-          if(!registered){
+        } else {
+          if (!registered) {
             goToNamePage();
-          }
-          else {
+          } else {
             setState(() {
               errorMessage = 'email_already_exists'.tr;
             });
@@ -224,9 +223,11 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _godModButton() {
     return ElevatedButton(
-      onPressed: _showGodModDialog,
-      child: Text('God Mod', style: TextStyle(color: Theme.of(context).colorScheme.secondary),)
-    );
+        onPressed: _showGodModDialog,
+        child: Text(
+          'God Mod',
+          style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+        ));
   }
 
   @override

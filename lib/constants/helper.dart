@@ -168,7 +168,10 @@ class Helper {
     db.create(newApp);
   }
 
-  static void snackbar(String title, String message){
-    Get.snackbar(title, message, duration: Duration(seconds: 2), snackPosition: SnackPosition.BOTTOM, isDismissible: true);
+  static void snackbar(String title, String message) {
+    Get.snackbar(title, message,
+        duration: Duration(seconds: 2),
+        snackPosition: SnackPosition.BOTTOM,
+        isDismissible: true);
   }
 }

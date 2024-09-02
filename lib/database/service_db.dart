@@ -124,8 +124,7 @@ class ServiceDB {
             'lastName': lastName as String,
             'email': email as String
           } in nameMaps)
-        UserSecu(
-            id: id, email: email, firstName: firstName, lastName: lastName)
+        UserSecu(id: id, email: email, firstName: firstName, lastName: lastName)
     ];
     return all;
   }

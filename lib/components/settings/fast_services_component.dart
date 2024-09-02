@@ -55,7 +55,8 @@ class FastServicesComponentState extends State<FastServicesComponent> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => const MainPage()));
-                      Helper.snackbar('Default calendar', 'Default calendar displayed for may, june and july');
+                      Helper.snackbar('Default calendar',
+                          'Default calendar displayed for may, june and july');
                     },
                     child: Text('yes'.tr)),
                 ElevatedButton(
@@ -552,7 +553,7 @@ class FastServicesComponentState extends State<FastServicesComponent> {
     return apps;
   }
 
-  List<Appointment> _fastAugustServices(){
+  List<Appointment> _fastAugustServices() {
     List<String> startDates = [
       '02 aout 21h00',
       '03 aout 21h00',

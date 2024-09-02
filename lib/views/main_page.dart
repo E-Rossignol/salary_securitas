@@ -42,11 +42,12 @@ class _MainPageState extends State<MainPage> {
     fetchServices();
   }
 
-  void setPrefs(){
+  void setPrefs() {
     setState(() {
       prefs = SharedPreferences.getInstance();
     });
   }
+
   void fetchServices() {
     setState(() {
       futureAppointments =
@@ -80,9 +81,10 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CreateServicePage(day: _selectedDay)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CreateServicePage(day: _selectedDay)));
         },
         backgroundColor: colors.secondary,
         child: const Icon(Icons.add),
@@ -97,7 +99,7 @@ class _MainPageState extends State<MainPage> {
               return Text('${'error:'.tr}${snapshot.error}');
             } else {
               user = snapshot.data!;
-              if (user.id == -1){
+              if (user.id == -1) {
                 return Center(
                   child: Text('no name registered'.tr),
                 );
@@ -124,31 +126,32 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: colors.primary,
       ),
       endDrawer: Drawer(
-        shadowColor: colors.onBackground,
-        backgroundColor: colors.background,
-        child: FutureBuilder<SharedPreferences>(
-          future: prefs,
-          builder: (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // Show a loading spinner while waiting
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              // SharedPreferences instance is available here
-              SharedPreferences prefs = snapshot.data!;
-              bool isDebug = prefs.getBool('godMod') ?? false;
-              return SettingsView(isLoginPage: false, isDebug: isDebug);
-            }
-          },
-        )
-      ),
+          shadowColor: colors.onBackground,
+          backgroundColor: colors.background,
+          child: FutureBuilder<SharedPreferences>(
+            future: prefs,
+            builder: (BuildContext context,
+                AsyncSnapshot<SharedPreferences> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator(); // Show a loading spinner while waiting
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                // SharedPreferences instance is available here
+                SharedPreferences prefs = snapshot.data!;
+                bool isDebug = prefs.getBool('godMod') ?? false;
+                return SettingsView(isLoginPage: false, isDebug: isDebug);
+              }
+            },
+          )),
       body: FutureBuilder<List<Appointment>>(
         future: futureAppointments,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('${'error:'.tr}  ${snapshot.error.toString()}'));
+            return Center(
+                child: Text('${'error:'.tr}  ${snapshot.error.toString()}'));
           } else {
             return Column(mainAxisSize: MainAxisSize.max, children: [
               Container(
@@ -206,7 +209,9 @@ class _MainPageState extends State<MainPage> {
                   onDayLongPressed: (selectedDay, focusedDay) {
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CreateServicePage(day: selectedDay)));
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                CreateServicePage(day: selectedDay)));
                   },
                   onDaySelected: (selectedDay, focusedDay) {
                     setState(() {
@@ -317,7 +322,13 @@ class _MainPageState extends State<MainPage> {
                                                       onPressed: () {
                                                         Navigator.push(
                                                             context,
-                                                            MaterialPageRoute(builder: (context) => EditServicePage(app: appointment,)));
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        EditServicePage(
+                                                                          app:
+                                                                              appointment,
+                                                                        )));
                                                       },
                                                     ),
                                                   ),
@@ -351,13 +362,16 @@ class _MainPageState extends State<MainPage> {
                                                             builder: (context) {
                                                               return AlertDialog(
                                                                 title: Text(
-                                                                    'delete_service'.tr),
+                                                                    'delete_service'
+                                                                        .tr),
                                                                 content: Text(
-                                                                    'sure_delete_service'.tr),
+                                                                    'sure_delete_service'
+                                                                        .tr),
                                                                 actions: <Widget>[
                                                                   TextButton(
                                                                     child: Text(
-                                                                        'cancel'.tr),
+                                                                        'cancel'
+                                                                            .tr),
                                                                     onPressed:
                                                                         () {
                                                                       Navigator.of(
@@ -367,7 +381,8 @@ class _MainPageState extends State<MainPage> {
                                                                   ),
                                                                   TextButton(
                                                                     child: Text(
-                                                                        'delete'.tr),
+                                                                        'delete'
+                                                                            .tr),
                                                                     onPressed:
                                                                         () {
                                                                       Navigator.of(
@@ -408,7 +423,8 @@ class _MainPageState extends State<MainPage> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
-                        return Center(child: Text('${'error'.tr} ${snapshot.error}'));
+                        return Center(
+                            child: Text('${'error'.tr} ${snapshot.error}'));
                       } else {
                         return Container(
                           margin: const EdgeInsets.all(15.0),
