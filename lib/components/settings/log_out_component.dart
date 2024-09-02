@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salary_securitas/auth/auth.dart';
 import 'package:salary_securitas/views/login_register_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// The `LogOutComponent` class represents a widget that allows the user to log out of the application.
 ///
@@ -39,6 +40,9 @@ class LogOutComponentState extends State<LogOutComponent> {
                 ElevatedButton(
                     onPressed: () async {
                       await Auth().signOut();
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.remove('email');
+                      prefs.remove('password');
                         Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => const LoginPage()));

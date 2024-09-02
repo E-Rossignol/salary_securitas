@@ -35,8 +35,11 @@ class _LoginPageState extends State<LoginPage> {
 
   void setPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _controllerEmail.text = prefs.getString('email') ?? '';
-    _controllerPassword.text = prefs.getString('password') ?? '';
+    setState(() {
+      _controllerEmail.text = prefs.getString('email') ?? '';
+      _controllerPassword.text = prefs.getString('password') ?? '';
+    });
+    await signInWithEmailAndPassword();
   }
 
   Future<bool> signInWithEmailAndPassword() async {
@@ -99,10 +102,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _title(){
-    return const Text(
+    return Text(
       'SECURITHUNES',
       style: TextStyle(
-        color: Color.fromRGBO(0, 80, 158, 100),
+        color: Theme.of(context).colorScheme.primary,
         fontSize: 40,
         fontFamily: 'Batman',
       ),
@@ -199,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
               child: Text('Submit'),
               onPressed: () async {
-                if (controller.text == '2563332563') {
+                if (controller.text == '2563') {
                   setState(() {
                     godMod = true;
                   });

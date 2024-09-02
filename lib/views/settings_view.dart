@@ -7,6 +7,8 @@ import 'package:salary_securitas/components/settings/fast_services_component.dar
 import 'package:salary_securitas/components/settings/reset_tables_component.dart';
 import 'package:salary_securitas/components/settings/theme_selection_widget.dart';
 import 'package:salary_securitas/components/settings/edit_user_component.dart';
+import 'package:salary_securitas/views/humantech_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// The `SettingsView` class represents the settings view of the application.
 ///
@@ -32,9 +34,22 @@ class SettingsView extends StatefulWidget {
 /// The `Scaffold` widget has an `AppBar` with a title `Text` widget that displays 'Settings'.
 /// The body of the `Scaffold` is a `Padding` widget that contains a `ListView` with `DarkModeSwitchComponent`, `ChangeLanguageComponent`, and `LogOutComponent` components.
 class SettingsViewState extends State<SettingsView> {
+  bool isGodMod = false;
   @override
   void initState() {
     super.initState();
+    initGodMod();
+  }
+
+  Future<void> initGodMod() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userName = prefs.getString('email') ?? '';
+    if (userName == 'erwan@hotmail.ch') {
+      prefs.setBool('godMod', true);
+    }
+    setState(() {
+      isGodMod = prefs.getBool('godMod') ?? false;
+    });
   }
 
   @override
@@ -50,6 +65,19 @@ class SettingsViewState extends State<SettingsView> {
       if(isDebug){
         widgets.add(const FastServicesComponent());
         widgets.add(const ResetTablesComponent());
+        if (isGodMod){
+          widgets.add(
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HumantechPage()),
+                );
+              },
+              child: Text('Humantech'),
+            ),
+          );
+        }
       }
     }
     return Scaffold(
