@@ -35,11 +35,15 @@ class _LoginPageState extends State<LoginPage> {
 
   void setPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _controllerEmail.text = prefs.getString('email') ?? '';
-      _controllerPassword.text = prefs.getString('password') ?? '';
-    });
-    await signInWithEmailAndPassword();
+    String mail = prefs.getString('email') ?? '';
+    String password = prefs.getString('password') ?? '';
+    if (mail.isNotEmpty && password.isNotEmpty) {
+      setState(() {
+        _controllerEmail.text = mail;
+        _controllerPassword.text = password;
+      });
+      await signInWithEmailAndPassword();
+    }
   }
 
   Future<bool> signInWithEmailAndPassword() async {
@@ -140,6 +144,9 @@ class _LoginPageState extends State<LoginPage> {
         bool registered = await hasName();
         if (isLogin) {
           if (registered) {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString('email', _controllerEmail.text);
+            prefs.setString('password', _controllerPassword.text);
             signInWithEmailAndPassword();
           } else {
             setState(() {
@@ -149,6 +156,9 @@ class _LoginPageState extends State<LoginPage> {
           }
         } else {
           if (!registered) {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString('email', _controllerEmail.text);
+            prefs.setString('password', _controllerPassword.text);
             goToNamePage();
           } else {
             setState(() {
