@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salary_securitas/components/settings/change_language_component.dart';
@@ -6,9 +5,10 @@ import 'package:salary_securitas/components/settings/dark_mode_switch_component.
 import 'package:salary_securitas/components/settings/fast_services_component.dart';
 import 'package:salary_securitas/components/settings/reset_tables_component.dart';
 import 'package:salary_securitas/components/settings/theme_selection_widget.dart';
-import 'package:salary_securitas/components/settings/edit_user_component.dart';
 import 'package:salary_securitas/views/humantech_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../components/settings/update_per_hour_salary_component.dart';
+import '../constants/helper.dart';
 
 /// The `SettingsView` class represents the settings view of the application.
 ///
@@ -36,6 +36,7 @@ class SettingsView extends StatefulWidget {
 /// The body of the `Scaffold` is a `Padding` widget that contains a `ListView` with `DarkModeSwitchComponent`, `ChangeLanguageComponent`, and `LogOutComponent` components.
 class SettingsViewState extends State<SettingsView> {
   bool isGodMod = false;
+
   @override
   void initState() {
     super.initState();
@@ -44,13 +45,46 @@ class SettingsViewState extends State<SettingsView> {
 
   Future<void> initGodMod() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userName = prefs.getString('email') ?? '';
-    if (userName == 'erwan@hotmail.ch') {
-      prefs.setBool('godMod', true);
-    }
     setState(() {
       isGodMod = prefs.getBool('godMod') ?? false;
     });
+  }
+
+  void _showGodModDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        TextEditingController controller = TextEditingController();
+        return AlertDialog(
+          title: Text('God Mod'),
+          content: TextField(
+            controller: controller,
+            obscureText: true,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(hintText: "Enter numeric code"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Submit'),
+              onPressed: () async {
+                if (controller.text == '2563') {
+                  setState(() {
+                    isGodMod = true;
+                  });
+                  Helper.snackbar('God Mod', 'God Mod activated, have fun !');
+                  SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+                  prefs.setBool('godMod', true);
+                } else {
+                  Helper.snackbar('Error', 'U don\'t deserve it !');
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -59,27 +93,35 @@ class SettingsViewState extends State<SettingsView> {
     bool isDebug = widget.isDebug;
     List<Widget> widgets = [];
     widgets.add(const DarkModeSwitchComponent());
+    widgets.add(const UpdateSalaryPerHourComponent());
     widgets.add(const ChangeLanguageComponent());
     widgets.add(const ThemeSelectionComponent());
     if (!isLoginPage) {
       widgets.add(
-          EditUserComponent(email: FirebaseAuth.instance.currentUser!.email!));
+        ListTile(
+          leading: const Icon(Icons.password),
+          title: const Text('God Mod'),
+          onTap: _showGodModDialog,
+        ),
+      );
       if (isDebug) {
         widgets.add(const FastServicesComponent());
         widgets.add(const ResetTablesComponent());
         if (isGodMod) {
-          widgets.add(
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const HumantechPage()),
-                );
-              },
-              child: Text('Humantech'),
-            ),
-          );
+          setState(() {
+            widgets.add(
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HumantechPage()),
+                  );
+                },
+                child: Text('Humantech'),
+              ),
+            );
+          });
         }
       }
     }

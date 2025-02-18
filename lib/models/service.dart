@@ -3,17 +3,15 @@ class Service {
   final int start;
   final int end;
   final int isOrderService;
-  final String user;
 
   Service(
       {required this.id,
       required this.start,
       required this.end,
-      required this.isOrderService,
-      required this.user});
+      required this.isOrderService});
 
   @override
   String toString() {
-    return '$id , $start , $end , $isOrderService , $user';
+    return '$id , $start , $end , $isOrderService';
   }
 }

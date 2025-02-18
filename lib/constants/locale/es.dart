@@ -64,4 +64,6 @@ const Map<String, String> esLocale = {
   'connection in progress': 'conexión en progreso ...',
   'where_is_salary':
       'Si no conoce su salario por hora, consulte una de sus nóminas.',
+  'edit_service': 'Editar servicio',
+  'salary_change': 'Cambiar valor del salario',
 };

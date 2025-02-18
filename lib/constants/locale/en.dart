@@ -63,4 +63,6 @@ const Map<String, String> enLocale = {
   'connection in progress': 'connection in progress ...',
   'where_is_salary':
       'If you do not know your hourly salary, look on one of your salary slips.',
+  'edit_service': 'Edit service',
+  'salary_change': 'Change salary value',
 };

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salary_securitas/constants/helper.dart';
@@ -155,55 +154,55 @@ class FastServicesComponentState extends State<FastServicesComponent> {
         start: startDateTime[0],
         end: endDateTime[0],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment mayApp2 = Appointment(
         id: 0,
         start: startDateTime[1],
         end: endDateTime[1],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment mayApp3 = Appointment(
         id: 0,
         start: startDateTime[2],
         end: endDateTime[2],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment mayApp4 = Appointment(
         id: 0,
         start: startDateTime[3],
         end: endDateTime[3],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment mayApp5 = Appointment(
         id: 0,
         start: startDateTime[4],
         end: endDateTime[4],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment mayApp6 = Appointment(
         id: 0,
         start: startDateTime[5],
         end: endDateTime[5],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment mayApp7 = Appointment(
         id: 0,
         start: startDateTime[6],
         end: endDateTime[6],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment mayApp8 = Appointment(
         id: 0,
         start: startDateTime[7],
         end: endDateTime[7],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment mayApp9 = Appointment(
         id: 0,
         start: startDateTime[8],
         end: endDateTime[8],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     apps.add(mayApp1);
     apps.add(mayApp2);
     apps.add(mayApp3);
@@ -257,85 +256,85 @@ class FastServicesComponentState extends State<FastServicesComponent> {
         start: startDateTime[0],
         end: endDateTime[0],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment juneApp2 = Appointment(
         id: 0,
         start: startDateTime[1],
         end: endDateTime[1],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment juneApp3 = Appointment(
         id: 0,
         start: startDateTime[2],
         end: endDateTime[2],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment juneApp4 = Appointment(
         id: 0,
         start: startDateTime[3],
         end: endDateTime[3],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment juneApp5 = Appointment(
         id: 0,
         start: startDateTime[4],
         end: endDateTime[4],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment juneApp6 = Appointment(
         id: 0,
         start: startDateTime[5],
         end: endDateTime[5],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment juneApp7 = Appointment(
         id: 0,
         start: startDateTime[6],
         end: endDateTime[6],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment juneApp8 = Appointment(
         id: 0,
         start: startDateTime[7],
         end: endDateTime[7],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment juneApp9 = Appointment(
         id: 0,
         start: startDateTime[8],
         end: endDateTime[8],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment juneApp10 = Appointment(
         id: 0,
         start: startDateTime[9],
         end: endDateTime[9],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment juneApp11 = Appointment(
         id: 0,
         start: startDateTime[10],
         end: endDateTime[10],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment juneApp12 = Appointment(
         id: 0,
         start: startDateTime[11],
         end: endDateTime[11],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment juneApp13 = Appointment(
         id: 0,
         start: startDateTime[12],
         end: endDateTime[12],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment juneApp14 = Appointment(
         id: 0,
         start: startDateTime[13],
         end: endDateTime[13],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     apps.add(juneApp1);
     apps.add(juneApp2);
     apps.add(juneApp3);
@@ -408,127 +407,127 @@ class FastServicesComponentState extends State<FastServicesComponent> {
         start: startDateTime[0],
         end: endDateTime[0],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp2 = Appointment(
         id: 0,
         start: startDateTime[1],
         end: endDateTime[1],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp3 = Appointment(
         id: 0,
         start: startDateTime[2],
         end: endDateTime[2],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp4 = Appointment(
         id: 0,
         start: startDateTime[3],
         end: endDateTime[3],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp5 = Appointment(
         id: 0,
         start: startDateTime[4],
         end: endDateTime[4],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp6 = Appointment(
         id: 0,
         start: startDateTime[5],
         end: endDateTime[5],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp7 = Appointment(
         id: 0,
         start: startDateTime[6],
         end: endDateTime[6],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp8 = Appointment(
         id: 0,
         start: startDateTime[7],
         end: endDateTime[7],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp9 = Appointment(
         id: 0,
         start: startDateTime[8],
         end: endDateTime[8],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp10 = Appointment(
         id: 0,
         start: startDateTime[9],
         end: endDateTime[9],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp11 = Appointment(
         id: 0,
         start: startDateTime[10],
         end: endDateTime[10],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp12 = Appointment(
         id: 0,
         start: startDateTime[11],
         end: endDateTime[11],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp13 = Appointment(
         id: 0,
         start: startDateTime[12],
         end: endDateTime[12],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp14 = Appointment(
         id: 0,
         start: startDateTime[13],
         end: endDateTime[13],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp15 = Appointment(
         id: 0,
         start: startDateTime[14],
         end: endDateTime[14],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp16 = Appointment(
         id: 0,
         start: startDateTime[15],
         end: endDateTime[15],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp17 = Appointment(
         id: 0,
         start: startDateTime[16],
         end: endDateTime[16],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp18 = Appointment(
         id: 0,
         start: startDateTime[17],
         end: endDateTime[17],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp19 = Appointment(
         id: 0,
         start: startDateTime[18],
         end: endDateTime[18],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp20 = Appointment(
         id: 0,
         start: startDateTime[19],
         end: endDateTime[19],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment julyApp21 = Appointment(
         id: 0,
         start: startDateTime[20],
         end: endDateTime[20],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     apps.add(julyApp1);
     apps.add(julyApp2);
     apps.add(julyApp3);
@@ -574,25 +573,25 @@ class FastServicesComponentState extends State<FastServicesComponent> {
         start: startDateTime[0],
         end: endDateTime[0],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment mayApp2 = Appointment(
         id: 0,
         start: startDateTime[1],
         end: endDateTime[1],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment mayApp3 = Appointment(
         id: 0,
         start: startDateTime[2],
         end: endDateTime[2],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     Appointment mayApp4 = Appointment(
         id: 0,
         start: startDateTime[3],
         end: endDateTime[3],
         isOrderService: true,
-        user: FirebaseAuth.instance.currentUser!.uid);
+        );
     apps.add(mayApp1);
     apps.add(mayApp2);
     apps.add(mayApp3);

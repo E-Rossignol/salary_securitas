@@ -2,25 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:salary_securitas/database/database_service.dart';
-import 'package:salary_securitas/views/widget_tree.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:salary_securitas/views/main_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'auth/auth.dart';
 import 'constants/locale/locale_string.dart';
 import 'constants/theme/theme_provider.dart';
-import 'firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DatabaseService databaseService = DatabaseService();
   await databaseService.database;
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
-  await Auth().signOut();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
@@ -39,7 +32,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       translations: LocaleString(),
       locale: const Locale('fr', 'FR'),
-      home: const WidgetTree(),
+      home: const MainPage(),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

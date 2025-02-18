@@ -62,5 +62,7 @@ const Map<String, String> deLocale = {
   'no name registered': 'Kein Name registriert',
   'connection in progress': 'verbindung wird hergestellt ...',
   'where_is_salary':
-      'Wenn Sie Ihren Stundenlohn nicht kennen, schauen Sie auf einer Ihrer Gehaltsabrechnungen nach.'
+      'Wenn Sie Ihren Stundenlohn nicht kennen, schauen Sie auf einer Ihrer Gehaltsabrechnungen nach.',
+  'edit_service': 'Dienst bearbeiten',
+  'salary_change': 'Ändern des Gehaltswerts',
 };

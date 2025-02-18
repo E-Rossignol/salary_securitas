@@ -29,7 +29,6 @@ class DatabaseService {
   }
 
   Future<void> create(Database database, int version) async {
-    await ServiceDB().createTableName(database);
     await ServiceDB().createTableService(database);
   }
 }

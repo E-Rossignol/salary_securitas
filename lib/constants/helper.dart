@@ -25,10 +25,17 @@ class Helper {
 
   static Future<double> getBrutSalary(List<Appointment> apps) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    double salaryPerHour = prefs.getDouble('salaryPerHour') ?? 25.92;
+    double salaryPerHour;
+    if (prefs.getDouble('salaryPerHour') == null) {
+      prefs.setDouble('salaryPerHour', 25.92);
+      salaryPerHour = 25.92;
+    }
+    else {
+      salaryPerHour = prefs.getDouble('salaryPerHour') ?? 25.92;
+    }
     double salary = 0;
     for (Appointment app in apps) {
-      double isOrderSalary = app.isOrderService ? 1 : 0.8;
+      double isOrderSalary = app.isOrderService ? 1 : 0.9502;
       double minutes = 0;
       minutes += app.end.difference(app.start).inMinutes;
       minutes += nightMinutes(app.start, app.end) / 10;
@@ -130,8 +137,7 @@ class Helper {
               .add(Duration(minutes: service.start)),
           end:
               DateTime(DateTime.now().year).add(Duration(minutes: service.end)),
-          isOrderService: service.isOrderService == 1,
-          user: service.user));
+          isOrderService: service.isOrderService == 1));
     }
     return appointments;
   }
@@ -147,8 +153,7 @@ class Helper {
           end: (appointment.end)
               .difference(DateTime(DateTime.now().year))
               .inMinutes,
-          isOrderService: appointment.isOrderService ? 1 : 0,
-          user: appointment.user));
+          isOrderService: appointment.isOrderService ? 1 : 0));
     }
     return services;
   }
@@ -161,8 +166,7 @@ class Helper {
       id: 0,
       start: newStartDate,
       end: newEndDate,
-      isOrderService: app.isOrderService,
-      user: app.user,
+      isOrderService: app.isOrderService
     );
     ServiceDB db = ServiceDB();
     db.create(newApp);

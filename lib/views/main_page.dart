@@ -1,16 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:salary_securitas/components/settings/log_out_component.dart';
 import 'package:salary_securitas/models/appointment.dart';
 import 'package:flutter/material.dart';
-import 'package:salary_securitas/auth/auth.dart';
 import 'package:salary_securitas/views/create_service_page.dart';
 import 'package:salary_securitas/views/settings_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../constants/helper.dart';
 import '../database/service_db.dart';
-import '../models/user_secu.dart';
 import 'copy_service_page.dart';
 import 'edit_service_page.dart';
 
@@ -25,8 +21,6 @@ class _MainPageState extends State<MainPage> {
   late Future<SharedPreferences> prefs;
   Future<List<Appointment>>? futureAppointments;
   ServiceDB db = ServiceDB();
-  late Future<UserSecu> futureUser;
-  UserSecu user = UserSecu(id: 0, email: '', firstName: '', lastName: '');
   late CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
@@ -38,7 +32,6 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     setPrefs();
-    getName();
     fetchServices();
   }
 
@@ -51,18 +44,8 @@ class _MainPageState extends State<MainPage> {
   void fetchServices() {
     setState(() {
       futureAppointments =
-          db.fetchUserAppointments(FirebaseAuth.instance.currentUser!.uid);
+          db.fetchUserAppointments();
     });
-  }
-
-  void getName() {
-    setState(() {
-      futureUser = db.getName(FirebaseAuth.instance.currentUser!.email!);
-    });
-  }
-
-  Future<void> signOut() async {
-    await Auth().signOut();
   }
 
   void deleteService(Appointment appointment) async {
@@ -90,26 +73,7 @@ class _MainPageState extends State<MainPage> {
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: FutureBuilder<UserSecu>(
-          future: futureUser,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text('loading'.tr);
-            } else if (snapshot.hasError) {
-              return Text('${'error:'.tr}${snapshot.error}');
-            } else {
-              user = snapshot.data!;
-              if (user.id == -1) {
-                return Center(
-                  child: Text('no name registered'.tr),
-                );
-              }
-              return Center(
-                  child: Text('${user.firstName} ${user.lastName}',
-                      style: TextStyle(color: colors.onPrimary)));
-            }
-          },
-        ),
+        title: const Text('SecuriThunes', style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic, fontFamily: 'Lobster', fontWeight: FontWeight.bold)),
         actions: [
           Builder(
               builder: (context) => IconButton(
@@ -122,7 +86,6 @@ class _MainPageState extends State<MainPage> {
                     ),
                   )),
         ],
-        leading: const LogOutComponent(),
         backgroundColor: colors.primary,
       ),
       endDrawer: Drawer(
@@ -153,84 +116,92 @@ class _MainPageState extends State<MainPage> {
             return Center(
                 child: Text('${'error:'.tr}  ${snapshot.error.toString()}'));
           } else {
-            return Column(mainAxisSize: MainAxisSize.max, children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: colors.secondaryContainer,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: TableCalendar<Appointment>(
-                  locale: Get.locale?.languageCode,
-                  firstDay: DateTime.utc(2010, 10, 16),
-                  lastDay: DateTime.utc(2030, 3, 14),
-                  focusedDay: _focusedDay,
-                  startingDayOfWeek: StartingDayOfWeek.monday,
-                  calendarFormat: _calendarFormat,
-                  eventLoader: (day) {
-                    return Helper.getEventsFromAppointments(snapshot.data!)[
-                            DateTime(day.year, day.month, day.day)] ??
-                        [];
-                  },
-                  availableCalendarFormats: {
-                    CalendarFormat.month: 'month'.tr,
-                  },
-                  onFormatChanged: (format) {
-                    setState(() {
-                      _calendarFormat = format;
-                    });
-                  },
-                  selectedDayPredicate: (day) {
-                    return isSameDay(
-                        _selectedDay, DateTime(day.year, day.month, day.day));
-                  },
-                  calendarStyle: CalendarStyle(
-                    todayDecoration: BoxDecoration(
-                      color: colors.secondary,
-                      shape: BoxShape.circle,
-                    ),
-                    selectedDecoration: BoxDecoration(
-                      color: colors.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    markersAutoAligned: true,
-                    markerDecoration: BoxDecoration(
-                      color: colors.onBackground,
-                      shape: BoxShape.rectangle,
-                    ),
+            return Column(children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: colors.secondaryContainer,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(10.0),
+                      bottomRight: Radius.circular(10.0),
+                  )
                   ),
-                  rowHeight: MediaQuery.of(context).size.height / 12,
-                  onPageChanged: (focusedDay) {
-                    setState(() {
-                      _currentMonth = focusedDay.month;
-                      _currentYear = focusedDay.year;
-                      _focusedDay = focusedDay;
-                    });
-                  },
-                  onDayLongPressed: (selectedDay, focusedDay) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                CreateServicePage(day: selectedDay)));
-                  },
-                  onDaySelected: (selectedDay, focusedDay) {
-                    setState(() {
-                      _selectedDay = DateTime(
-                          selectedDay.year, selectedDay.month, selectedDay.day);
-                      _focusedDay = DateTime(
-                          selectedDay.year, selectedDay.month, selectedDay.day);
-                    });
-                    List<Appointment> appointmentsForSelectedDay =
-                        Helper.getEventsFromAppointments(
-                                snapshot.data!)[_selectedDay] ??
-                            [];
-                    _appointmentsForSelectedDay = appointmentsForSelectedDay;
-                  },
+                  child: TableCalendar<Appointment>(
+                    locale: Get.locale?.languageCode,
+                    firstDay: DateTime.utc(2010, 10, 16),
+                    lastDay: DateTime.utc(2030, 3, 14),
+                    focusedDay: _focusedDay,
+                    startingDayOfWeek: StartingDayOfWeek.monday,
+                    calendarFormat: _calendarFormat,
+                    eventLoader: (day) {
+                      return Helper.getEventsFromAppointments(snapshot.data!)[
+                              DateTime(day.year, day.month, day.day)] ??
+                          [];
+                    },
+                    availableCalendarFormats: {
+                      CalendarFormat.month: 'month'.tr,
+                    },
+                    onFormatChanged: (format) {
+                      setState(() {
+                        _calendarFormat = format;
+                      });
+                    },
+                    selectedDayPredicate: (day) {
+                      return isSameDay(
+                          _selectedDay, DateTime(day.year, day.month, day.day));
+                    },
+                    calendarStyle: CalendarStyle(
+                      todayDecoration: BoxDecoration(
+                        color: colors.secondary,
+                        shape: BoxShape.circle,
+                      ),
+                      selectedDecoration: BoxDecoration(
+                        color: colors.primary,
+                        shape: BoxShape.circle,
+                      ),
+                      markersAutoAligned: true,
+                      markerDecoration: BoxDecoration(
+                        color: colors.onBackground,
+                        shape: BoxShape.rectangle,
+                      ),
+                    ),
+                    rowHeight: MediaQuery.of(context).size.height / 12,
+                    onPageChanged: (focusedDay) {
+                      setState(() {
+                        _currentMonth = focusedDay.month;
+                        _currentYear = focusedDay.year;
+                        _focusedDay = focusedDay;
+                      });
+                    },
+                    onDayLongPressed: (selectedDay, focusedDay) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CreateServicePage(day: selectedDay)));
+                    },
+                    onDaySelected: (selectedDay, focusedDay) {
+                      setState(() {
+                        _selectedDay = DateTime(
+                            selectedDay.year, selectedDay.month, selectedDay.day);
+                        _focusedDay = DateTime(
+                            selectedDay.year, selectedDay.month, selectedDay.day);
+                      });
+                      List<Appointment> appointmentsForSelectedDay =
+                          Helper.getEventsFromAppointments(
+                                  snapshot.data!)[_selectedDay] ??
+                              [];
+                      _appointmentsForSelectedDay = appointmentsForSelectedDay;
+                    },
+                  ),
                 ),
               ),
-              Expanded(
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                 child: Center(
                   child: Container(
+                    height: MediaQuery.of(context).size.height * 0.15,
                     decoration: BoxDecoration(
                       color: colors.onInverseSurface,
                       borderRadius: BorderRadius.circular(10.0),
@@ -413,45 +384,48 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
               ),
-              Center(
-                child: FittedBox(
-                  fit: BoxFit.cover,
-                  child: FutureBuilder<List<double>>(
-                    future: getMonthSalary(
-                        snapshot.data!, _currentMonth, _currentYear),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(
-                            child: Text('${'error'.tr} ${snapshot.error}'));
-                      } else {
-                        return Container(
-                          margin: const EdgeInsets.all(15.0),
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${snapshot.data!.first.round()} .- (${snapshot.data!.last.round()}h)',
-                                style: TextStyle(
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 20.0,
-                                      color: colors.onSecondaryContainer,
-                                      offset: const Offset(1.0, 1.0),
-                                    ),
-                                  ],
-                                  color: colors.error,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+              Container(
+                height: MediaQuery.of(context).size.height * 0.1,
+                child: Center(
+                  child: FittedBox(
+                    fit: BoxFit.cover,
+                    child: FutureBuilder<List<double>>(
+                      future: getMonthSalary(
+                          snapshot.data!, _currentMonth, _currentYear),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('${'error'.tr} ${snapshot.error}'));
+                        } else {
+                          return Container(
+                            margin: const EdgeInsets.all(15.0),
+                            padding: const EdgeInsets.all(15.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${snapshot.data!.first.round()} .- (${snapshot.data!.last.round()}h)',
+                                  style: TextStyle(
+                                    shadows: [
+                                      Shadow(
+                                        blurRadius: 20.0,
+                                        color: colors.onSecondaryContainer,
+                                        offset: const Offset(1.0, 1.0),
+                                      ),
+                                    ],
+                                    color: colors.error,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    },
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    ),
                   ),
                 ),
               )

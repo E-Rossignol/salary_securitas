@@ -39,22 +39,40 @@ class _HumantechPageState extends State<HumantechPage> {
           children: <Widget>[
             Center(
               child: Container(
-                width: MediaQuery.of(context).size.width * 0.8,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.8,
                 child: TextField(
                   controller: _controller,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     label:
-                        Center(child: const Text('Enter your Humantech Hours')),
+                    Center(child: const Text('Enter your Humantech Hours')),
                   ),
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: _calculate,
-              child: Text('Calculate'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: _calculate,
+                  child: Text('Calculate'),
+                ),
+                ElevatedButton(onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder:(context)
+                  =>
+                  const MainPage()
+                  ));
+                },
+                    child: Text('Home Page')
+                ),
+              ],
             ),
-            Text('Humantech Salary: $_result'),
+
+            Text('Humantech Salary: ${_result.toInt()}.-'),
           ],
         ),
       ),

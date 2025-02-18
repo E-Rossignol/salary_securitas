@@ -1,5 +1,4 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -21,9 +20,9 @@ class CreateServicePage extends StatefulWidget {
 
 class _CreateServicePageState extends State<CreateServicePage> {
   late DateTime defaultDay;
-  TimeOfDay defaultStartTime = const TimeOfDay(hour: 19, minute: 0);
-  TimeOfDay defaultEndTime = const TimeOfDay(hour: 03, minute: 0);
-  String dropdownValue = 'yes'.tr;
+  TimeOfDay defaultStartTime = const TimeOfDay(hour: 14, minute: 30);
+  TimeOfDay defaultEndTime = const TimeOfDay(hour: 22, minute: 30);
+  String dropdownValue = 'no'.tr;
   final dateFormat = DateFormat("MM/dd");
   final timeFormat = DateFormat("HH:mm");
   DateTime start = DateTime(2000);
@@ -132,7 +131,7 @@ class _CreateServicePageState extends State<CreateServicePage> {
                       Expanded(
                         child: DateTimeField(
                           format: dateFormat,
-                          initialValue: defaultDay.add(const Duration(days: 1)),
+                          initialValue: defaultDay,
                           decoration: InputDecoration(labelText: 'end_date'.tr),
                           onShowPicker: (context, currentValue) async {
                             final date = await showDatePicker(
@@ -231,8 +230,7 @@ class _CreateServicePageState extends State<CreateServicePage> {
                           start: start,
                           end: end,
                           isOrderService:
-                              dropdownValue == 'yes'.tr ? true : false,
-                          user: FirebaseAuth.instance.currentUser!.uid);
+                              dropdownValue == 'yes'.tr ? true : false);
                       await ServiceDB().create(app);
                       Navigator.push(
                           context,

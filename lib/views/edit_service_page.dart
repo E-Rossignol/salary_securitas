@@ -62,7 +62,7 @@ class _EditServicePageState extends State<EditServicePage> {
           appBar: AppBar(
             foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
             backgroundColor: Theme.of(context).colorScheme.background,
-            title: Text('yes'.tr),
+            title: Text('edit_service'.tr),
           ),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -207,8 +207,7 @@ class _EditServicePageState extends State<EditServicePage> {
                           id: widget.app.id,
                           start: start,
                           end: end,
-                          isOrderService: dropdownValue == 'yes'.tr,
-                          user: widget.app.user);
+                          isOrderService: dropdownValue == 'yes'.tr);
                       await ServiceDB().update(newApp.id, newApp);
                       Navigator.push(
                           context,
