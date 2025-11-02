@@ -73,7 +73,7 @@ class _MainPageState extends State<MainPage> {
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: const Text('SecuriThunes', style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic, fontFamily: 'Lobster', fontWeight: FontWeight.bold)),
+        title: const Text('Salarytas', style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic, fontFamily: 'Lobster', fontWeight: FontWeight.bold)),
         actions: [
           Builder(
               builder: (context) => IconButton(
