@@ -15,7 +15,7 @@ class CopyServicePage extends StatefulWidget {
 }
 
 class _CopyServicePageState extends State<CopyServicePage> {
-  Set<DateTime> _selectedDates = {};
+  final Set<DateTime> _selectedDates = {};
   late DateTime _focusedDay;
 
   @override
@@ -33,8 +33,6 @@ class _CopyServicePageState extends State<CopyServicePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Select dates to copy', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 16),
             TableCalendar(
               locale: Get.locale?.languageCode,
               firstDay: DateTime(2020),
@@ -53,6 +51,51 @@ class _CopyServicePageState extends State<CopyServicePage> {
               ),
               availableCalendarFormats: { CalendarFormat.month: 'month'.tr},
               selectedDayPredicate: (day) => _selectedDates.any((d) => isSameDay(d, day)),
+              calendarStyle: CalendarStyle(
+                isTodayHighlighted: false,
+                selectedDecoration: BoxDecoration(
+                  color: colors.primary,
+                  shape: BoxShape.circle,
+                ),
+                todayDecoration: BoxDecoration(
+                  // keep as fallback
+                  color: colors.secondary,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              calendarBuilders: CalendarBuilders(
+                defaultBuilder: (context, day, focusedDay) {
+                  if (isSameDay(day, widget.app.start)) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: colors.secondary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '${day.day}',
+                          style: TextStyle(color: colors.onPrimary),
+                        ),
+                      ),
+                    );
+                  }
+                  return null; // fallback to default rendering
+                },
+                selectedBuilder: (context, day, focusedDay) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: colors.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${day.day}',
+                        style: TextStyle(color: colors.onPrimary),
+                      ),
+                    ),
+                  );
+                },
+              ),
               onDaySelected: (selectedDay, focusedDay) {
                 final currentFocused = _focusedDay;
                 setState(() {
@@ -75,16 +118,6 @@ class _CopyServicePageState extends State<CopyServicePage> {
                   _focusedDay = focusedDay;
                 });
               },
-              calendarStyle: CalendarStyle(
-                selectedDecoration: BoxDecoration(
-                  color: colors.primary,
-                  shape: BoxShape.circle,
-                ),
-                todayDecoration: BoxDecoration(
-                  color: colors.secondary,
-                  shape: BoxShape.circle,
-                ),
-              ),
             ),
             SizedBox(height: 16),
             ElevatedButton(
