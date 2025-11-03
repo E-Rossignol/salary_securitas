@@ -11,7 +11,8 @@ import 'copy_service_page.dart';
 import 'edit_service_page.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  final DateTime? initialDate;
+  const MainPage({super.key, this.initialDate});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -22,15 +23,28 @@ class _MainPageState extends State<MainPage> {
   Future<List<Appointment>>? futureAppointments;
   ServiceDB db = ServiceDB();
   late CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _selectedDay = DateTime.now();
-  DateTime _focusedDay = DateTime.now();
-  late int _currentMonth = DateTime.now().month;
-  late int _currentYear = DateTime.now().year;
+  late DateTime _selectedDay;
+  late DateTime _focusedDay;
+  late int _currentMonth;
+  late int _currentYear;
   List<Appointment> _appointmentsForSelectedDay = [];
 
   @override
   void initState() {
     super.initState();
+    final initial = widget.initialDate;
+    if (initial != null) {
+      _selectedDay = DateTime(initial.year, initial.month, initial.day);
+      _focusedDay = DateTime(initial.year, initial.month, initial.day);
+      _currentMonth = initial.month;
+      _currentYear = initial.year;
+    } else {
+      final now = DateTime.now();
+      _selectedDay = now;
+      _focusedDay = now;
+      _currentMonth = now.month;
+      _currentYear = now.year;
+    }
     setPrefs();
     fetchServices();
   }
@@ -73,7 +87,7 @@ class _MainPageState extends State<MainPage> {
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: const Text('Salarytas', style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic, fontFamily: 'Lobster', fontWeight: FontWeight.bold)),
+        title: const Text('Securithunes', style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic, fontFamily: 'Lobster', fontWeight: FontWeight.bold)),
         actions: [
           Builder(
               builder: (context) => IconButton(
@@ -89,8 +103,8 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: colors.primary,
       ),
       endDrawer: Drawer(
-          shadowColor: colors.onBackground,
-          backgroundColor: colors.background,
+          shadowColor: colors.onSurface,
+          backgroundColor: colors.surface,
           child: FutureBuilder<SharedPreferences>(
             future: prefs,
             builder: (BuildContext context,
@@ -120,6 +134,9 @@ class _MainPageState extends State<MainPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
                 child: Container(
+                  constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height * 0.55,
+                  ),
                   decoration: BoxDecoration(
                     color: colors.secondaryContainer,
                     borderRadius: const BorderRadius.only(
@@ -162,7 +179,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                       markersAutoAligned: true,
                       markerDecoration: BoxDecoration(
-                        color: colors.onBackground,
+                        color: colors.onSurface,
                         shape: BoxShape.rectangle,
                       ),
                     ),
@@ -230,7 +247,7 @@ class _MainPageState extends State<MainPage> {
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           border: Border.all(
-                                            color: colors.onBackground,
+                                            color: colors.onSurface,
                                             width: 1.0,
                                           ),
                                           boxShadow: [
@@ -257,13 +274,13 @@ class _MainPageState extends State<MainPage> {
                                                           appointment.start),
                                                       style: TextStyle(
                                                         color:
-                                                            colors.onBackground,
+                                                            colors.onSurface,
                                                         fontSize: 18,
                                                       )),
                                                   Text(' - ',
                                                       style: TextStyle(
                                                         color:
-                                                            colors.onBackground,
+                                                            colors.onSurface,
                                                         fontSize: 18,
                                                       )),
                                                   Text(
@@ -271,7 +288,7 @@ class _MainPageState extends State<MainPage> {
                                                           appointment.end),
                                                       style: TextStyle(
                                                         color:
-                                                            colors.onBackground,
+                                                            colors.onSurface,
                                                         fontSize: 18,
                                                       )),
                                                 ],
