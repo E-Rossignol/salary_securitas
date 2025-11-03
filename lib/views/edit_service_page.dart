@@ -61,7 +61,7 @@ class _EditServicePageState extends State<EditServicePage> {
         return Scaffold(
           appBar: AppBar(
             foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             title: Text('edit_service'.tr),
           ),
           body: Padding(
@@ -212,7 +212,7 @@ class _EditServicePageState extends State<EditServicePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const MainPage()));
+                              builder: (context) => MainPage(initialDate: start,)));
                     },
                     child: Text('validate'.tr))
               ],

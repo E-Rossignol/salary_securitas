@@ -1,46 +1,111 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 import '../constants/helper.dart';
 import '../models/appointment.dart';
 import 'main_page.dart';
 
 class CopyServicePage extends StatefulWidget {
-  final Appointment _app;
-  const CopyServicePage({super.key, required Appointment app}) : _app = app;
+  final Appointment app;
+  const CopyServicePage({super.key, required this.app});
 
   @override
-  CopyServicePageState createState() => CopyServicePageState(_app);
+  State<CopyServicePage> createState() => _CopyServicePageState();
 }
 
-class CopyServicePageState extends State<CopyServicePage> {
-  late DateTime _selectedDate;
-
-  CopyServicePageState(Appointment app) {
-    _selectedDate = app.start;
-  }
+class _CopyServicePageState extends State<CopyServicePage> {
+  Set<DateTime> _selectedDates = {};
+  late DateTime _focusedDay;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final DateTime? picked = await showDatePicker(
-        context: context,
-        locale: Get.locale,
-        initialDate: widget._app.start, // Initially selected date
-        firstDate: DateTime(2020), // Earliest date the user can pick
-        lastDate: DateTime(2100), // Latest date the user can pick
-      );
-      if (picked != null) {
-        setState(() => _selectedDate = picked);
-        Helper.copyApp(_selectedDate, widget._app);
-      }
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const MainPage()));
-    });
+    _focusedDay = widget.app.start;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    ColorScheme colors = Theme.of(context).colorScheme;
+    return Dialog(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Select dates to copy', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 16),
+            TableCalendar(
+              locale: Get.locale?.languageCode,
+              firstDay: DateTime(2020),
+              lastDay: DateTime(2100),
+              startingDayOfWeek: StartingDayOfWeek.monday,
+              focusedDay: _focusedDay,
+              headerStyle: HeaderStyle(
+                titleCentered: true,
+                formatButtonVisible: false,
+                titleTextFormatter: (date, locale) {
+                  final loc = locale ?? Get.locale?.languageCode ?? 'en';
+                  final formatted = DateFormat.yMMMM(loc).format(date);
+                  if (formatted.isEmpty) return formatted;
+                  return formatted[0].toUpperCase() + formatted.substring(1);
+                },
+              ),
+              availableCalendarFormats: { CalendarFormat.month: 'month'.tr},
+              selectedDayPredicate: (day) => _selectedDates.any((d) => isSameDay(d, day)),
+              onDaySelected: (selectedDay, focusedDay) {
+                final currentFocused = _focusedDay;
+                setState(() {
+                  if (_selectedDates.any((d) => isSameDay(d, selectedDay))) {
+                    _selectedDates.removeWhere((d) => isSameDay(d, selectedDay));
+                  } else {
+                    if (isSameDay(selectedDay, widget.app.start)) {
+                      // Prevent selecting the original date
+                      return;
+                    }
+                    _selectedDates.add(selectedDay);
+                  }
+                  // réaffecte explicitement la focalisation précédente pour éviter tout recentrage
+                  _focusedDay = currentFocused;
+                });
+              },
+              onPageChanged: (focusedDay) {
+                // Allow user to navigate months without changing focus when selecting days
+                setState(() {
+                  _focusedDay = focusedDay;
+                });
+              },
+              calendarStyle: CalendarStyle(
+                selectedDecoration: BoxDecoration(
+                  color: colors.primary,
+                  shape: BoxShape.circle,
+                ),
+                todayDecoration: BoxDecoration(
+                  color: colors.secondary,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _selectedDates.isEmpty
+                  ? null
+                  : () {
+                      for (var date in _selectedDates) {
+                        Helper.copyApp(date, widget.app);
+                      }
+                      var earlierDate = _selectedDates.reduce((a, b) => a.isBefore(b) ? a : b);
+                      Navigator.of(context).pop();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainPage(initialDate: earlierDate,)),
+                      );
+                    },
+              child: Text('Validate'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
