@@ -2,6 +2,9 @@
 ///
 /// It is a `Map<String, String>` where each key is a string representing the English term and the corresponding value is the German translation of that term.
 const Map<String, String> frLocale = {
+  'start_time' : "Début de service",
+  'end_time' : "Fin de service",
+  'change_default_service' : 'Modifier les horaires par défaut',
   'create': 'Créer',
   'languageChange': 'Changer de langue',
   'logIn': 'Connexion',

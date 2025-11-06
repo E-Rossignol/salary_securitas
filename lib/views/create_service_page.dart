@@ -8,6 +8,7 @@ import 'package:salary_securitas/models/appointment.dart';
 import 'package:salary_securitas/views/main_page.dart';
 import '../constants/helper.dart';
 import '../constants/theme/theme_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateServicePage extends StatefulWidget {
   final DateTime day;
@@ -20,8 +21,8 @@ class CreateServicePage extends StatefulWidget {
 
 class _CreateServicePageState extends State<CreateServicePage> {
   late DateTime defaultDay;
-  TimeOfDay defaultStartTime = const TimeOfDay(hour: 14, minute: 30);
-  TimeOfDay defaultEndTime = const TimeOfDay(hour: 22, minute: 30);
+  TimeOfDay defaultStartTime = const TimeOfDay(hour: 6, minute: 0);
+  TimeOfDay defaultEndTime = const TimeOfDay(hour: 14, minute: 0);
   String dropdownValue = 'no'.tr;
   final dateFormat = DateFormat("MM/dd");
   final timeFormat = DateFormat("HH:mm");
@@ -52,6 +53,21 @@ class _CreateServicePageState extends State<CreateServicePage> {
   @override
   void initState() {
     super.initState();
+    setDefaultTimes();
+  }
+
+  Future<void> setDefaultTimes() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    TimeOfDay startTime = TimeOfDay(
+        hour: prefs.getInt('default_start_hour') ?? 6,
+        minute: prefs.getInt('default_start_minute') ?? 0);
+    TimeOfDay endTime = TimeOfDay(
+        hour: prefs.getInt('default_end_hour') ?? 14,
+        minute: prefs.getInt('default_end_minute') ?? 0);
+    setState(() {
+      defaultStartTime = startTime;
+      defaultEndTime = endTime;
+    });
   }
 
   @override

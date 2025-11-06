@@ -2,6 +2,9 @@
 ///
 /// It is a `Map<String, String>` where each key is a string representing the English term and the corresponding value is the German translation of that term.
 const Map<String, String> deLocale = {
+  'start_time' : "Dienstbeginn",
+  'end_time' : "Dienstende",
+  'change_default_service' : 'Standardzeiten ändern',
   'create': 'Erstellen',
   'languageChange': 'Sprache ändern',
   'logIn': 'Einloggen',

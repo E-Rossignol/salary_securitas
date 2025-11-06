@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:salary_securitas/components/settings/change_default_time_component.dart';
 import 'package:salary_securitas/components/settings/change_language_component.dart';
 import 'package:salary_securitas/components/settings/dark_mode_switch_component.dart';
 import 'package:salary_securitas/components/settings/fast_services_component.dart';
@@ -94,6 +95,7 @@ class SettingsViewState extends State<SettingsView> {
     List<Widget> widgets = [];
     widgets.add(const DarkModeSwitchComponent());
     widgets.add(const UpdateSalaryPerHourComponent());
+    widgets.add(const ChangeDefaultTimeComponent());
     widgets.add(const ChangeLanguageComponent());
     widgets.add(const ThemeSelectionComponent());
     if (!isLoginPage) {
