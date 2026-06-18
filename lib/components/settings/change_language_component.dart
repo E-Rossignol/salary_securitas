@@ -31,8 +31,9 @@ class _ChangeLanguageComponent extends State<ChangeLanguageComponent> {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
-          Icons.language),
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        Icons.language,
+      ),
       title: Text(
         'languageChange'.tr,
         style: TextStyle(
@@ -53,58 +54,58 @@ class _ChangeLanguageComponent extends State<ChangeLanguageComponent> {
 /// When a language is selected, it calls the `_updateLanguage` function to update the language of the application.
 void buildDialog(BuildContext context, List locale) {
   showDialog(
-      context: context,
-      builder: (builder) {
-        return AlertDialog(
-          title: Text(
-            'languageChange'.tr,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
+    context: context,
+    builder: (builder) {
+      return AlertDialog(
+        title: Text(
+          'languageChange'.tr,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
+          ),
+        ),
+        content: SizedBox(
+          width: double.minPositive,
+          child: ListView.separated(
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    _updateLanguage(locale[index]['locale']);
+                  },
+                  child: Text(
+                    locale[index]['name'],
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const Divider();
+            },
+            itemCount: locale.length,
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              'close'.tr,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
           ),
-          content: SizedBox(
-              width: double.minPositive,
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                          onTap: () {
-                            _updateLanguage(locale[index]['locale']);
-                          },
-                          child: Text(
-                            locale[index]['name'],
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer,
-                            ),
-                            textAlign: TextAlign.center,
-                          )),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const Divider();
-                  },
-                  itemCount: locale.length)),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'close'.tr,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.error,
-                ),
-              ),
-            ),
-          ],
-          actionsAlignment: MainAxisAlignment.end,
-        );
-      });
+        ],
+        actionsAlignment: MainAxisAlignment.end,
+      );
+    },
+  );
 }
 
 /// The `_updateLanguage` function updates the language of the application.

@@ -14,13 +14,16 @@ Future<void> main() async {
   await databaseService.database;
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(
-          create: (context) => ThemeProvider(isDarkMode: isDarkMode)),
-    ],
-    child: const MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ThemeProvider(isDarkMode: isDarkMode),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

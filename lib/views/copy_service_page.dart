@@ -49,8 +49,9 @@ class _CopyServicePageState extends State<CopyServicePage> {
                   return formatted[0].toUpperCase() + formatted.substring(1);
                 },
               ),
-              availableCalendarFormats: { CalendarFormat.month: 'month'.tr},
-              selectedDayPredicate: (day) => _selectedDates.any((d) => isSameDay(d, day)),
+              availableCalendarFormats: {CalendarFormat.month: 'month'.tr},
+              selectedDayPredicate: (day) =>
+                  _selectedDates.any((d) => isSameDay(d, day)),
               calendarStyle: CalendarStyle(
                 isTodayHighlighted: false,
                 selectedDecoration: BoxDecoration(
@@ -100,7 +101,9 @@ class _CopyServicePageState extends State<CopyServicePage> {
                 final currentFocused = _focusedDay;
                 setState(() {
                   if (_selectedDates.any((d) => isSameDay(d, selectedDay))) {
-                    _selectedDates.removeWhere((d) => isSameDay(d, selectedDay));
+                    _selectedDates.removeWhere(
+                      (d) => isSameDay(d, selectedDay),
+                    );
                   } else {
                     if (isSameDay(selectedDay, widget.app.start)) {
                       // Prevent selecting the original date
@@ -127,11 +130,16 @@ class _CopyServicePageState extends State<CopyServicePage> {
                       for (var date in _selectedDates) {
                         Helper.copyApp(date, widget.app);
                       }
-                      var earlierDate = _selectedDates.reduce((a, b) => a.isBefore(b) ? a : b);
+                      var earlierDate = _selectedDates.reduce(
+                        (a, b) => a.isBefore(b) ? a : b,
+                      );
                       Navigator.of(context).pop();
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => MainPage(initialDate: earlierDate,)),
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              MainPage(initialDate: earlierDate),
+                        ),
                       );
                     },
               child: Text('Validate'),

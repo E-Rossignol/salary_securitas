@@ -57,8 +57,7 @@ class _MainPageState extends State<MainPage> {
 
   void fetchServices() {
     setState(() {
-      futureAppointments =
-          db.fetchUserAppointments();
+      futureAppointments = db.fetchUserAppointments();
     });
   }
 
@@ -67,8 +66,10 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       _appointmentsForSelectedDay.removeWhere((a) => a.id == appointment.id);
       fetchServices();
-      futureAppointments = futureAppointments?.then((appointments) =>
-          appointments.where((a) => a.id != appointment.id).toList());
+      futureAppointments = futureAppointments?.then(
+        (appointments) =>
+            appointments.where((a) => a.id != appointment.id).toList(),
+      );
     });
   }
 
@@ -79,48 +80,60 @@ class _MainPageState extends State<MainPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => CreateServicePage(day: _selectedDay)));
+            context,
+            MaterialPageRoute(
+              builder: (context) => CreateServicePage(day: _selectedDay),
+            ),
+          );
         },
         backgroundColor: colors.secondary,
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: const Text('Securithunes', style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic, fontFamily: 'Lobster', fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Salarytas',
+          style: TextStyle(
+            fontSize: 25,
+            fontStyle: FontStyle.italic,
+            fontFamily: 'Lobster',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         actions: [
           Builder(
-              builder: (context) => IconButton(
-                    onPressed: () {
-                      Scaffold.of(context).openEndDrawer();
-                    },
-                    icon: Icon(
-                      color: colors.onPrimary,
-                      Icons.settings,
-                    ),
-                  )),
+            builder: (context) => IconButton(
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              icon: Icon(color: colors.onPrimary, Icons.settings),
+            ),
+          ),
         ],
         backgroundColor: colors.primary,
       ),
       endDrawer: Drawer(
-          shadowColor: colors.onSurface,
-          backgroundColor: colors.surface,
-          child: FutureBuilder<SharedPreferences>(
-            future: prefs,
-            builder: (BuildContext context,
-                AsyncSnapshot<SharedPreferences> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator(); // Show a loading spinner while waiting
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else {
-                // SharedPreferences instance is available here
-                SharedPreferences prefs = snapshot.data!;
-                bool isDebug = prefs.getBool('godMod') ?? false;
-                return SettingsView(isLoginPage: false, isDebug: isDebug);
-              }
-            },
-          )),
+        shadowColor: colors.onSurface,
+        backgroundColor: colors.surface,
+        child: FutureBuilder<SharedPreferences>(
+          future: prefs,
+          builder:
+              (
+                BuildContext context,
+                AsyncSnapshot<SharedPreferences> snapshot,
+              ) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator(); // Show a loading spinner while waiting
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  // SharedPreferences instance is available here
+                  SharedPreferences prefs = snapshot.data!;
+                  bool isDebug = prefs.getBool('godMod') ?? false;
+                  return SettingsView(isLoginPage: false, isDebug: isDebug);
+                }
+              },
+        ),
+      ),
       body: FutureBuilder<List<Appointment>>(
         future: futureAppointments,
         builder: (context, snapshot) {
@@ -128,104 +141,119 @@ class _MainPageState extends State<MainPage> {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(
-                child: Text('${'error:'.tr}  ${snapshot.error.toString()}'));
+              child: Text('${'error:'.tr}  ${snapshot.error.toString()}'),
+            );
           } else {
-            return Column(children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
-                child: Container(
-                  constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height * 0.55,
-                  ),
-                  decoration: BoxDecoration(
-                    color: colors.secondaryContainer,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(10.0),
-                      bottomRight: Radius.circular(10.0),
-                  )
-                  ),
-                  child: TableCalendar<Appointment>(
-                    locale: Get.locale?.languageCode,
-                    firstDay: DateTime.utc(2010, 10, 16),
-                    lastDay: DateTime.utc(2030, 3, 14),
-                    focusedDay: _focusedDay,
-                    startingDayOfWeek: StartingDayOfWeek.monday,
-                    calendarFormat: _calendarFormat,
-                    eventLoader: (day) {
-                      return Helper.getEventsFromAppointments(snapshot.data!)[
-                              DateTime(day.year, day.month, day.day)] ??
-                          [];
-                    },
-                    availableCalendarFormats: {
-                      CalendarFormat.month: 'month'.tr,
-                    },
-                    onFormatChanged: (format) {
-                      setState(() {
-                        _calendarFormat = format;
-                      });
-                    },
-                    selectedDayPredicate: (day) {
-                      return isSameDay(
-                          _selectedDay, DateTime(day.year, day.month, day.day));
-                    },
-                    calendarStyle: CalendarStyle(
-                      todayDecoration: BoxDecoration(
-                        color: colors.secondary,
-                        shape: BoxShape.circle,
-                      ),
-                      selectedDecoration: BoxDecoration(
-                        color: colors.primary,
-                        shape: BoxShape.circle,
-                      ),
-                      markersAutoAligned: true,
-                      markerDecoration: BoxDecoration(
-                        color: colors.onSurface,
-                        shape: BoxShape.rectangle,
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
+                  child: Container(
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height * 0.55,
+                    ),
+                    decoration: BoxDecoration(
+                      color: colors.secondaryContainer,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(10.0),
+                        bottomRight: Radius.circular(10.0),
                       ),
                     ),
-                    rowHeight: MediaQuery.of(context).size.height / 12,
-                    onPageChanged: (focusedDay) {
-                      setState(() {
-                        _currentMonth = focusedDay.month;
-                        _currentYear = focusedDay.year;
-                        _focusedDay = focusedDay;
-                      });
-                    },
-                    onDayLongPressed: (selectedDay, focusedDay) {
-                      Navigator.push(
+                    child: TableCalendar<Appointment>(
+                      locale: Get.locale?.languageCode,
+                      firstDay: DateTime.utc(2010, 10, 16),
+                      lastDay: DateTime.utc(2030, 3, 14),
+                      focusedDay: _focusedDay,
+                      startingDayOfWeek: StartingDayOfWeek.monday,
+                      calendarFormat: _calendarFormat,
+                      eventLoader: (day) {
+                        return Helper.getEventsFromAppointments(
+                              snapshot.data!,
+                            )[DateTime(day.year, day.month, day.day)] ??
+                            [];
+                      },
+                      availableCalendarFormats: {
+                        CalendarFormat.month: 'month'.tr,
+                      },
+                      onFormatChanged: (format) {
+                        setState(() {
+                          _calendarFormat = format;
+                        });
+                      },
+                      selectedDayPredicate: (day) {
+                        return isSameDay(
+                          _selectedDay,
+                          DateTime(day.year, day.month, day.day),
+                        );
+                      },
+                      calendarStyle: CalendarStyle(
+                        todayDecoration: BoxDecoration(
+                          color: colors.secondary,
+                          shape: BoxShape.circle,
+                        ),
+                        selectedDecoration: BoxDecoration(
+                          color: colors.primary,
+                          shape: BoxShape.circle,
+                        ),
+                        markersAutoAligned: true,
+                        markerDecoration: BoxDecoration(
+                          color: colors.onSurface,
+                          shape: BoxShape.rectangle,
+                        ),
+                      ),
+                      rowHeight: MediaQuery.of(context).size.height / 12,
+                      onPageChanged: (focusedDay) {
+                        setState(() {
+                          _currentMonth = focusedDay.month;
+                          _currentYear = focusedDay.year;
+                          _focusedDay = focusedDay;
+                        });
+                      },
+                      onDayLongPressed: (selectedDay, focusedDay) {
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  CreateServicePage(day: selectedDay)));
-                    },
-                    onDaySelected: (selectedDay, focusedDay) {
-                      setState(() {
-                        _selectedDay = DateTime(
-                            selectedDay.year, selectedDay.month, selectedDay.day);
-                        _focusedDay = DateTime(
-                            selectedDay.year, selectedDay.month, selectedDay.day);
-                      });
-                      List<Appointment> appointmentsForSelectedDay =
-                          Helper.getEventsFromAppointments(
-                                  snapshot.data!)[_selectedDay] ??
-                              [];
-                      _appointmentsForSelectedDay = appointmentsForSelectedDay;
-                    },
+                            builder: (context) =>
+                                CreateServicePage(day: selectedDay),
+                          ),
+                        );
+                      },
+                      onDaySelected: (selectedDay, focusedDay) {
+                        setState(() {
+                          _selectedDay = DateTime(
+                            selectedDay.year,
+                            selectedDay.month,
+                            selectedDay.day,
+                          );
+                          _focusedDay = DateTime(
+                            selectedDay.year,
+                            selectedDay.month,
+                            selectedDay.day,
+                          );
+                        });
+                        List<Appointment> appointmentsForSelectedDay =
+                            Helper.getEventsFromAppointments(
+                              snapshot.data!,
+                            )[_selectedDay] ??
+                            [];
+                        _appointmentsForSelectedDay =
+                            appointmentsForSelectedDay;
+                      },
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: Center(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.15,
-                    decoration: BoxDecoration(
-                      color: colors.onInverseSurface,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: _appointmentsForSelectedDay.isNotEmpty
-                        ? Center(
-                            child: ListView.builder(
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Center(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      decoration: BoxDecoration(
+                        color: colors.onInverseSurface,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: _appointmentsForSelectedDay.isNotEmpty
+                          ? Center(
+                              child: ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: _appointmentsForSelectedDay.length,
                                 itemBuilder: (context, index) {
@@ -233,220 +261,239 @@ class _MainPageState extends State<MainPage> {
                                       _appointmentsForSelectedDay[index];
                                   return Center(
                                     child: Container(
-                                        margin: const EdgeInsets.all(15.0),
-                                        padding: const EdgeInsets.all(15.0),
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                            colors: [
-                                              colors.primaryContainer,
-                                              colors.secondaryContainer,
-                                            ],
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          border: Border.all(
-                                            color: colors.onSurface,
-                                            width: 1.0,
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.black.withOpacity(0.5),
-                                              spreadRadius: 5,
-                                              blurRadius: 7,
-                                              offset: const Offset(0,
-                                                  3), // changes position of shadow
-                                            ),
+                                      margin: const EdgeInsets.all(15.0),
+                                      padding: const EdgeInsets.all(15.0),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: [
+                                            colors.primaryContainer,
+                                            colors.secondaryContainer,
                                           ],
                                         ),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  Text(
-                                                      Helper.toNiceString(
-                                                          appointment.start),
-                                                      style: TextStyle(
-                                                        color:
-                                                            colors.onSurface,
-                                                        fontSize: 18,
-                                                      )),
-                                                  Text(' - ',
-                                                      style: TextStyle(
-                                                        color:
-                                                            colors.onSurface,
-                                                        fontSize: 18,
-                                                      )),
-                                                  Text(
-                                                      Helper.toNiceString(
-                                                          appointment.end),
-                                                      style: TextStyle(
-                                                        color:
-                                                            colors.onSurface,
-                                                        fontSize: 18,
-                                                      )),
-                                                ],
-                                              ),
+                                        borderRadius: BorderRadius.circular(
+                                          10.0,
+                                        ),
+                                        border: Border.all(
+                                          color: colors.onSurface,
+                                          width: 1.0,
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(
+                                              0.5,
                                             ),
-                                            Expanded(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  Transform.scale(
-                                                    scale: 0.8,
-                                                    child: IconButton(
-                                                      icon: const Icon(
-                                                        Icons.edit,
-                                                        size: 20,
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        EditServicePage(
-                                                                          app:
-                                                                              appointment,
-                                                                        )));
-                                                      },
-                                                    ),
-                                                  ),
-                                                  Transform.scale(
-                                                      scale: 0.8,
-                                                      child: IconButton(
-                                                        icon: const Icon(
-                                                          Icons.copy_all,
-                                                          size: 20,
-                                                        ),
-                                                        onPressed: () {
-                                                          showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (context) {
-                                                                return CopyServicePage(
-                                                                    app:
-                                                                        appointment);
-                                                              });
-                                                        },
-                                                      )),
-                                                  Transform.scale(
-                                                    scale: 0.8,
-                                                    child: IconButton(
-                                                      icon: const Icon(
-                                                          Icons.delete,
-                                                          size: 20),
-                                                      onPressed: () {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder: (context) {
-                                                              return AlertDialog(
-                                                                title: Text(
-                                                                    'delete_service'
-                                                                        .tr),
-                                                                content: Text(
-                                                                    'sure_delete_service'
-                                                                        .tr),
-                                                                actions: <Widget>[
-                                                                  TextButton(
-                                                                    child: Text(
-                                                                        'cancel'
-                                                                            .tr),
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                  ),
-                                                                  TextButton(
-                                                                    child: Text(
-                                                                        'delete'
-                                                                            .tr),
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                      setState(
-                                                                          () {
-                                                                        deleteService(
-                                                                            appointment);
-                                                                      });
-                                                                    },
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            });
-                                                      },
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        )),
-                                  );
-                                }),
-                          )
-                        : Center(child: Text('no_service'.tr)),
-                  ),
-                ),
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.1,
-                child: Center(
-                  child: FittedBox(
-                    fit: BoxFit.cover,
-                    child: FutureBuilder<List<double>>(
-                      future: getMonthSalary(
-                          snapshot.data!, _currentMonth, _currentYear),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text('${'error'.tr} ${snapshot.error}'));
-                        } else {
-                          return Container(
-                            margin: const EdgeInsets.all(15.0),
-                            padding: const EdgeInsets.all(15.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '${snapshot.data!.first.round()} .- (${snapshot.data!.last.round()}h)',
-                                  style: TextStyle(
-                                    shadows: [
-                                      Shadow(
-                                        blurRadius: 20.0,
-                                        color: colors.onSecondaryContainer,
-                                        offset: const Offset(1.0, 1.0),
+                                            spreadRadius: 5,
+                                            blurRadius: 7,
+                                            offset: const Offset(
+                                              0,
+                                              3,
+                                            ), // changes position of shadow
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                    color: colors.error,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      },
+                                      child: Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Text(
+                                                  Helper.toNiceString(
+                                                    appointment.start,
+                                                  ),
+                                                  style: TextStyle(
+                                                    color: colors.onSurface,
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  ' - ',
+                                                  style: TextStyle(
+                                                    color: colors.onSurface,
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  Helper.toNiceString(
+                                                    appointment.end,
+                                                  ),
+                                                  style: TextStyle(
+                                                    color: colors.onSurface,
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Transform.scale(
+                                                  scale: 0.8,
+                                                  child: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.edit,
+                                                      size: 20,
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EditServicePage(
+                                                                app:
+                                                                    appointment,
+                                                              ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                                Transform.scale(
+                                                  scale: 0.8,
+                                                  child: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.copy_all,
+                                                      size: 20,
+                                                    ),
+                                                    onPressed: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return CopyServicePage(
+                                                            app: appointment,
+                                                          );
+                                                        },
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                                Transform.scale(
+                                                  scale: 0.8,
+                                                  child: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.delete,
+                                                      size: 20,
+                                                    ),
+                                                    onPressed: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return AlertDialog(
+                                                            title: Text(
+                                                              'delete_service'
+                                                                  .tr,
+                                                            ),
+                                                            content: Text(
+                                                              'sure_delete_service'
+                                                                  .tr,
+                                                            ),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                child: Text(
+                                                                  'cancel'.tr,
+                                                                ),
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                    context,
+                                                                  ).pop();
+                                                                },
+                                                              ),
+                                                              TextButton(
+                                                                child: Text(
+                                                                  'delete'.tr,
+                                                                ),
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                    context,
+                                                                  ).pop();
+                                                                  setState(() {
+                                                                    deleteService(
+                                                                      appointment,
+                                                                    );
+                                                                  });
+                                                                },
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                          : Center(child: Text('no_service'.tr)),
                     ),
                   ),
                 ),
-              )
-            ]);
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: Center(
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: FutureBuilder<List<double>>(
+                        future: getMonthSalary(
+                          snapshot.data!,
+                          _currentMonth,
+                          _currentYear,
+                        ),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Center(
+                              child: Text('${'error'.tr} ${snapshot.error}'),
+                            );
+                          } else {
+                            return Container(
+                              margin: const EdgeInsets.all(15.0),
+                              padding: const EdgeInsets.all(15.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '${snapshot.data!.first.round()} .- (${snapshot.data!.last.round()}h)',
+                                    style: TextStyle(
+                                      shadows: [
+                                        Shadow(
+                                          blurRadius: 20.0,
+                                          color: colors.onSecondaryContainer,
+                                          offset: const Offset(1.0, 1.0),
+                                        ),
+                                      ],
+                                      color: colors.error,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
           }
         },
       ),
@@ -454,9 +501,13 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<List<double>> getMonthSalary(
-      List<Appointment> list, int month, int year) async {
-    list =
-        list.where((appointment) => appointment.start.month == month).toList();
+    List<Appointment> list,
+    int month,
+    int year,
+  ) async {
+    list = list
+        .where((appointment) => appointment.start.month == month)
+        .toList();
     list = list.where((appointment) => appointment.start.year == year).toList();
     return (await Helper.getNetSalary(list));
   }

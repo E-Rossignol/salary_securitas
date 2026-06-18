@@ -4,11 +4,12 @@ class Service {
   final int end;
   final int isOrderService;
 
-  Service(
-      {required this.id,
-      required this.start,
-      required this.end,
-      required this.isOrderService});
+  Service({
+    required this.id,
+    required this.start,
+    required this.end,
+    required this.isOrderService,
+  });
 
   @override
   String toString() {

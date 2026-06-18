@@ -16,65 +16,69 @@ class ThemeSelectionComponent extends StatelessWidget {
       Colors.green,
       Colors.orange,
       Colors.purple,
-      Colors.red
+      Colors.red,
     ];
     return ListTile(
-        leading: Icon(Icons.palette,
-            color: Theme.of(context).colorScheme.onPrimaryContainer),
-        title: Text(
-          'select_theme'.tr,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
-          ),
+      leading: Icon(
+        Icons.palette,
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+      ),
+      title: Text(
+        'select_theme'.tr,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
         ),
-        onTap: () {
-          showDialog(
-              context: context,
-              builder: (builder) {
-                return AlertDialog(
-                    title: Text(
-                      'select_theme'.tr,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+      ),
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (builder) {
+            return AlertDialog(
+              title: Text(
+                'select_theme'.tr,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+              ),
+              content: SizedBox(
+                width: double.minPositive,
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: GestureDetector(
+                        onTap: () async {
+                          await themeProvider.changeTheme(values[index]);
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          await prefs.setString('theme', values[index]);
+                          Navigator.of(context).pop();
+                        },
+                        child: IconButton(
+                          icon: const Icon(Icons.palette),
+                          color: colors.elementAt(index),
+                          onPressed: () async {
+                            await themeProvider.changeTheme(values[index]);
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            await prefs.setString('theme', values[index]);
+                            Navigator.of(context).pop();
+                          },
+                        ),
                       ),
-                    ),
-                    content: SizedBox(
-                        width: double.minPositive,
-                        child: ListView.separated(
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: GestureDetector(
-                                    onTap: () async {
-                                      await themeProvider
-                                          .changeTheme(values[index]);
-                                      SharedPreferences prefs =
-                                          await SharedPreferences.getInstance();
-                                      await prefs.setString(
-                                          'theme', values[index]);
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: IconButton(
-                                        icon: const Icon(Icons.palette),
-                                        color: colors.elementAt(index),
-                                        onPressed: () async {
-                                          await themeProvider
-                                              .changeTheme(values[index]);
-                                          SharedPreferences prefs =
-                                              await SharedPreferences
-                                                  .getInstance();
-                                          await prefs.setString(
-                                              'theme', values[index]);
-                                          Navigator.of(context).pop();
-                                        })),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const Divider();
-                            },
-                            itemCount: values.length)));
-              });
-        });
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const Divider();
+                  },
+                  itemCount: values.length,
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }

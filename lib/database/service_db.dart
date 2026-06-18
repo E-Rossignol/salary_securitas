@@ -3,6 +3,7 @@ import 'package:salary_securitas/models/appointment.dart';
 import 'package:sqflite/sqflite.dart';
 import 'database_service.dart';
 import 'package:salary_securitas/models/service.dart';
+
 class ServiceDB {
   final tableNameService = 'services';
 
@@ -28,20 +29,18 @@ class ServiceDB {
 
   Future<List<Appointment>> fetchAll() async {
     final db = await DatabaseService().database;
-    final List<Map<String, Object?>> serviceMaps =
-        await db.query(tableNameService);
+    final List<Map<String, Object?>> serviceMaps = await db.query(
+      tableNameService,
+    );
     List<Service> all = [
       for (final {
             'id': id as int,
             'start': start as int,
             'end': end as int,
             'isOrderService': isOrderService as int,
-          } in serviceMaps)
-        Service(
-            id: id,
-            start: start,
-            end: end,
-            isOrderService: isOrderService),
+          }
+          in serviceMaps)
+        Service(id: id, start: start, end: end, isOrderService: isOrderService),
     ];
     return Helper.toAppointmentList(all.toList());
   }
@@ -55,16 +54,17 @@ class ServiceDB {
     final db = await DatabaseService().database;
     Service data = Helper.toServiceList([app]).first;
     return await db.update(
-        tableNameService,
-        {
-          'id': data.id,
-          'start': data.start,
-          'end': data.end,
-          'isOrderService': data.isOrderService,
-        },
-        where: 'id = ?',
-        conflictAlgorithm: ConflictAlgorithm.rollback,
-        whereArgs: [id]);
+      tableNameService,
+      {
+        'id': data.id,
+        'start': data.start,
+        'end': data.end,
+        'isOrderService': data.isOrderService,
+      },
+      where: 'id = ?',
+      conflictAlgorithm: ConflictAlgorithm.rollback,
+      whereArgs: [id],
+    );
   }
 
   Future<int> delete(int id) async {

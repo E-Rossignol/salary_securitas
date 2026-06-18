@@ -38,8 +38,13 @@ class _CreateServicePageState extends State<CreateServicePage> {
       endMinute;
 
   _CreateServicePageState(DateTime day) {
-    defaultDay = DateTime(day.year, day.month, day.day, defaultStartTime.hour,
-        defaultStartTime.minute);
+    defaultDay = DateTime(
+      day.year,
+      day.month,
+      day.day,
+      defaultStartTime.hour,
+      defaultStartTime.minute,
+    );
     startMonth = defaultDay.month;
     startDay = defaultDay.day;
     startHour = defaultDay.hour;
@@ -59,11 +64,13 @@ class _CreateServicePageState extends State<CreateServicePage> {
   Future<void> setDefaultTimes() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     TimeOfDay startTime = TimeOfDay(
-        hour: prefs.getInt('default_start_hour') ?? 6,
-        minute: prefs.getInt('default_start_minute') ?? 0);
+      hour: prefs.getInt('default_start_hour') ?? 6,
+      minute: prefs.getInt('default_start_minute') ?? 0,
+    );
     TimeOfDay endTime = TimeOfDay(
-        hour: prefs.getInt('default_end_hour') ?? 14,
-        minute: prefs.getInt('default_end_minute') ?? 0);
+      hour: prefs.getInt('default_end_hour') ?? 14,
+      minute: prefs.getInt('default_end_minute') ?? 0,
+    );
     setState(() {
       defaultStartTime = startTime;
       defaultEndTime = endTime;
@@ -77,7 +84,7 @@ class _CreateServicePageState extends State<CreateServicePage> {
         return Scaffold(
           appBar: AppBar(
             foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             title: Text('create_service'.tr),
           ),
           body: Padding(
@@ -85,116 +92,119 @@ class _CreateServicePageState extends State<CreateServicePage> {
             child: Column(
               children: [
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: DateTimeField(
-                          format: dateFormat,
-                          initialValue: defaultDay,
-                          decoration:
-                              InputDecoration(labelText: 'start_date'.tr),
-                          onShowPicker: (context, currentValue) async {
-                            final date = await showDatePicker(
-                                locale: Get.locale,
-                                context: context,
-                                initialEntryMode:
-                                    DatePickerEntryMode.calendarOnly,
-                                firstDate: DateTime(2020),
-                                initialDate: currentValue ?? DateTime.now(),
-                                lastDate: DateTime(2100));
-                            if (date != null) {
-                              setState(() {
-                                startMonth = date.month;
-                                startDay = date.day;
-                              });
-                            }
-                            return date;
-                          },
-                        ),
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: DateTimeField(
+                        format: dateFormat,
+                        initialValue: defaultDay,
+                        decoration: InputDecoration(labelText: 'start_date'.tr),
+                        onShowPicker: (context, currentValue) async {
+                          final date = await showDatePicker(
+                            locale: Get.locale,
+                            context: context,
+                            initialEntryMode: DatePickerEntryMode.calendarOnly,
+                            firstDate: DateTime(2020),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100),
+                          );
+                          if (date != null) {
+                            setState(() {
+                              startMonth = date.month;
+                              startDay = date.day;
+                            });
+                          }
+                          return date;
+                        },
                       ),
-                      Expanded(
-                        child: DateTimeField(
-                          format: timeFormat,
-                          decoration:
-                              InputDecoration(labelText: 'start_hour'.tr),
-                          onShowPicker: (context, currentValue) async {
-                            final time = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.fromDateTime(
-                                  currentValue ??
-                                      DateTime(
-                                          defaultDay.year,
-                                          defaultDay.month,
-                                          defaultDay.day,
-                                          defaultStartTime.hour,
-                                          defaultStartTime.minute)),
-                            );
-                            if (time != null) {
-                              setState(() {
-                                startHour = time.hour;
-                                startMinute =
-                                    getClosestValidMinute(time.minute);
-                              });
-                            }
-                            return DateTimeField.convert(time);
-                          },
-                        ),
+                    ),
+                    Expanded(
+                      child: DateTimeField(
+                        format: timeFormat,
+                        decoration: InputDecoration(labelText: 'start_hour'.tr),
+                        onShowPicker: (context, currentValue) async {
+                          final time = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.fromDateTime(
+                              currentValue ??
+                                  DateTime(
+                                    defaultDay.year,
+                                    defaultDay.month,
+                                    defaultDay.day,
+                                    defaultStartTime.hour,
+                                    defaultStartTime.minute,
+                                  ),
+                            ),
+                          );
+                          if (time != null) {
+                            setState(() {
+                              startHour = time.hour;
+                              startMinute = getClosestValidMinute(time.minute);
+                            });
+                          }
+                          return DateTimeField.convert(time);
+                        },
                       ),
-                    ]),
+                    ),
+                  ],
+                ),
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: DateTimeField(
-                          format: dateFormat,
-                          initialValue: defaultDay,
-                          decoration: InputDecoration(labelText: 'end_date'.tr),
-                          onShowPicker: (context, currentValue) async {
-                            final date = await showDatePicker(
-                                locale: Get.locale,
-                                context: context,
-                                initialEntryMode:
-                                    DatePickerEntryMode.calendarOnly,
-                                firstDate: DateTime(2020),
-                                initialDate: currentValue ?? DateTime.now(),
-                                lastDate: DateTime(2100));
-                            if (date != null) {
-                              setState(() {
-                                endMonth = date.month;
-                                endDay = date.day;
-                              });
-                            }
-                            return date;
-                          },
-                        ),
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: DateTimeField(
+                        format: dateFormat,
+                        initialValue: defaultDay,
+                        decoration: InputDecoration(labelText: 'end_date'.tr),
+                        onShowPicker: (context, currentValue) async {
+                          final date = await showDatePicker(
+                            locale: Get.locale,
+                            context: context,
+                            initialEntryMode: DatePickerEntryMode.calendarOnly,
+                            firstDate: DateTime(2020),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100),
+                          );
+                          if (date != null) {
+                            setState(() {
+                              endMonth = date.month;
+                              endDay = date.day;
+                            });
+                          }
+                          return date;
+                        },
                       ),
-                      Expanded(
-                        child: DateTimeField(
-                          format: timeFormat,
-                          decoration: InputDecoration(labelText: 'end_hour'.tr),
-                          onShowPicker: (context, currentValue) async {
-                            final time = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.fromDateTime(
-                                  currentValue ??
-                                      DateTime(
-                                          defaultDay.year,
-                                          defaultDay.month,
-                                          defaultDay.day,
-                                          defaultEndTime.hour,
-                                          defaultEndTime.minute)),
-                            );
-                            if (time != null) {
-                              setState(() {
-                                endHour = time.hour;
-                                endMinute = getClosestValidMinute(time.minute);
-                              });
-                            }
-                            return DateTimeField.convert(time);
-                          },
-                        ),
+                    ),
+                    Expanded(
+                      child: DateTimeField(
+                        format: timeFormat,
+                        decoration: InputDecoration(labelText: 'end_hour'.tr),
+                        onShowPicker: (context, currentValue) async {
+                          final time = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.fromDateTime(
+                              currentValue ??
+                                  DateTime(
+                                    defaultDay.year,
+                                    defaultDay.month,
+                                    defaultDay.day,
+                                    defaultEndTime.hour,
+                                    defaultEndTime.minute,
+                                  ),
+                            ),
+                          );
+                          if (time != null) {
+                            setState(() {
+                              endHour = time.hour;
+                              endMinute = getClosestValidMinute(time.minute);
+                            });
+                          }
+                          return DateTimeField.convert(time);
+                        },
                       ),
-                    ]),
+                    ),
+                  ],
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -208,52 +218,89 @@ class _CreateServicePageState extends State<CreateServicePage> {
                       },
                       items: <String>['yes'.tr, 'no'.tr]
                           .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          })
+                          .toList(),
                     ),
                   ],
                 ),
                 ElevatedButton(
-                    onPressed: () async {
-                      setState(() {
-                        start = DateTime(defaultDay.year, startMonth, startDay,
-                            startHour, startMinute);
-                        end = DateTime(defaultDay.year, endMonth, endDay,
-                            endHour, endMinute);
-                      });
-                      if (DateTime(defaultDay.year, endMonth, endDay, endHour,
-                              endMinute)
-                          .isBefore(DateTime(defaultDay.year, startMonth,
-                              startDay, startHour, startMinute))) {
-                        Helper.snackbar(
-                            'error'.tr, 'end_date_before_start_date'.tr);
-                        return;
-                      }
-                      if (DateTime(defaultDay.year, endMonth, endDay, endHour,
-                                  endMinute)
-                              .difference(DateTime(defaultDay.year, startMonth,
-                                  startDay, startHour, startMinute))
-                              .inHours >=
-                          14) {
-                        Helper.snackbar('error'.tr, 'date_error'.tr);
-                        return;
-                      }
-                      Appointment app = Appointment(
-                          id: 0,
-                          start: start,
-                          end: end,
-                          isOrderService:
-                              dropdownValue == 'yes'.tr ? true : false);
-                      await ServiceDB().create(app);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MainPage()));
-                    },
-                    child: Text('validate'.tr))
+                  onPressed: () async {
+                    setState(() {
+                      start = DateTime(
+                        defaultDay.year,
+                        startMonth,
+                        startDay,
+                        startHour,
+                        startMinute,
+                      );
+                      end = DateTime(
+                        defaultDay.year,
+                        endMonth,
+                        endDay,
+                        endHour,
+                        endMinute,
+                      );
+                    });
+                    if (DateTime(
+                      defaultDay.year,
+                      endMonth,
+                      endDay,
+                      endHour,
+                      endMinute,
+                    ).isBefore(
+                      DateTime(
+                        defaultDay.year,
+                        startMonth,
+                        startDay,
+                        startHour,
+                        startMinute,
+                      ),
+                    )) {
+                      Helper.snackbar(
+                        'error'.tr,
+                        'end_date_before_start_date'.tr,
+                      );
+                      return;
+                    }
+                    if (DateTime(
+                              defaultDay.year,
+                              endMonth,
+                              endDay,
+                              endHour,
+                              endMinute,
+                            )
+                            .difference(
+                              DateTime(
+                                defaultDay.year,
+                                startMonth,
+                                startDay,
+                                startHour,
+                                startMinute,
+                              ),
+                            )
+                            .inHours >=
+                        14) {
+                      Helper.snackbar('error'.tr, 'date_error'.tr);
+                      return;
+                    }
+                    Appointment app = Appointment(
+                      id: 0,
+                      start: start,
+                      end: end,
+                      isOrderService: dropdownValue == 'yes'.tr ? true : false,
+                    );
+                    await ServiceDB().create(app);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MainPage()),
+                    );
+                  },
+                  child: Text('validate'.tr),
+                ),
               ],
             ),
           ),

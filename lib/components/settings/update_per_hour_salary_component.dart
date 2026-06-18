@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 /// The `DarkModeSwitchComponent` class represents a widget that allows the user to switch between dark and light modes.
 ///
 /// It extends `StatefulWidget`, meaning it can maintain state that might change during the lifetime of the widget.
@@ -19,7 +20,8 @@ class UpdateSalaryPerHourComponent extends StatefulWidget {
 /// It extends `State<DarkModeSwitchComponent>`, meaning it holds the mutable state for the `DarkModeSwitchComponent` widget.
 ///
 /// The class provides a `build` method that returns a `SwitchListTile` widget. When this `SwitchListTile` is toggled, it calls the `_saveThemePreference` function to save the user's preference and updates the `_isDarkMode` state.
-class _UpdateSalaryPerHourComponentState extends State<UpdateSalaryPerHourComponent> {
+class _UpdateSalaryPerHourComponentState
+    extends State<UpdateSalaryPerHourComponent> {
   double _salaryPerHour = 25.92;
 
   @override
@@ -45,8 +47,9 @@ class _UpdateSalaryPerHourComponentState extends State<UpdateSalaryPerHourCompon
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
-          Icons.attach_money),
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        Icons.attach_money,
+      ),
       title: Text(
         'salary_change'.tr,
         style: TextStyle(
@@ -61,44 +64,48 @@ class _UpdateSalaryPerHourComponentState extends State<UpdateSalaryPerHourCompon
 
   void buildDialog(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (builder) {
-          return AlertDialog(
-            title: Text(
-              'salary_change'.tr,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
+      context: context,
+      builder: (builder) {
+        return AlertDialog(
+          title: Text(
+            'salary_change'.tr,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Enter salary per hour',
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _salaryPerHour = double.parse(value);
+                  });
+                },
               ),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Enter salary per hour',
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      _salaryPerHour = double.parse(value);
-                    });
-                  },
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    setState(() {
-                      _saveSalaryPerHourPreference(_salaryPerHour);
-                    });
-                    Get.snackbar("Salary", "Salary updated to $_salaryPerHour.-/h");
-                  },
-                  child: const Text('Save'),
-                ),
-              ],
-            ),
-          );
-        });
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  setState(() {
+                    _saveSalaryPerHourPreference(_salaryPerHour);
+                  });
+                  Get.snackbar(
+                    "Salary",
+                    "Salary updated to $_salaryPerHour.-/h",
+                  );
+                },
+                child: const Text('Save'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

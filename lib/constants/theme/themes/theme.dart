@@ -596,17 +596,17 @@ class MaterialTheme {
   }
 
   ThemeData theme(ColorScheme colorScheme) => ThemeData(
-        useMaterial3: true,
-        brightness: colorScheme.brightness,
-        colorScheme: colorScheme,
-        textTheme: textTheme.apply(
-          fontFamily: 'Montserrat',
-          bodyColor: colorScheme.onSurface,
-          displayColor: colorScheme.onSurface,
-        ),
-        scaffoldBackgroundColor: colorScheme.background,
-        canvasColor: colorScheme.surface,
-      );
+    useMaterial3: true,
+    brightness: colorScheme.brightness,
+    colorScheme: colorScheme,
+    textTheme: textTheme.apply(
+      fontFamily: 'Montserrat',
+      bodyColor: colorScheme.onSurface,
+      displayColor: colorScheme.onSurface,
+    ),
+    scaffoldBackgroundColor: colorScheme.surface,
+    canvasColor: colorScheme.surface,
+  );
 }
 
 class MaterialScheme {
@@ -735,11 +735,9 @@ extension MaterialSchemeUtils on MaterialScheme {
       onError: onError,
       errorContainer: errorContainer,
       onErrorContainer: onErrorContainer,
-      background: background,
-      onBackground: onBackground,
-      surface: surface,
-      onSurface: onSurface,
-      surfaceVariant: surfaceVariant,
+      surface: background,
+      onSurface: onBackground,
+      surfaceContainerHighest: surfaceVariant,
       onSurfaceVariant: onSurfaceVariant,
       outline: outline,
       outlineVariant: outlineVariant,

@@ -13,10 +13,10 @@ import 'de.dart';
 class LocaleString extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
-        'en': enLocale,
-        'fr': frLocale,
-        'it': itLocale,
-        'de': deLocale,
-        'es': esLocale,
-      };
+    'en': enLocale,
+    'fr': frLocale,
+    'it': itLocale,
+    'de': deLocale,
+    'es': esLocale,
+  };
 }

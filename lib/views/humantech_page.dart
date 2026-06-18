@@ -25,13 +25,17 @@ class _HumantechPageState extends State<HumantechPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Humantech Page'),
-          leading: IconButton(
-              icon: const Icon(Icons.home_outlined),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const MainPage()));
-              })),
+        title: const Text('Humantech Page'),
+        leading: IconButton(
+          icon: const Icon(Icons.home_outlined),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MainPage()),
+            );
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -39,16 +43,14 @@ class _HumantechPageState extends State<HumantechPage> {
           children: <Widget>[
             Center(
               child: Container(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.8,
+                width: MediaQuery.of(context).size.width * 0.8,
                 child: TextField(
                   controller: _controller,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    label:
-                    Center(child: const Text('Enter your Humantech Hours')),
+                    label: Center(
+                      child: const Text('Enter your Humantech Hours'),
+                    ),
                   ),
                 ),
               ),
@@ -56,18 +58,15 @@ class _HumantechPageState extends State<HumantechPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                ElevatedButton(onPressed: _calculate, child: Text('Calculate')),
                 ElevatedButton(
-                  onPressed: _calculate,
-                  child: Text('Calculate'),
-                ),
-                ElevatedButton(onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder:(context)
-                  =>
-                  const MainPage()
-                  ));
-                },
-                    child: Text('Home Page')
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MainPage()),
+                    );
+                  },
+                  child: Text('Home Page'),
                 ),
               ],
             ),

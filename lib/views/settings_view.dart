@@ -21,8 +21,11 @@ import '../constants/helper.dart';
 class SettingsView extends StatefulWidget {
   final bool isLoginPage;
   final bool isDebug;
-  const SettingsView(
-      {super.key, required this.isLoginPage, required this.isDebug});
+  const SettingsView({
+    super.key,
+    required this.isLoginPage,
+    required this.isDebug,
+  });
 
   @override
   SettingsViewState createState() => SettingsViewState();
@@ -74,7 +77,7 @@ class SettingsViewState extends State<SettingsView> {
                   });
                   Helper.snackbar('God Mod', 'God Mod activated, have fun !');
                   SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
+                      await SharedPreferences.getInstance();
                   prefs.setBool('godMod', true);
                 } else {
                   Helper.snackbar('Error', 'U don\'t deserve it !');
@@ -117,7 +120,8 @@ class SettingsViewState extends State<SettingsView> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const HumantechPage()),
+                      builder: (context) => const HumantechPage(),
+                    ),
                   );
                 },
                 child: Text('Humantech'),
@@ -130,14 +134,12 @@ class SettingsViewState extends State<SettingsView> {
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         title: Text('settings'.tr),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView(
-          children: widgets,
-        ),
+        child: ListView(children: widgets),
       ),
     );
   }

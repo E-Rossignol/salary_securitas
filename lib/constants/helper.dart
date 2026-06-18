@@ -29,8 +29,7 @@ class Helper {
     if (prefs.getDouble('salaryPerHour') == null) {
       prefs.setDouble('salaryPerHour', 25.92);
       salaryPerHour = 25.92;
-    }
-    else {
+    } else {
       salaryPerHour = prefs.getDouble('salaryPerHour') ?? 25.92;
     }
     double salary = 0;
@@ -114,11 +113,15 @@ class Helper {
   }
 
   static Map<DateTime, List<Appointment>> getEventsFromAppointments(
-      List<Appointment> appointments) {
+    List<Appointment> appointments,
+  ) {
     Map<DateTime, List<Appointment>> kEvents = {};
     for (var appointment in appointments) {
-      final eventDate = DateTime(appointment.start.year,
-          appointment.start.month, appointment.start.day);
+      final eventDate = DateTime(
+        appointment.start.year,
+        appointment.start.month,
+        appointment.start.day,
+      );
       if (kEvents.containsKey(eventDate)) {
         kEvents[eventDate]!.add(appointment);
       } else {
@@ -131,13 +134,18 @@ class Helper {
   static List<Appointment> toAppointmentList(List<Service> services) {
     List<Appointment> appointments = [];
     for (Service service in services) {
-      appointments.add(Appointment(
+      appointments.add(
+        Appointment(
           id: service.id,
-          start: DateTime(DateTime.now().year)
-              .add(Duration(minutes: service.start)),
-          end:
-              DateTime(DateTime.now().year).add(Duration(minutes: service.end)),
-          isOrderService: service.isOrderService == 1));
+          start: DateTime(
+            DateTime.now().year,
+          ).add(Duration(minutes: service.start)),
+          end: DateTime(
+            DateTime.now().year,
+          ).add(Duration(minutes: service.end)),
+          isOrderService: service.isOrderService == 1,
+        ),
+      );
     }
     return appointments;
   }
@@ -145,7 +153,8 @@ class Helper {
   static List<Service> toServiceList(List<Appointment> appointments) {
     List<Service> services = [];
     for (Appointment appointment in appointments) {
-      services.add(Service(
+      services.add(
+        Service(
           id: appointment.id,
           start: (appointment.start)
               .difference(DateTime(DateTime.now().year))
@@ -153,29 +162,39 @@ class Helper {
           end: (appointment.end)
               .difference(DateTime(DateTime.now().year))
               .inMinutes,
-          isOrderService: appointment.isOrderService ? 1 : 0));
+          isOrderService: appointment.isOrderService ? 1 : 0,
+        ),
+      );
     }
     return services;
   }
 
   static Future<void> copyApp(DateTime copyDate, Appointment app) async {
-    final newStartDate = DateTime(copyDate.year, copyDate.month, copyDate.day,
-        app.start.hour, app.start.minute);
+    final newStartDate = DateTime(
+      copyDate.year,
+      copyDate.month,
+      copyDate.day,
+      app.start.hour,
+      app.start.minute,
+    );
     final newEndDate = newStartDate.add(app.end.difference(app.start));
     final newApp = Appointment(
       id: 0,
       start: newStartDate,
       end: newEndDate,
-      isOrderService: app.isOrderService
+      isOrderService: app.isOrderService,
     );
     ServiceDB db = ServiceDB();
     db.create(newApp);
   }
 
   static void snackbar(String title, String message) {
-    Get.snackbar(title, message,
-        duration: Duration(seconds: 2),
-        snackPosition: SnackPosition.BOTTOM,
-        isDismissible: true);
+    Get.snackbar(
+      title,
+      message,
+      duration: Duration(seconds: 2),
+      snackPosition: SnackPosition.BOTTOM,
+      isDismissible: true,
+    );
   }
 }

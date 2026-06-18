@@ -54,14 +54,15 @@ class _ChangeDefaultTimeComponentState
       color: Theme.of(context).colorScheme.onPrimaryContainer,
     );
     return ListTile(
-      leading:
-      Icon(Icons.schedule, color: Theme.of(context).colorScheme.onPrimaryContainer),
+      leading: Icon(
+        Icons.schedule,
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+      ),
       title: Text('change_default_service'.tr, style: titleStyle),
       onTap: _openDialog,
     );
   }
 }
-
 
 class EditDefaultTimeDialog extends StatefulWidget {
   const EditDefaultTimeDialog({super.key});
@@ -164,14 +165,18 @@ class _EditDefaultTimeDialogState extends State<EditDefaultTimeDialog> {
                 ListTile(
                   leading: const Icon(Icons.schedule),
                   title: Text('start_time'.tr),
-                  subtitle: Text('${twoDigits(startHour)}:${twoDigits(startMinute)}'),
+                  subtitle: Text(
+                    '${twoDigits(startHour)}:${twoDigits(startMinute)}',
+                  ),
                   onTap: _pickStartTime,
                 ),
                 const SizedBox(height: 8),
                 ListTile(
                   leading: const Icon(Icons.schedule),
                   title: Text('end_time'.tr),
-                  subtitle: Text('${twoDigits(endHour)}:${twoDigits(endMinute)}'),
+                  subtitle: Text(
+                    '${twoDigits(endHour)}:${twoDigits(endMinute)}',
+                  ),
                   onTap: _pickEndTime,
                 ),
               ],

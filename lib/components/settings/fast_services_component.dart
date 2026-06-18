@@ -27,8 +27,9 @@ class FastServicesComponentState extends State<FastServicesComponent> {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
-          Icons.fast_forward_outlined),
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        Icons.fast_forward_outlined,
+      ),
       title: Text(
         'Default Services',
         style: TextStyle(
@@ -41,23 +42,27 @@ class FastServicesComponentState extends State<FastServicesComponent> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text(
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                  'Display example calendar ?'),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+                'Display example calendar ?',
+              ),
               actions: <Widget>[
                 ElevatedButton(
-                    onPressed: () async {
-                      await _fastServices();
-                      Navigator.of(context).pop();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MainPage()));
-                      Helper.snackbar('Default calendar',
-                          'Default calendar displayed for may, june and july');
-                    },
-                    child: Text('yes'.tr)),
+                  onPressed: () async {
+                    await _fastServices();
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MainPage()),
+                    );
+                    Helper.snackbar(
+                      'Default calendar',
+                      'Default calendar displayed for may, june and july',
+                    );
+                  },
+                  child: Text('yes'.tr),
+                ),
                 ElevatedButton(
                   child: Text('no'.tr),
                   onPressed: () {
@@ -150,59 +155,59 @@ class FastServicesComponentState extends State<FastServicesComponent> {
     List<DateTime> endDateTime = formatDate(endDates);
     List<Appointment> apps = [];
     Appointment mayApp1 = Appointment(
-        id: 0,
-        start: startDateTime[0],
-        end: endDateTime[0],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[0],
+      end: endDateTime[0],
+      isOrderService: true,
+    );
     Appointment mayApp2 = Appointment(
-        id: 0,
-        start: startDateTime[1],
-        end: endDateTime[1],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[1],
+      end: endDateTime[1],
+      isOrderService: true,
+    );
     Appointment mayApp3 = Appointment(
-        id: 0,
-        start: startDateTime[2],
-        end: endDateTime[2],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[2],
+      end: endDateTime[2],
+      isOrderService: true,
+    );
     Appointment mayApp4 = Appointment(
-        id: 0,
-        start: startDateTime[3],
-        end: endDateTime[3],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[3],
+      end: endDateTime[3],
+      isOrderService: true,
+    );
     Appointment mayApp5 = Appointment(
-        id: 0,
-        start: startDateTime[4],
-        end: endDateTime[4],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[4],
+      end: endDateTime[4],
+      isOrderService: true,
+    );
     Appointment mayApp6 = Appointment(
-        id: 0,
-        start: startDateTime[5],
-        end: endDateTime[5],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[5],
+      end: endDateTime[5],
+      isOrderService: true,
+    );
     Appointment mayApp7 = Appointment(
-        id: 0,
-        start: startDateTime[6],
-        end: endDateTime[6],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[6],
+      end: endDateTime[6],
+      isOrderService: true,
+    );
     Appointment mayApp8 = Appointment(
-        id: 0,
-        start: startDateTime[7],
-        end: endDateTime[7],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[7],
+      end: endDateTime[7],
+      isOrderService: true,
+    );
     Appointment mayApp9 = Appointment(
-        id: 0,
-        start: startDateTime[8],
-        end: endDateTime[8],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[8],
+      end: endDateTime[8],
+      isOrderService: true,
+    );
     apps.add(mayApp1);
     apps.add(mayApp2);
     apps.add(mayApp3);
@@ -252,89 +257,89 @@ class FastServicesComponentState extends State<FastServicesComponent> {
     List<DateTime> endDateTime = formatDate(endDates);
     List<Appointment> apps = [];
     Appointment juneApp1 = Appointment(
-        id: 0,
-        start: startDateTime[0],
-        end: endDateTime[0],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[0],
+      end: endDateTime[0],
+      isOrderService: true,
+    );
     Appointment juneApp2 = Appointment(
-        id: 0,
-        start: startDateTime[1],
-        end: endDateTime[1],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[1],
+      end: endDateTime[1],
+      isOrderService: true,
+    );
     Appointment juneApp3 = Appointment(
-        id: 0,
-        start: startDateTime[2],
-        end: endDateTime[2],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[2],
+      end: endDateTime[2],
+      isOrderService: true,
+    );
     Appointment juneApp4 = Appointment(
-        id: 0,
-        start: startDateTime[3],
-        end: endDateTime[3],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[3],
+      end: endDateTime[3],
+      isOrderService: true,
+    );
     Appointment juneApp5 = Appointment(
-        id: 0,
-        start: startDateTime[4],
-        end: endDateTime[4],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[4],
+      end: endDateTime[4],
+      isOrderService: true,
+    );
     Appointment juneApp6 = Appointment(
-        id: 0,
-        start: startDateTime[5],
-        end: endDateTime[5],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[5],
+      end: endDateTime[5],
+      isOrderService: true,
+    );
     Appointment juneApp7 = Appointment(
-        id: 0,
-        start: startDateTime[6],
-        end: endDateTime[6],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[6],
+      end: endDateTime[6],
+      isOrderService: true,
+    );
     Appointment juneApp8 = Appointment(
-        id: 0,
-        start: startDateTime[7],
-        end: endDateTime[7],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[7],
+      end: endDateTime[7],
+      isOrderService: true,
+    );
     Appointment juneApp9 = Appointment(
-        id: 0,
-        start: startDateTime[8],
-        end: endDateTime[8],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[8],
+      end: endDateTime[8],
+      isOrderService: true,
+    );
     Appointment juneApp10 = Appointment(
-        id: 0,
-        start: startDateTime[9],
-        end: endDateTime[9],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[9],
+      end: endDateTime[9],
+      isOrderService: true,
+    );
     Appointment juneApp11 = Appointment(
-        id: 0,
-        start: startDateTime[10],
-        end: endDateTime[10],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[10],
+      end: endDateTime[10],
+      isOrderService: true,
+    );
     Appointment juneApp12 = Appointment(
-        id: 0,
-        start: startDateTime[11],
-        end: endDateTime[11],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[11],
+      end: endDateTime[11],
+      isOrderService: true,
+    );
     Appointment juneApp13 = Appointment(
-        id: 0,
-        start: startDateTime[12],
-        end: endDateTime[12],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[12],
+      end: endDateTime[12],
+      isOrderService: true,
+    );
     Appointment juneApp14 = Appointment(
-        id: 0,
-        start: startDateTime[13],
-        end: endDateTime[13],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[13],
+      end: endDateTime[13],
+      isOrderService: true,
+    );
     apps.add(juneApp1);
     apps.add(juneApp2);
     apps.add(juneApp3);
@@ -403,131 +408,131 @@ class FastServicesComponentState extends State<FastServicesComponent> {
     List<DateTime> endDateTime = formatDate(endDates);
     List<Appointment> apps = [];
     Appointment julyApp1 = Appointment(
-        id: 0,
-        start: startDateTime[0],
-        end: endDateTime[0],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[0],
+      end: endDateTime[0],
+      isOrderService: true,
+    );
     Appointment julyApp2 = Appointment(
-        id: 0,
-        start: startDateTime[1],
-        end: endDateTime[1],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[1],
+      end: endDateTime[1],
+      isOrderService: true,
+    );
     Appointment julyApp3 = Appointment(
-        id: 0,
-        start: startDateTime[2],
-        end: endDateTime[2],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[2],
+      end: endDateTime[2],
+      isOrderService: true,
+    );
     Appointment julyApp4 = Appointment(
-        id: 0,
-        start: startDateTime[3],
-        end: endDateTime[3],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[3],
+      end: endDateTime[3],
+      isOrderService: true,
+    );
     Appointment julyApp5 = Appointment(
-        id: 0,
-        start: startDateTime[4],
-        end: endDateTime[4],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[4],
+      end: endDateTime[4],
+      isOrderService: true,
+    );
     Appointment julyApp6 = Appointment(
-        id: 0,
-        start: startDateTime[5],
-        end: endDateTime[5],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[5],
+      end: endDateTime[5],
+      isOrderService: true,
+    );
     Appointment julyApp7 = Appointment(
-        id: 0,
-        start: startDateTime[6],
-        end: endDateTime[6],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[6],
+      end: endDateTime[6],
+      isOrderService: true,
+    );
     Appointment julyApp8 = Appointment(
-        id: 0,
-        start: startDateTime[7],
-        end: endDateTime[7],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[7],
+      end: endDateTime[7],
+      isOrderService: true,
+    );
     Appointment julyApp9 = Appointment(
-        id: 0,
-        start: startDateTime[8],
-        end: endDateTime[8],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[8],
+      end: endDateTime[8],
+      isOrderService: true,
+    );
     Appointment julyApp10 = Appointment(
-        id: 0,
-        start: startDateTime[9],
-        end: endDateTime[9],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[9],
+      end: endDateTime[9],
+      isOrderService: true,
+    );
     Appointment julyApp11 = Appointment(
-        id: 0,
-        start: startDateTime[10],
-        end: endDateTime[10],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[10],
+      end: endDateTime[10],
+      isOrderService: true,
+    );
     Appointment julyApp12 = Appointment(
-        id: 0,
-        start: startDateTime[11],
-        end: endDateTime[11],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[11],
+      end: endDateTime[11],
+      isOrderService: true,
+    );
     Appointment julyApp13 = Appointment(
-        id: 0,
-        start: startDateTime[12],
-        end: endDateTime[12],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[12],
+      end: endDateTime[12],
+      isOrderService: true,
+    );
     Appointment julyApp14 = Appointment(
-        id: 0,
-        start: startDateTime[13],
-        end: endDateTime[13],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[13],
+      end: endDateTime[13],
+      isOrderService: true,
+    );
     Appointment julyApp15 = Appointment(
-        id: 0,
-        start: startDateTime[14],
-        end: endDateTime[14],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[14],
+      end: endDateTime[14],
+      isOrderService: true,
+    );
     Appointment julyApp16 = Appointment(
-        id: 0,
-        start: startDateTime[15],
-        end: endDateTime[15],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[15],
+      end: endDateTime[15],
+      isOrderService: true,
+    );
     Appointment julyApp17 = Appointment(
-        id: 0,
-        start: startDateTime[16],
-        end: endDateTime[16],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[16],
+      end: endDateTime[16],
+      isOrderService: true,
+    );
     Appointment julyApp18 = Appointment(
-        id: 0,
-        start: startDateTime[17],
-        end: endDateTime[17],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[17],
+      end: endDateTime[17],
+      isOrderService: true,
+    );
     Appointment julyApp19 = Appointment(
-        id: 0,
-        start: startDateTime[18],
-        end: endDateTime[18],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[18],
+      end: endDateTime[18],
+      isOrderService: true,
+    );
     Appointment julyApp20 = Appointment(
-        id: 0,
-        start: startDateTime[19],
-        end: endDateTime[19],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[19],
+      end: endDateTime[19],
+      isOrderService: true,
+    );
     Appointment julyApp21 = Appointment(
-        id: 0,
-        start: startDateTime[20],
-        end: endDateTime[20],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[20],
+      end: endDateTime[20],
+      isOrderService: true,
+    );
     apps.add(julyApp1);
     apps.add(julyApp2);
     apps.add(julyApp3);
@@ -569,29 +574,29 @@ class FastServicesComponentState extends State<FastServicesComponent> {
     List<DateTime> endDateTime = formatDate(endDates);
     List<Appointment> apps = [];
     Appointment mayApp1 = Appointment(
-        id: 0,
-        start: startDateTime[0],
-        end: endDateTime[0],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[0],
+      end: endDateTime[0],
+      isOrderService: true,
+    );
     Appointment mayApp2 = Appointment(
-        id: 0,
-        start: startDateTime[1],
-        end: endDateTime[1],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[1],
+      end: endDateTime[1],
+      isOrderService: true,
+    );
     Appointment mayApp3 = Appointment(
-        id: 0,
-        start: startDateTime[2],
-        end: endDateTime[2],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[2],
+      end: endDateTime[2],
+      isOrderService: true,
+    );
     Appointment mayApp4 = Appointment(
-        id: 0,
-        start: startDateTime[3],
-        end: endDateTime[3],
-        isOrderService: true,
-        );
+      id: 0,
+      start: startDateTime[3],
+      end: endDateTime[3],
+      isOrderService: true,
+    );
     apps.add(mayApp1);
     apps.add(mayApp2);
     apps.add(mayApp3);

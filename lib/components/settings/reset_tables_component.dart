@@ -26,8 +26,9 @@ class ResetTablesComponentState extends State<ResetTablesComponent> {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
-          Icons.reset_tv_outlined),
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+        Icons.reset_tv_outlined,
+      ),
       title: Text(
         'Reset tables',
         style: TextStyle(
@@ -49,20 +50,21 @@ class ResetTablesComponentState extends State<ResetTablesComponent> {
               content: Text('Are you sure you want to reset the tables?'),
               actions: <Widget>[
                 ElevatedButton(
-                    onPressed: () async {
-                      ServiceDB db = ServiceDB();
-                      bool success = await db.resetTables();
-                      if (success) {
-                        Helper.snackbar('Success', 'Tables reseted');
-                      } else {
-                        Helper.snackbar('Error', 'Could not reset tables');
-                      }
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MainPage()));
-                    },
-                    child: Text('yes'.tr)),
+                  onPressed: () async {
+                    ServiceDB db = ServiceDB();
+                    bool success = await db.resetTables();
+                    if (success) {
+                      Helper.snackbar('Success', 'Tables reseted');
+                    } else {
+                      Helper.snackbar('Error', 'Could not reset tables');
+                    }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MainPage()),
+                    );
+                  },
+                  child: Text('yes'.tr),
+                ),
                 ElevatedButton(
                   child: Text('no'.tr),
                   onPressed: () {

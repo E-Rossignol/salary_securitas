@@ -69,106 +69,107 @@ class _EditServicePageState extends State<EditServicePage> {
             child: Column(
               children: [
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: DateTimeField(
-                          format: dateFormat,
-                          initialValue: widget.app.start,
-                          decoration:
-                              InputDecoration(labelText: 'start_date'.tr),
-                          onShowPicker: (context, currentValue) async {
-                            final date = await showDatePicker(
-                                locale: Get.locale,
-                                context: context,
-                                initialEntryMode:
-                                    DatePickerEntryMode.calendarOnly,
-                                firstDate: DateTime(2020),
-                                initialDate: currentValue ?? DateTime.now(),
-                                lastDate: DateTime(2100));
-                            if (date != null) {
-                              setState(() {
-                                startMonth = date.month;
-                                startDay = date.day;
-                              });
-                            }
-                            return date;
-                          },
-                        ),
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: DateTimeField(
+                        format: dateFormat,
+                        initialValue: widget.app.start,
+                        decoration: InputDecoration(labelText: 'start_date'.tr),
+                        onShowPicker: (context, currentValue) async {
+                          final date = await showDatePicker(
+                            locale: Get.locale,
+                            context: context,
+                            initialEntryMode: DatePickerEntryMode.calendarOnly,
+                            firstDate: DateTime(2020),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100),
+                          );
+                          if (date != null) {
+                            setState(() {
+                              startMonth = date.month;
+                              startDay = date.day;
+                            });
+                          }
+                          return date;
+                        },
                       ),
-                      Expanded(
-                        child: DateTimeField(
-                          format: timeFormat,
-                          initialValue: widget.app.start,
-                          decoration:
-                              InputDecoration(labelText: 'start_hour'.tr),
-                          onShowPicker: (context, currentValue) async {
-                            final time = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.fromDateTime(
-                                  currentValue ?? widget.app.start),
-                            );
-                            if (time != null) {
-                              setState(() {
-                                startHour = time.hour;
-                                startMinute =
-                                    getClosestValidMinute(time.minute);
-                              });
-                            }
-                            return DateTimeField.convert(time);
-                          },
-                        ),
+                    ),
+                    Expanded(
+                      child: DateTimeField(
+                        format: timeFormat,
+                        initialValue: widget.app.start,
+                        decoration: InputDecoration(labelText: 'start_hour'.tr),
+                        onShowPicker: (context, currentValue) async {
+                          final time = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.fromDateTime(
+                              currentValue ?? widget.app.start,
+                            ),
+                          );
+                          if (time != null) {
+                            setState(() {
+                              startHour = time.hour;
+                              startMinute = getClosestValidMinute(time.minute);
+                            });
+                          }
+                          return DateTimeField.convert(time);
+                        },
                       ),
-                    ]),
+                    ),
+                  ],
+                ),
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: DateTimeField(
-                          format: dateFormat,
-                          initialValue: widget.app.end,
-                          decoration: InputDecoration(labelText: 'end_date'.tr),
-                          onShowPicker: (context, currentValue) async {
-                            final date = await showDatePicker(
-                                locale: Get.locale,
-                                context: context,
-                                initialEntryMode:
-                                    DatePickerEntryMode.calendarOnly,
-                                firstDate: DateTime(2020),
-                                initialDate: currentValue ?? DateTime.now(),
-                                lastDate: DateTime(2100));
-                            if (date != null) {
-                              setState(() {
-                                endMonth = date.month;
-                                endDay = date.day;
-                              });
-                            }
-                            return date;
-                          },
-                        ),
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: DateTimeField(
+                        format: dateFormat,
+                        initialValue: widget.app.end,
+                        decoration: InputDecoration(labelText: 'end_date'.tr),
+                        onShowPicker: (context, currentValue) async {
+                          final date = await showDatePicker(
+                            locale: Get.locale,
+                            context: context,
+                            initialEntryMode: DatePickerEntryMode.calendarOnly,
+                            firstDate: DateTime(2020),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100),
+                          );
+                          if (date != null) {
+                            setState(() {
+                              endMonth = date.month;
+                              endDay = date.day;
+                            });
+                          }
+                          return date;
+                        },
                       ),
-                      Expanded(
-                        child: DateTimeField(
-                          format: timeFormat,
-                          initialValue: widget.app.end,
-                          decoration: InputDecoration(labelText: 'end_hour'.tr),
-                          onShowPicker: (context, currentValue) async {
-                            final time = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.fromDateTime(
-                                  currentValue ?? widget.app.end),
-                            );
-                            if (time != null) {
-                              setState(() {
-                                endHour = time.hour;
-                                endMinute = getClosestValidMinute(time.minute);
-                              });
-                            }
-                            return DateTimeField.convert(time);
-                          },
-                        ),
+                    ),
+                    Expanded(
+                      child: DateTimeField(
+                        format: timeFormat,
+                        initialValue: widget.app.end,
+                        decoration: InputDecoration(labelText: 'end_hour'.tr),
+                        onShowPicker: (context, currentValue) async {
+                          final time = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.fromDateTime(
+                              currentValue ?? widget.app.end,
+                            ),
+                          );
+                          if (time != null) {
+                            setState(() {
+                              endHour = time.hour;
+                              endMinute = getClosestValidMinute(time.minute);
+                            });
+                          }
+                          return DateTimeField.convert(time);
+                        },
                       ),
-                    ]),
+                    ),
+                  ],
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -182,39 +183,56 @@ class _EditServicePageState extends State<EditServicePage> {
                       },
                       items: <String>['yes'.tr, 'no'.tr]
                           .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          })
+                          .toList(),
                     ),
                   ],
                 ),
                 ElevatedButton(
-                    onPressed: () async {
-                      setState(() {
-                        start = DateTime(defaultDay.year, startMonth, startDay,
-                            startHour, startMinute);
-                        end = DateTime(defaultDay.year, endMonth, endDay,
-                            endHour, endMinute);
-                      });
-                      if (end.isBefore(start)) {
-                        Helper.snackbar(
-                            'error'.tr, 'end_date_before_start_date'.tr);
-                        return;
-                      }
-                      Appointment newApp = Appointment(
-                          id: widget.app.id,
-                          start: start,
-                          end: end,
-                          isOrderService: dropdownValue == 'yes'.tr);
-                      await ServiceDB().update(newApp.id, newApp);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MainPage(initialDate: start,)));
-                    },
-                    child: Text('validate'.tr))
+                  onPressed: () async {
+                    setState(() {
+                      start = DateTime(
+                        defaultDay.year,
+                        startMonth,
+                        startDay,
+                        startHour,
+                        startMinute,
+                      );
+                      end = DateTime(
+                        defaultDay.year,
+                        endMonth,
+                        endDay,
+                        endHour,
+                        endMinute,
+                      );
+                    });
+                    if (end.isBefore(start)) {
+                      Helper.snackbar(
+                        'error'.tr,
+                        'end_date_before_start_date'.tr,
+                      );
+                      return;
+                    }
+                    Appointment newApp = Appointment(
+                      id: widget.app.id,
+                      start: start,
+                      end: end,
+                      isOrderService: dropdownValue == 'yes'.tr,
+                    );
+                    await ServiceDB().update(newApp.id, newApp);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MainPage(initialDate: start),
+                      ),
+                    );
+                  },
+                  child: Text('validate'.tr),
+                ),
               ],
             ),
           ),
