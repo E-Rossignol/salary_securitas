@@ -4,9 +4,15 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants/theme/theme_provider.dart';
 
+/// Component that displays theme (color) selection.
+///
+/// Opens a dialog with choices; selected theme is applied via ThemeProvider and persisted.
 class ThemeSelectionComponent extends StatelessWidget {
   const ThemeSelectionComponent({super.key});
 
+  /// Build the ListTile that opens the theme selection dialog.
+  /// @param context BuildContext
+  /// @return Widget
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -52,6 +58,7 @@ class ThemeSelectionComponent extends StatelessWidget {
                           await themeProvider.changeTheme(values[index]);
                           SharedPreferences prefs =
                               await SharedPreferences.getInstance();
+                          // Persist chosen theme for next launches
                           await prefs.setString('theme', values[index]);
                           Navigator.of(context).pop();
                         },

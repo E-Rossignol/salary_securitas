@@ -5,6 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import '../../constants/theme/theme_provider.dart';
 
+/// Widget that shows an entry to edit default service times.
+///
+/// Tapping the ListTile opens a dialog to edit start/end times.
+/// Values are loaded from and saved to SharedPreferences.
 class ChangeDefaultTimeComponent extends StatefulWidget {
   const ChangeDefaultTimeComponent({super.key});
 
@@ -26,6 +30,8 @@ class _ChangeDefaultTimeComponentState
     _loadPreferences();
   }
 
+  /// Load hour/minute values from SharedPreferences.
+  /// @return Future<void> completes when preferences have been loaded and state updated.
   Future<void> _loadPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -36,8 +42,13 @@ class _ChangeDefaultTimeComponentState
     });
   }
 
+  /// Format an integer as two digits.
+  /// @param n integer to format
+  /// @return String zero-padded two digit string
   String twoDigits(int n) => n.toString().padLeft(2, '0');
 
+  /// Open the edit dialog and reload preferences if dialog returns true.
+  /// @return Future<void> completes after dialog closes and preferences are reloaded if needed.
   Future<void> _openDialog() async {
     final result = await showDialog<bool>(
       context: context,
@@ -64,6 +75,10 @@ class _ChangeDefaultTimeComponentState
   }
 }
 
+/// Dialog used to edit default start/end times.
+///
+/// Minutes are rounded to the nearest quarter according to business rules,
+/// and results are persisted in SharedPreferences.
 class EditDefaultTimeDialog extends StatefulWidget {
   const EditDefaultTimeDialog({super.key});
 
@@ -84,6 +99,7 @@ class _EditDefaultTimeDialogState extends State<EditDefaultTimeDialog> {
     _loadPreferences();
   }
 
+  /// Load currently saved start/end times.
   Future<void> _loadPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -104,6 +120,8 @@ class _EditDefaultTimeDialogState extends State<EditDefaultTimeDialog> {
     return 60;
   }
 
+  /// Show time picker for start time and apply rounding.
+  /// @return Future<void> completes when start time is potentially updated.
   Future<void> _pickStartTime() async {
     final picked = await showTimePicker(
       context: context,
@@ -112,6 +130,7 @@ class _EditDefaultTimeDialogState extends State<EditDefaultTimeDialog> {
     if (picked != null) {
       int rounded = _getClosestValidMinute(picked.minute);
       int hour = picked.hour;
+      // If rounding returns 60, advance to next hour and set minutes to 0.
       if (rounded == 60) {
         rounded = 0;
         hour = (hour + 1) % 24;
@@ -123,6 +142,8 @@ class _EditDefaultTimeDialogState extends State<EditDefaultTimeDialog> {
     }
   }
 
+  /// Show time picker for end time and apply same rounding logic.
+  /// @return Future<void> completes when end time is potentially updated.
   Future<void> _pickEndTime() async {
     final picked = await showTimePicker(
       context: context,
@@ -131,6 +152,7 @@ class _EditDefaultTimeDialogState extends State<EditDefaultTimeDialog> {
     if (picked != null) {
       int rounded = _getClosestValidMinute(picked.minute);
       int hour = picked.hour;
+      // Advance hour when rounded minute is 60.
       if (rounded == 60) {
         rounded = 0;
         hour = (hour + 1) % 24;
@@ -142,6 +164,8 @@ class _EditDefaultTimeDialogState extends State<EditDefaultTimeDialog> {
     }
   }
 
+  /// Save values to SharedPreferences and close the dialog.
+  /// @return Future<void> completes after saving and closing the dialog (pop true).
   Future<void> _saveAndClose() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('default_start_hour', startHour);

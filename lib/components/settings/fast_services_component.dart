@@ -5,11 +5,9 @@ import '../../database/service_db.dart';
 import '../../models/appointment.dart';
 import '../../views/main_page.dart';
 
-/// The `LogOutComponent` class represents a widget that allows the user to log out of the application.
+/// Component to quickly insert a set of predefined services.
 ///
-/// It extends `StatefulWidget`, meaning it can maintain state that might change during the lifetime of the widget.
-///
-/// The class provides a `build` method that returns a `ListTile` widget. When this `ListTile` is tapped, it shows a dialog asking the user to confirm if they want to leave the app.
+/// Useful to populate the DB with example appointments for demo purposes.
 class FastServicesComponent extends StatefulWidget {
   const FastServicesComponent({super.key});
 
@@ -17,11 +15,6 @@ class FastServicesComponent extends StatefulWidget {
   FastServicesComponentState createState() => FastServicesComponentState();
 }
 
-/// The `_LogOutComponent` class represents the state of the `LogOutComponent` widget.
-///
-/// It extends `State<LogOutComponent>`, meaning it holds the mutable state for the `LogOutComponent` widget.
-///
-/// The class provides a `build` method that returns a `ListTile` widget. When this `ListTile` is tapped, it shows a dialog asking the user to confirm if they want to leave the app.
 class FastServicesComponentState extends State<FastServicesComponent> {
   @override
   Widget build(BuildContext context) {
@@ -66,7 +59,7 @@ class FastServicesComponentState extends State<FastServicesComponent> {
                 ElevatedButton(
                   child: Text('no'.tr),
                   onPressed: () {
-                    Navigator.of(context).pop(); // Dismiss the dialog
+                    Navigator.of(context).pop();
                   },
                 ),
               ],
@@ -78,6 +71,10 @@ class FastServicesComponentState extends State<FastServicesComponent> {
     );
   }
 
+  /// Parse strings like 'DD month HHhMM' into DateTime objects.
+  /// NOTE: months are expected in French (mai, juin, juillet, aout, septembre).
+  /// @param dates list of strings to parse
+  /// @return List<DateTime> parsed DateTime objects
   List<DateTime> formatDate(List<String> dates) {
     List<DateTime> formattedDates = [];
     for (String date in dates) {
@@ -85,6 +82,7 @@ class FastServicesComponentState extends State<FastServicesComponent> {
       List<String> words = date.split(' ');
       int days = int.parse(words[0]);
       int month = 0;
+      // Map French month names to month numbers.
       switch (words[1]) {
         case "mai":
           month = 5;
@@ -104,6 +102,7 @@ class FastServicesComponentState extends State<FastServicesComponent> {
         default:
           month = 1;
       }
+      // Parse 'HHhMM' pattern.
       int hours = int.parse(words[2].split('h')[0]);
       int minutes = int.parse(words[2].split('h')[1]);
       formattedDate = DateTime(2024, month, days, hours, minutes);
@@ -112,6 +111,8 @@ class FastServicesComponentState extends State<FastServicesComponent> {
     return formattedDates;
   }
 
+  /// Insert all predefined appointments into the database.
+  /// @return Future<void> completes after all inserts have been performed.
   Future<void> _fastServices() async {
     List<Appointment> mayApp = _fastMayServices();
     List<Appointment> juneApp = _fastJuneServices();

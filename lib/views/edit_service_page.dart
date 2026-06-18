@@ -9,6 +9,10 @@ import 'package:salary_securitas/views/main_page.dart';
 import '../constants/helper.dart';
 import '../constants/theme/theme_provider.dart';
 
+/// Page used to edit an existing appointment.
+///
+/// The initial values are seeded from the provided `app`.
+/// @param app the Appointment to edit
 class EditServicePage extends StatefulWidget {
   final Appointment app;
 
@@ -54,6 +58,9 @@ class _EditServicePageState extends State<EditServicePage> {
     super.initState();
   }
 
+  /// Build the edit service page UI.
+  /// @param context BuildContext
+  /// @return Widget
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
@@ -241,7 +248,11 @@ class _EditServicePageState extends State<EditServicePage> {
     );
   }
 
+  /// Return the nearest quarter minute (0,15,30,45).
+  /// @param minute minute value selected by the user
+  /// @return int rounded minute
   int getClosestValidMinute(int minute) {
+    // Round to quarter-hour blocks per business rules
     if (minute >= 0 && minute < 15) {
       return 0;
     } else if (minute >= 15 && minute < 30) {

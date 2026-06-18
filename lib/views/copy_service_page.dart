@@ -6,6 +6,11 @@ import '../constants/helper.dart';
 import '../models/appointment.dart';
 import 'main_page.dart';
 
+/// Page that allows copying an existing appointment to multiple target dates.
+///
+/// Displays a dialog-like calendar where user can select multiple destination dates.
+/// The original appointment date is highlighted and cannot be re-selected.
+/// @param app the Appointment to be copied
 class CopyServicePage extends StatefulWidget {
   final Appointment app;
   const CopyServicePage({super.key, required this.app});
@@ -18,12 +23,16 @@ class _CopyServicePageState extends State<CopyServicePage> {
   final Set<DateTime> _selectedDates = {};
   late DateTime _focusedDay;
 
+  /// Initialize focused day to the appointment start date.
   @override
   void initState() {
     super.initState();
     _focusedDay = widget.app.start;
   }
 
+  /// Build the dialog widget containing the calendar and validate button.
+  /// @param context BuildContext used to build the widget tree
+  /// @return Widget the dialog content
   @override
   Widget build(BuildContext context) {
     ColorScheme colors = Theme.of(context).colorScheme;
@@ -111,12 +120,12 @@ class _CopyServicePageState extends State<CopyServicePage> {
                     }
                     _selectedDates.add(selectedDay);
                   }
-                  // réaffecte explicitement la focalisation précédente pour éviter tout recentrage
+                  // keep previous focused day to avoid calendar recentering
                   _focusedDay = currentFocused;
                 });
               },
               onPageChanged: (focusedDay) {
-                // Allow user to navigate months without changing focus when selecting days
+                // allow navigation without altering selected focus
                 setState(() {
                   _focusedDay = focusedDay;
                 });

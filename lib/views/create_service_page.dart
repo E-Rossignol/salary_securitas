@@ -10,6 +10,11 @@ import '../constants/helper.dart';
 import '../constants/theme/theme_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Page used to create a new service/appointment.
+///
+/// The page reads default start/end times from SharedPreferences and allows
+/// the user to choose date/time and whether the service is an order.
+/// @param day the selected day used to seed default times
 class CreateServicePage extends StatefulWidget {
   final DateTime day;
 
@@ -61,6 +66,8 @@ class _CreateServicePageState extends State<CreateServicePage> {
     setDefaultTimes();
   }
 
+  /// Load default start/end times from SharedPreferences.
+  /// @return Future<void>
   Future<void> setDefaultTimes() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     TimeOfDay startTime = TimeOfDay(
@@ -77,6 +84,9 @@ class _CreateServicePageState extends State<CreateServicePage> {
     });
   }
 
+  /// Build the create service page UI.
+  /// @param context BuildContext
+  /// @return Widget
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
@@ -309,7 +319,11 @@ class _CreateServicePageState extends State<CreateServicePage> {
     );
   }
 
+  /// Return the nearest quarter minute (0,15,30,45) for business rules.
+  /// @param minute minute value selected by the user
+  /// @return int rounded minute
   int getClosestValidMinute(int minute) {
+    // Rounding minutes to quarter-hour blocks
     if (minute >= 0 && minute < 15) {
       return 0;
     } else if (minute >= 15 && minute < 30) {

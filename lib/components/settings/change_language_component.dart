@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-/// The `ChangeLanguageComponent` class represents a widget that allows the user to change the language of the application.
+/// Component that shows a language change option.
 ///
-/// It extends `StatefulWidget`, meaning it can maintain state that might change during the lifetime of the widget.
-///
-/// The class provides a `build` method that returns a `ListTile` widget. When this `ListTile` is tapped, it calls the `buildDialog` function to show a dialog with a list of available languages.
+/// Tapping opens a dialog with available languages. Selected locale is applied globally.
 class ChangeLanguageComponent extends StatefulWidget {
   const ChangeLanguageComponent({super.key});
 
@@ -13,11 +11,7 @@ class ChangeLanguageComponent extends StatefulWidget {
   _ChangeLanguageComponent createState() => _ChangeLanguageComponent();
 }
 
-/// The `_ChangeLanguageComponent` class represents the state of the `ChangeLanguageComponent` widget.
-///
-/// It extends `State<ChangeLanguageComponent>`, meaning it holds the mutable state for the `ChangeLanguageComponent` widget.
-///
-/// The class provides a `build` method that returns a `ListTile` widget. When this `ListTile` is tapped, it calls the `buildDialog` function to show a dialog with a list of available languages.
+/// État associé au composant de changement de langue.
 class _ChangeLanguageComponent extends State<ChangeLanguageComponent> {
   final List locale = [
     {'name': 'Français', 'locale': const Locale('fr')},
@@ -47,11 +41,10 @@ class _ChangeLanguageComponent extends State<ChangeLanguageComponent> {
   }
 }
 
-/// The `buildDialog` function shows a dialog with a list of available languages.
-///
-/// It takes two parameters: `context` and `locale`. `context` is the `BuildContext` object representing the location in the widget tree. `locale` is a list of available languages.
-///
-/// When a language is selected, it calls the `_updateLanguage` function to update the language of the application.
+/// Show the language selection dialog.
+/// @param context BuildContext used to show the dialog
+/// @param locale list of maps with keys 'name' and 'locale'
+/// @return void
 void buildDialog(BuildContext context, List locale) {
   showDialog(
     context: context,
@@ -108,12 +101,11 @@ void buildDialog(BuildContext context, List locale) {
   );
 }
 
-/// The `_updateLanguage` function updates the language of the application.
-///
-/// It takes one parameter: `locale`, which is the `Locale` object representing the selected language.
-///
-/// It uses the `Get` package to update the locale of the application.
+/// Update application locale using Get.
+/// @param locale Locale to apply globally
+/// @return void
 void _updateLanguage(Locale locale) {
+  // Close dialog then update global locale.
   Get.back();
   Get.updateLocale(locale);
 }

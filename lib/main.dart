@@ -8,6 +8,8 @@ import 'constants/locale/locale_string.dart';
 import 'constants/theme/theme_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+/// Application entry point: initialize DB, load preferences and start the app.
+/// @return Future<void> completes when initialization is done and app is started.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DatabaseService databaseService = DatabaseService();
@@ -18,6 +20,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          // Provide ThemeProvider with persisted initial value.
           create: (context) => ThemeProvider(isDarkMode: isDarkMode),
         ),
       ],
@@ -26,10 +29,12 @@ Future<void> main() async {
   );
 }
 
+/// Root widget using GetMaterialApp, localization and provided theme.
+/// @param context BuildContext provided by framework
+/// @return Widget the root application widget
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

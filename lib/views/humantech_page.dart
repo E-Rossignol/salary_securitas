@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:salary_securitas/views/main_page.dart';
 
+/// Simple calculator page for Humantech hours conversion.
+///
+/// Multiplies user input by a fixed multiplier to compute a salary-like value.
 class HumantechPage extends StatefulWidget {
   const HumantechPage({Key? key}) : super(key: key);
 
@@ -12,15 +15,21 @@ class _HumantechPageState extends State<HumantechPage> {
   final TextEditingController _controller = TextEditingController();
   double _result = 0.0;
 
+  /// Calculate converted value from input hours.
+  /// @return void
   void _calculate() {
     double? inputValue = double.tryParse(_controller.text);
     if (inputValue != null) {
       setState(() {
+        // multiplier originates from business rule / conversion factor
         _result = (inputValue * 21.30240963855421).roundToDouble();
       });
     }
   }
 
+  /// Build Humantech page UI.
+  /// @param context BuildContext
+  /// @return Widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +79,6 @@ class _HumantechPageState extends State<HumantechPage> {
                 ),
               ],
             ),
-
             Text('Humantech Salary: ${_result.toInt()}.-'),
           ],
         ),

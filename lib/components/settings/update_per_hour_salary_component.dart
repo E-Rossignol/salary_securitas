@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// The `DarkModeSwitchComponent` class represents a widget that allows the user to switch between dark and light modes.
+/// Component to update the default per-hour salary.
 ///
-/// It extends `StatefulWidget`, meaning it can maintain state that might change during the lifetime of the widget.
-///
-/// The class provides a `build` method that returns a `SwitchListTile` widget. When this `SwitchListTile` is toggled, it calls the `_saveThemePreference` function to save the user's preference and updates the `_isDarkMode` state.
+/// Opens a dialog to input a new value and persists it to SharedPreferences.
 class UpdateSalaryPerHourComponent extends StatefulWidget {
   const UpdateSalaryPerHourComponent({super.key});
 
@@ -15,11 +13,6 @@ class UpdateSalaryPerHourComponent extends StatefulWidget {
       _UpdateSalaryPerHourComponentState();
 }
 
-/// The `_DarkModeSwitchComponentState` class represents the state of the `DarkModeSwitchComponent` widget.
-///
-/// It extends `State<DarkModeSwitchComponent>`, meaning it holds the mutable state for the `DarkModeSwitchComponent` widget.
-///
-/// The class provides a `build` method that returns a `SwitchListTile` widget. When this `SwitchListTile` is toggled, it calls the `_saveThemePreference` function to save the user's preference and updates the `_isDarkMode` state.
 class _UpdateSalaryPerHourComponentState
     extends State<UpdateSalaryPerHourComponent> {
   double _salaryPerHour = 25.92;
@@ -30,6 +23,8 @@ class _UpdateSalaryPerHourComponentState
     _getSalaryPerHourPreference();
   }
 
+  /// Retrieve saved salary per hour from SharedPreferences and update state.
+  /// @return Future<void>
   _getSalaryPerHourPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     double salaryPerHour = (prefs.getDouble('salaryPerHour')) ?? 25.92;
@@ -38,6 +33,9 @@ class _UpdateSalaryPerHourComponentState
     });
   }
 
+  /// Save the salary per hour to SharedPreferences.
+  /// @param value the salary per hour to persist
+  /// @return Future<void>
   _saveSalaryPerHourPreference(double value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setDouble('salaryPerHour', value);
@@ -62,6 +60,9 @@ class _UpdateSalaryPerHourComponentState
     );
   }
 
+  /// Show dialog to input salary per hour. Input is parsed to double and persisted.
+  /// @param context BuildContext used to show the dialog
+  /// @return void
   void buildDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -84,12 +85,14 @@ class _UpdateSalaryPerHourComponentState
                 ),
                 onChanged: (value) {
                   setState(() {
+                    // Simple conversion; caller should ensure valid numeric input.
                     _salaryPerHour = double.parse(value);
                   });
                 },
               ),
               ElevatedButton(
                 onPressed: () {
+                  // Close dialogs and persist the new value.
                   Navigator.pop(context);
                   Navigator.pop(context);
                   setState(() {

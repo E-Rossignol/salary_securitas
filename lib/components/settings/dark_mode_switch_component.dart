@@ -4,11 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants/theme/theme_provider.dart';
 
-/// The `DarkModeSwitchComponent` class represents a widget that allows the user to switch between dark and light modes.
+/// Switch component to toggle dark mode.
 ///
-/// It extends `StatefulWidget`, meaning it can maintain state that might change during the lifetime of the widget.
-///
-/// The class provides a `build` method that returns a `SwitchListTile` widget. When this `SwitchListTile` is toggled, it calls the `_saveThemePreference` function to save the user's preference and updates the `_isDarkMode` state.
+/// The selection is persisted to SharedPreferences and applied via ThemeProvider.
 class DarkModeSwitchComponent extends StatefulWidget {
   const DarkModeSwitchComponent({super.key});
 
@@ -17,11 +15,6 @@ class DarkModeSwitchComponent extends StatefulWidget {
       _DarkModeSwitchComponentState();
 }
 
-/// The `_DarkModeSwitchComponentState` class represents the state of the `DarkModeSwitchComponent` widget.
-///
-/// It extends `State<DarkModeSwitchComponent>`, meaning it holds the mutable state for the `DarkModeSwitchComponent` widget.
-///
-/// The class provides a `build` method that returns a `SwitchListTile` widget. When this `SwitchListTile` is toggled, it calls the `_saveThemePreference` function to save the user's preference and updates the `_isDarkMode` state.
 class _DarkModeSwitchComponentState extends State<DarkModeSwitchComponent> {
   bool _isDarkMode = false;
 
@@ -31,9 +24,8 @@ class _DarkModeSwitchComponentState extends State<DarkModeSwitchComponent> {
     _getDarkModePreference();
   }
 
-  /// The `_getDarkModePreference` function retrieves the user's dark mode preference from shared preferences.
-  ///
-  /// If the shared preferences do not contain a 'isDarkMode' key, it initializes the `_isDarkMode` state with `false`.
+  /// Retrieve 'isDarkMode' from SharedPreferences and update state.
+  /// @return Future<void> completes when preference read and state set
   _getDarkModePreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isDarkMode = (prefs.getBool('isDarkMode')) ?? false;
@@ -42,14 +34,17 @@ class _DarkModeSwitchComponentState extends State<DarkModeSwitchComponent> {
     });
   }
 
-  /// The `_saveThemePreference` function saves the user's dark mode preference to shared preferences.
-  ///
-  /// It takes one parameter: `value`, which is a `bool` representing the user's preference.
+  /// Save theme preference to SharedPreferences.
+  /// @param value boolean to save
+  /// @return Future<void>
   _saveThemePreference(bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isDarkMode', value);
   }
 
+  /// Build the SwitchListTile controlling dark mode.
+  /// @param context BuildContext
+  /// @return Widget
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
@@ -63,6 +58,7 @@ class _DarkModeSwitchComponentState extends State<DarkModeSwitchComponent> {
       value: _isDarkMode,
       selected: _isDarkMode,
       onChanged: (bool value) {
+        // Apply theme immediately through provider and persist the choice.
         Provider.of<ThemeProvider>(context, listen: false).setDarkMode(value);
         setState(() {
           _isDarkMode = value;

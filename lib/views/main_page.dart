@@ -10,6 +10,10 @@ import '../database/service_db.dart';
 import 'copy_service_page.dart';
 import 'edit_service_page.dart';
 
+/// Main page displaying the calendar, daily appointments and monthly salary.
+///
+/// Optionally accepts an initialDate to focus the calendar.
+/// @param initialDate optional DateTime to focus the calendar on open
 class MainPage extends StatefulWidget {
   final DateTime? initialDate;
   const MainPage({super.key, this.initialDate});
@@ -18,6 +22,7 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
+/// State implementation for the main page.
 class _MainPageState extends State<MainPage> {
   late Future<SharedPreferences> prefs;
   Future<List<Appointment>>? futureAppointments;
@@ -29,6 +34,7 @@ class _MainPageState extends State<MainPage> {
   late int _currentYear;
   List<Appointment> _appointmentsForSelectedDay = [];
 
+  /// Initialize default selected/focused days and load preferences & services.
   @override
   void initState() {
     super.initState();
@@ -49,18 +55,25 @@ class _MainPageState extends State<MainPage> {
     fetchServices();
   }
 
+  /// Initialize SharedPreferences future.
+  /// @return void
   void setPrefs() {
     setState(() {
       prefs = SharedPreferences.getInstance();
     });
   }
 
+  /// Trigger loading of services from the database.
+  /// @return void
   void fetchServices() {
     setState(() {
       futureAppointments = db.fetchUserAppointments();
     });
   }
 
+  /// Delete an appointment and refresh local lists/futures.
+  /// @param appointment the Appointment to delete
+  /// @return void
   void deleteService(Appointment appointment) async {
     await db.delete(appointment.id);
     setState(() {
@@ -73,6 +86,9 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  /// Build main UI with calendar, appointment list and monthly summary.
+  /// @param context BuildContext
+  /// @return Widget
   @override
   Widget build(BuildContext context) {
     ColorScheme colors = Theme.of(context).colorScheme;
@@ -500,6 +516,11 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  /// Compute net salary and total hours for provided list filtered by month/year.
+  /// @param list list of Appointment to compute over
+  /// @param month month number to filter
+  /// @param year year to filter
+  /// @return Future<List<double>> returns [netSalary, totalHours]
   Future<List<double>> getMonthSalary(
     List<Appointment> list,
     int month,

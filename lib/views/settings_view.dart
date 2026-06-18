@@ -11,13 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../components/settings/update_per_hour_salary_component.dart';
 import '../constants/helper.dart';
 
-/// The `SettingsView` class represents the settings view of the application.
+/// Settings view page containing application settings widgets.
 ///
-/// It extends `StatefulWidget` to create a mutable state for this widget.
-///
-/// The class provides a `build` method which returns a `Scaffold` widget.
-/// The `Scaffold` widget has an `AppBar` with a title `Text` widget that displays 'Settings'.
-/// The body of the `Scaffold` is a `Padding` widget that contains a `ListView` with `DarkModeSwitchComponent`, `ChangeLanguageComponent`, and `LogOutComponent` components.
+/// @param isLoginPage boolean indicating whether this settings view is opened from login
+/// @param isDebug boolean enabling debug-only features in the UI
 class SettingsView extends StatefulWidget {
   final bool isLoginPage;
   final bool isDebug;
@@ -31,13 +28,7 @@ class SettingsView extends StatefulWidget {
   SettingsViewState createState() => SettingsViewState();
 }
 
-/// The `_SettingsViewState` class represents the mutable state for the `SettingsView` widget.
-///
-/// It extends `State<SettingsView>` to create a mutable state for the `SettingsView` widget.
-///
-/// The class provides a `build` method which returns a `Scaffold` widget.
-/// The `Scaffold` widget has an `AppBar` with a title `Text` widget that displays 'Settings'.
-/// The body of the `Scaffold` is a `Padding` widget that contains a `ListView` with `DarkModeSwitchComponent`, `ChangeLanguageComponent`, and `LogOutComponent` components.
+/// State for SettingsView handling god mode initialization and dialogs.
 class SettingsViewState extends State<SettingsView> {
   bool isGodMod = false;
 
@@ -47,6 +38,8 @@ class SettingsViewState extends State<SettingsView> {
     initGodMod();
   }
 
+  /// Initialize the 'godMod' flag from SharedPreferences.
+  /// @return Future<void>
   Future<void> initGodMod() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -54,6 +47,9 @@ class SettingsViewState extends State<SettingsView> {
     });
   }
 
+  /// Show a dialog to enable God Mod with a numeric code.
+  /// On success the flag is stored in SharedPreferences.
+  /// @return void
   void _showGodModDialog() {
     showDialog(
       context: context,
@@ -91,6 +87,9 @@ class SettingsViewState extends State<SettingsView> {
     );
   }
 
+  /// Build the settings page containing multiple setting components.
+  /// @param context BuildContext
+  /// @return Widget
   @override
   Widget build(BuildContext context) {
     bool isLoginPage = widget.isLoginPage;
