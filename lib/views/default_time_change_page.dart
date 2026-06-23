@@ -12,12 +12,8 @@ class DefaultTimeChangePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('change_default_service'.tr),
-      ),
-      body: Center(
-        child: Text('change_default_service'.tr),
-      ),
+      appBar: AppBar(title: Text('change_default_service'.tr)),
+      body: Center(child: Text('change_default_service'.tr)),
     );
   }
 }
