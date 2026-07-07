@@ -72,9 +72,23 @@ class SettingsViewState extends State<SettingsView> {
                     isGodMod = true;
                   });
                   Helper.snackbar('God Mod', 'God Mod activated, have fun !');
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.setBool('godMod', true);
+                  bool? godMod = await SharedPreferences.getInstance().then(
+                    (prefs) => prefs.getBool('godMod'),
+                  );
+                  if (godMod == null || !godMod) {
+                    Helper.snackbar('God Mod', 'God Mod activated, have fun !');
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setBool('godMod', true);
+                  } else {
+                    Helper.snackbar('God Mod', 'God Mod deactivated !');
+                    await SharedPreferences.getInstance().then(
+                      (prefs) => prefs.setBool('godMod', false),
+                    );
+                    setState(() {
+                      isGodMod = false;
+                    });
+                  }
                 } else {
                   Helper.snackbar('Error', 'U don\'t deserve it !');
                 }
