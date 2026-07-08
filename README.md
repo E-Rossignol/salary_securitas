@@ -16,7 +16,8 @@ A Flutter application to track Securitas work time and calculate salary details 
 - Import/export DB fixtures for testing and demos.
 
 ## Demonstration
-@TODO: Add screenshots (main view, shift editor, reports, settings) and a short demo video.
+
+A video demonstration of the app is available at: [https://youtu.be/vKgVivpJyPM](https://youtu.be/vKgVivpJyPM)
 
 ## Tech Stack
 - Flutter (stable)
